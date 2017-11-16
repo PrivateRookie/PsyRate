@@ -1,0 +1,9 @@
+﻿# 忽略.gitignore
+.gitignore
+
+# 忽略.pyc .sqlite
+*.pyc
+*.sqlite
+
+# 忽略__pycache__文件夹
+__pycache__
