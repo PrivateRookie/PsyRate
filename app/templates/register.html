@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}PsyRates 注册{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>新用户注册</h1>
+</div>
+<hr>
+<div class="col-md-4">
+    {{ wtf.quick_form(form) }}
+</div>
+{% endblock %}

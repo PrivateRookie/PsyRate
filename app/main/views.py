@@ -10,8 +10,5 @@ def index():
     form = DemoForm()
     if form.validate_on_submit():
         session['msg'] = form.msg.data
-        session['name'] = form.name.data
-        flash('成功')
         return redirect(url_for('.index'))
-    return render_template('index.html', form=form, msg=session.get('msg'),
-                           name=session.get('name'))
+    return render_template('index.html', form=form, msg=session.get('msg'))

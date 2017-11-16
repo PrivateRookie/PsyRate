@@ -5,5 +5,4 @@ from wtforms.validators import Required
 
 class DemoForm(FlaskForm):
     msg = StringField('给自己写段消息吧', validators=[Required()])
-    name = StringField('名字', validators=[Required()])
     submit = SubmitField('提交')
