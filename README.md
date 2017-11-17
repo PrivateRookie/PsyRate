@@ -1,2 +1,2 @@
-# PsyRate
-Website for Psychiatric by flask+Python
+# PsyRates
+Web site uses Flask by Python. Mainly for test.
