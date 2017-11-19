@@ -7,3 +7,12 @@
 
 # 忽略__pycache__文件夹
 __pycache__
+
+# 忽略helper.py 文件
+helper.py
+
+# 忽略forms_raw文件夹
+forms_raw
+
+# 忽略sqlite文件
+*.sqlite
