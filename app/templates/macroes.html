@@ -1,0 +1,50 @@
+{% macro render_radio_question(question) %}
+    <label class="question-title">{{ question['title'] }}</label><br>
+    {% for value, opt_str in question['options'] %}
+    <div class="form-group">
+        <label>
+        <input type="radio" name="{{ question['question_id'] }}" value="{{ value }}">{{ opt_str }}
+        </label>
+    {% endfor %}
+    </div>
+{% endmacro %}
+
+{% macro render_radio_survey(survey, route) %}
+    <h2>{{ survey['survey_title'] }}</h2>
+    <form action="{{ url_for(route) }}" methods="post">
+        {% for question in survey['questions'] %}
+            {{ render_radio_question(question) }}
+        {% endfor %}
+        <input type="submit">
+    </form>
+{% endmacro %}
+
+{% macro render_table_question(question) %}
+    <tr>
+        <td>{{ question['title'] }}</td>
+        {% for opt_value in question['opt_values'] %}
+        <td>
+            <label>
+            <input type="radio" name="{{ question['q_id'] }}" vlaue="{{ opt_value }}">{{ opt_value }}
+            </label>
+        </td>
+        {% endfor %}
+    </tr>
+{% endmacro %}
+
+{% macro render_table_survey(survey, route) %}
+    <h2>{{ survey['title'] }}</h2>
+    <form method="post" action="{{ url_for(route) }}">
+        <table class="table"> 
+            <tr>
+                {% for col in survey['cols'] %}
+                <td>{{ col }}</td>
+                {% endfor %}
+            </tr>
+            {% for question in survey['questions'] %}
+                {{ render_table_question(question) }}
+            {% endfor %}
+        </table>
+    <input type="submit">
+    </form>
+{% endmacro %}
