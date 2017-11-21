@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}PsyRates Forms{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>All forms used by PsyRates</h2>
+    <ul>
+        <li><a href="{{ url_for('main.forms', form_name='qids') }}">QIDS-SR16</a></li>
+        <li><a href="{{ url_for('main.forms', form_name='dsss') }}">DSSS</a></li>
+    </ul>
+</div>
+{% endblock %}
