@@ -22,6 +22,19 @@ class DevelopmentConfig(Config):
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') \
     or ('sqlite:///' + os.path.join(basedir, 'data-dev.sqlite'))
+    
+    
+class TestConfig(Config):
+    DEBUG = True
+    MAIL_SERVER = os.environ.get('SMTP_SERVER')
+    MAIL_PORT = os.environ.get('SMTP_PORT')
+    MAIL_USE_SSL = os.environ.get('USE_SSL')
+    MIAL_USE_TLS = os.environ.get('USE_TLS')
+    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') \
+    or ('sqlite:///' + os.path.join(basedir, 'data-test.sqlite'))
 
 config = {'default':DevelopmentConfig,
-          'dev':DevelopmentConfig}
+          'dev':DevelopmentConfig,
+          'test':TestConfig}
