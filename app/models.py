@@ -1,7 +1,25 @@
 # -*- coding: utf-8 -*-
+import csv
 from . import db
 from . import login_manager
 from flask_login import UserMixin
+
+class Export:
+    __tablename__ = None
+    export_cols = None
+    
+    @classmethod
+    def export2csv(cls, csv_file=None):
+        csv_file = cls.__tablename__ + '.csv' if csv_file is None else csv_file
+        ints = cls.query.all()
+        col_names = ['p_id', 'status']
+        col_names += [cls.__tablename__ + col for col in cls.export_cols]
+        with open(csv_file, 'w', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerow(col_names)
+            for int in ints:
+                line = [getattr(int, attr) for attr in cls.export_cols]
+                writer.writerow(line)
 
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
@@ -41,8 +59,9 @@ class FollowUp(db.Model):
     def __repr__(self):
         return '<FollowUP {}>'.format(self.status)
     
-class QIDS(db.Model):
+class QIDS(db.Model, Export):
     __tablename__ = 'qids_sr16'
+    export_cols = ('p_id', 'status', 'q_1', 'q_2', 'q_3', 'q_4', 'q_5', 'q_6', 'q_7', 'q_8', 'q_9', 'q_10', 'q_11', 'q_12', 'q_13', 'q_14', 'q_15', 'q_16')
     id = db.Column(db.Integer, primary_key=True)
     p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
     status = db.Column(db.String(16), db.ForeignKey('follow_ups.status'))
@@ -66,8 +85,9 @@ class QIDS(db.Model):
     def __repr__(self):
         return '<QIDS {}>'.format(self.id)
         
-class DSSS(db.Model):
+class DSSS(db.Model, Export):
     __tablename__ = 'dsss'
+    export_cols = ('p_id', 'status','q_1', 'q_2', 'q_3', 'q_4', 'q_5', 'q_6', 'q_7', 'q_8', 'q_9', 'q_10', 'q_11', 'q_12', 'q_13', 'q_14', 'q_15', 'q_16', 'q_17', 'q_18', 'q_19', 'q_20', 'q_21', 'q_22')
     id = db.Column(db.Integer, primary_key=True)
     p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
     status = db.Column(db.String(16), db.ForeignKey('follow_ups.status'))
