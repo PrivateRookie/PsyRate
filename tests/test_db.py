@@ -50,3 +50,10 @@ class VirtualFillTestCase(unittest.TestCase):
         data.update(p_id=self.test_patient.id, status='v2')
         db.session.add(QIDS(**data))
         db.session.commit()
+        
+    def test_pain(self):
+        from app.models import PAIN
+        data = {'q_{}'.format(i):randint(0, 4) for i in range(2, 5)}
+        data.update(p_id=self.test_patient.id, status='v2', q_1='abcd')
+        db.session.add(PAIN(**data))
+        db.session.commit()
