@@ -3,15 +3,15 @@
     {% for value, opt_str in question['options'] %}
     <div class="form-group">
         <label>
-        <input type="radio" name="{{ question['question_id'] }}" value="{{ value }}">{{ opt_str }}
+        <input type="radio" name="{{ question['q_id'] }}" value="{{ value }}">{{ opt_str }}
         </label>
-    {% endfor %}
     </div>
+    {% endfor %}   
 {% endmacro %}
 
 {% macro render_radio_survey(survey, route) %}
     <h2>{{ survey['survey_title'] }}</h2>
-    <form action="{{ url_for(route) }}" methods="post">
+    <form action="{{ url_for(route) }}" method="post">
         {% for question in survey['questions'] %}
             {{ render_radio_question(question) }}
         {% endfor %}
