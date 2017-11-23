@@ -116,4 +116,18 @@ class DSSS(db.Model, Export):
     
     def __repr__(self):
         return '<DSSS {}>'.format(self.id)
+        
+class PAIN(db.Model, Export):
+    __tablename__ = 'pain'
+    export_cols = ('p_id', 'status','q_1', 'q_2', 'q_3', 'q_4')
+    id = db.Column(db.Integer, primary_key=True)
+    p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
+    status = db.Column(db.String(16), db.ForeignKey('follow_ups.status'))
+    q_1 = db.Column(db.String(16))
+    q_2 = db.Column(db.Integer)
+    q_3 = db.Column(db.Integer)
+    q_4 = db.Column(db.Integer)
+    
+    def __repr__(self):
+        return '<PAIN {}>'.format(self.id)
  
