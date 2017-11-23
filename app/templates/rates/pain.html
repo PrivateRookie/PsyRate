@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <form method='post' action="{{ url_for(route) }}">
+        <formfield>
+            <h2>疼痛问卷（自评-状态）</h2>
+            <p>{{ survey['q_1']['title'] }}</p>
+            <ul class="unstyled">
+            {% for value, opt_str in survey['q_1']['options'] %}
+                <li>
+                    <label><input type="checkbox" name="{{ survey['q_1']['q_id'] }}" value="{{ value }}">{{ opt_str }}</label>
+                </li>
+            {% endfor %}
+            </ul>
+            <div class="form-group">
+                <label>
+                    如果存在疼痛，最长持续多久？
+                    <input type="number" max="100" min="1" name="{{ survey['q_2']['q_id'] }}">
+                    {{ survey['q_2']['title'] }}
+                    <input type="number" max="31" min="1" name="{{ survey['q_3']['q_id'] }}">
+                    {{ survey['q_3']['title'] }}
+                </label>
+            </div>
+        </formfield>
+        <hr>
+        <formfield>
+            <h2>疼痛视觉模拟量表（VAS） （自评-状态）</h2>
+            <p>{{ survey['q_4']['title'] }}</p>
+            <div class="input-group col-xs-10">
+                <div class="input-group-addon">无疼痛（0）</div>
+                <input type="range" class="form-control" name="{{ survey['q_4']['q_id'] }}" min="0" max="10">
+                <div class="input-group-addon">最严重疼痛（10）</div>
+            </div>
+        </formfield>
+        <input type="submit">
+    </form>
+</div>
+{% endblock content %}
