@@ -25,5 +25,5 @@ def forms():
     
 @main.route('/echo', methods=['GET', 'POST'])
 def echo():
-    data = [(attr, request.form.get(attr)) for attr in request.form.keys() if attr.startswith('q')]
+    data = [(attr, request.form.getlist(attr)) for attr in request.form.keys() if attr.startswith('q')]
     return render_template('echo.html', data=data)
