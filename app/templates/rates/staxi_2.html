@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% from "macroes.html" import render_table_question %}
+
+{% block content %}
+<div class="container">
+    <h2>{{ survey['title'] }}</h2>
+    <p>{{ survey['description'] }}</p>
+    <form method="post" action="{{ url_for(route) }}">
+        <h3>Part 1</h3>
+        <p>{{ survey['part_1']['description'] }}</p>
+        <table class="table">
+            <tr>
+                {% for col in survey['part_1']['cols'] %}
+                <td>{{ col }}</td>
+                {% endfor %}
+            </tr>
+            {% for question in survey['part_1']['questions'] %}
+            {{ render_table_question(question) }}
+            {% endfor %} 
+        </table>
+        <hr>
+        <h3>Part 2</h3>
+        <p>{{ survey['part_2']['description'] }}</p>
+        <table class="table">
+            <tr>
+                {% for col in survey['part_2']['cols'] %}
+                <td>{{ col }}</td>
+                {% endfor %}
+            </tr>
+            {% for question in survey['part_2']['questions'] %}
+            {{ render_table_question(question) }}
+            {% endfor %}
+        </table>
+        <hr>
+        <h3>Part 3</h3>
+        <p>{{ survey['part_3']['description'] }}</p>
+        <table class="table">
+            <tr>
+                {% for col in survey['part_3']['cols'] %}
+                <td>{{ col }}</td>
+                {% endfor %}
+            </tr>
+            {% for question in survey['part_3']['questions'] %}
+            {{ render_table_question(question) }}
+            {% endfor %}
+        </table>
+        <input type="submit">
+    </form>
+</div>
+{% endblock content %}
