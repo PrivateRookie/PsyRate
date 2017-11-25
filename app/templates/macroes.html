@@ -34,6 +34,7 @@
 
 {% macro render_table_survey(survey, route) %}
     <h2>{{ survey['title'] }}</h2>
+    <p>{{ survey['description'] }}</p>
     <form method="post" action="{{ url_for(route) }}">
         <table class="table"> 
             <tr>
@@ -47,4 +48,12 @@
         </table>
     <input type="submit">
     </form>
+{% endmacro %}
+
+{% macro render_wrapped_input(question) %}
+    <div class="input-group">
+        <div class="input-group-addon">{{ question['prepend_text'] }}</div>
+        <input type="{{ question['input_type'] }}" class="form-control input-small" name="{{ question['q_id'] }}">
+        <div class="input-group-addon">{{ question['append_text'] }}</div>
+    </div>
 {% endmacro %}
