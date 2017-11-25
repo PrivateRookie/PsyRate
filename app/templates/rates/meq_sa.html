@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% from "macroes.html" import render_radio_survey %}
+
+{% block content %}
+<div class="container">
+<h2>{{ survey['title'] }}</h2>
+<p>{{ survey['description'] }}</p>
+{{ render_radio_survey(survey, route) }}
+</div>
+{% endblock content %}
