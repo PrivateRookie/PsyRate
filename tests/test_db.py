@@ -57,3 +57,37 @@ class VirtualFillTestCase(unittest.TestCase):
         data.update(p_id=self.test_patient.id, status='v2', q_1='abcd')
         db.session.add(PAIN(**data))
         db.session.commit()
+        
+    def test_mfi_20(self):
+        from app.models import MFI
+        data = {'q_{}'.format(i):randint(0, 5) for i in range(1, 21)}
+        data.update(p_id=self.test_patient.id, status='v2')
+        db.session.add(MFI(**data))
+        self.assertTrue(db.session.commit() is None)
+        
+    def test_psqi(self):
+        from app.models import PSQI
+        data = dict()
+        for i in range(1, 10):
+            if i == 5:
+                for j in range(1, 11):
+                    data['q_{}_{}'.format(i, j)] = randint(0, 4)
+            else:
+                data['q_{}'.format(i)] = randint(0, 4)
+        data.update(p_id=self.test_patient.id, status='v2')
+        db.session.add(PSQI(**data))
+        self.assertTrue(db.session.commit() is None)
+        
+    def test_meq_sa(self):
+        from app.models import MEQ_SA
+        data = {'q_{}'.format(i):randint(0, 5) for i in range(1, 20)}
+        data.update(p_id=self.test_patient.id, status='v2')
+        db.session.add(MEQ_SA(**data))
+        self.assertTrue(db.session.commit() is None)
+    
+    def text_staxi_2(self):
+        from app.models import STAXI_2
+        data = {'q_{}'.format(i):randint(0, 4) for i in range(1, 58)}
+        data.update(p_id=self.test_patient.id, status='v2')
+        db.session.add(STAXI_2(**data))
+        self.assertTrue(db.session.commit() is None)
