@@ -91,3 +91,38 @@ class VirtualFillTestCase(unittest.TestCase):
         data.update(p_id=self.test_patient.id, status='v2')
         db.session.add(STAXI_2(**data))
         self.assertTrue(db.session.commit() is None)
+        
+    def test_ipas(self):
+        from app.models import IPAS
+        data = {'q_{}'.format(i):randint(0, 4) for i in range(1, 31)}
+        data.update(p_id=self.test_patient.id, status='v2')
+        db.session.add(IPAS(**data))
+        self.assertTrue(db.session.commit() is None)
+        
+    def test_mdq(self):
+        from app.models import MDQ
+        data = {'q_1_{}'.format(i):randint(1, 2) for i in range(1, 14)}
+        data.update(dict(q_2=2, q_3=3, p_id=self.test_patient.id, status='v2'))
+        db.session.add(MDQ(**data))
+        self.assertTrue(db.session.commit() is None)
+        
+    def test_ssp(self):
+        from app.models import SSP
+        data = {'q_{}'.format(i):randint(1, 4) for i in range(1, 92)}
+        data.update(dict(p_id=self.test_patient.id, status='v2'))
+        db.session.add(SSP(**data))
+        self.assertTrue(db.session.commit() is None)
+        
+    def test_pbi(self):
+        from app.models import PBI
+        data = {'q_{}'.format(i):randint(1, 4) for i in range(1, 26)}
+        data.update(dict(p_id=self.test_patient.id, status='v2', parent='父亲'))
+        db.session.add(PBI(**data))
+        self.assertTrue(db.session.commit() is None)
+        
+    def test_ssp(self):
+        from app.models import CTQ
+        data = {'q_{}'.format(i):randint(1, 5) for i in range(1, 29)}
+        data.update(dict(p_id=self.test_patient.id, status='v2'))
+        db.session.add(CTQ(**data))
+        self.assertTrue(db.session.commit() is None)
