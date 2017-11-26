@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% from "macroes.html" import render_table_question %}
+
+{% block content %}
+<div class="container">
+    <h2>{{ survey['title'] }}</h2>
+    <form method="post" action="{{ url_for(route) }}" class="form-inline">
+        <div class="from-group">
+            <label>{{ survey['questions'][0]['prepend_text'] }}</label>
+            <select class="form-control" name="parent">
+                <option value="父亲">父亲</option>
+                <option value="母亲">母亲</option>
+            </select>
+            <label>{{ survey['questions'][0]['append_text'] }}</label>
+        </div>
+        <br>
+        <table class="table">
+            <tr>
+                {% for col in survey['cols'] %}
+                <td>{{ col }}</td>
+                {% endfor %}
+            </tr>
+            {% for question in survey['questions'][1:] %}
+            {{ render_table_question(question) }}
+            {% endfor %}
+        </table>
+        <br>
+        <input type="submit">
+    </form>
+</div>
+{% endblock content %}
