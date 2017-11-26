@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% from "macroes.html" import render_table_question, render_radio_question %}
+
+{% block content %}
+<div class="container">
+    <h2>{{ survey['title'] }}</h2>
+    <p>{{ survey['description'] }}</p>
+    <form method="post" action="{{ url_for(route) }}">
+        <table class="table">
+            <tr>
+                {% for col in survey['cols'] %}
+                <td>{{ col }}</td>
+                {% endfor %}
+            </tr>
+            {% for question in survey['questions'][:-1] %}
+            {{ render_table_question(question) }}
+            {% endfor %}
+        </table>
+        {{ render_radio_question(survey['questions'][-1]) }}
+        <input type="submit">
+    </form>
+</div>
+{% endblock %}
+            
