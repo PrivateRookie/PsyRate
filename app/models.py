@@ -518,3 +518,16 @@ class CTQ(db.Model, Export):
     q_26 = db.Column(db.Integer)
     q_27 = db.Column(db.Integer)
     q_28 = db.Column(db.Integer)
+    
+class LES(db.Model, Export):
+    __tablename__ = 'les'
+    export_cols = ('p_id', 'status', 'event_code', 'event_date', 'property', 'degree', 'duration', 'note')
+    id = db.Column(db.Integer, primary_key=True)
+    p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
+    status = db.Column(db.String(16), db.ForeignKey('follow_ups.status'))
+    event_code = db.Column(db.Integer)
+    event_date = db.Column(db.Integer)
+    property = db.Column(db.Integer)
+    degree = db.Column(db.Integer)
+    duration = db.Column(db.Integer)
+    note = db.Column(db.Text)

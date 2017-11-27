@@ -126,3 +126,10 @@ class VirtualFillTestCase(unittest.TestCase):
         data.update(dict(p_id=self.test_patient.id, status='v2'))
         db.session.add(CTQ(**data))
         self.assertTrue(db.session.commit() is None)
+        
+    def test_les(self):
+        from app.models import LES
+        data = dict(event_code=2, event_date=3, property=1, degree=1, duration=2, note='NOTE')
+        data.update(dict(p_id=self.test_patient.id, status='v2'))
+        db.session.add(LES(**data))
+        self.assertTrue(db.session.commit () is None)
