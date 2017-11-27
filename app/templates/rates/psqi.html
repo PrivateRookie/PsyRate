@@ -2,22 +2,30 @@
 {% from "macroes.html" import render_radio_question, render_table_question, render_wrapped_input %}
 
 {% block content %}
-<h1>{{ survey['title'] }}</h1>
-<p>{{ survey['description'] }}</p>
-<form action="{{ url_for(route) }}" method="post">
-    {% for question in survey['questions'][:4] %}
-    {{ render_wrapped_input(question) }}
-    {% endfor %}
+<div class="container">
+    <h1>{{ survey['title'] }}</h1>
     <br>
-    <table class="table">
-        <p>5. 近 1 个月 ，因下列情况影响睡眠而烦恼：</p>
-        {% for question in survey['questions'][4:13] %}
-        {{ render_table_question(question) }}
+    <p>{{ survey['description'] }}</p>
+    <br>
+    <form class="form-inline">
+        <ul class="list-unstyled">
+        {% for question in survey['questions'][:4] %}
+            <li>{{ render_wrapped_input(question) }}</li>
         {% endfor %}
-    </table>
-    {% for question in survey['questions'][13:] %}
-    {{ render_radio_question(question) }}
-    {% endfor %}
-    <input type="submit">
-</form>
+        </ul>
+    </form>
+    <form  id="main-form" action="{{ url_for(route) }}" method="post">
+        <br>
+        <table class="table">
+            <p>5. 近 1 个月 ，因下列情况影响睡眠而烦恼：</p>
+            {% for question in survey['questions'][4:13] %}
+            {{ render_table_question(question) }}
+            {% endfor %}
+        </table>
+        {% for question in survey['questions'][13:] %}
+        {{ render_radio_question(question) }}
+        {% endfor %}
+        <button class="btn btn-default" type="submit">提交</button>
+    </form>
+</div>
 {% endblock content %}

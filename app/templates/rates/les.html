@@ -5,9 +5,16 @@
     <h2>{{ survey['title'] }}</h2>
     <p>{{ survey['description'] }}</p>
     <form method="post" action="{{ url_for(route) }}">
+        <div class="form-group">
+            <label>事件名称</label>
+            <select class="form-contorl" name="event_code">
+                {% for code, event in survey['options'] %}
+                <option value="{{ code }}">{{ event }}</option>
+                {% endfor %}
+            </select>
+        </div>
         <table class="table">
             <tr>
-                <td rowspan=2>事件名称</td>
                 <td colspan=4>事件发生时间</td>
                 <td colspan=2>性质</td>
                 <td colspan=5>精神影响程度</td>
@@ -33,13 +40,6 @@
                 <td>备注</td>
             </tr>
             <tr>
-                <td>
-                    <select name="event_code" class="col-s-2">
-                        {% for code, event in survey['options'] %}
-                        <option value="{{ code }}">{{ event }}</option>
-                        {% endfor %}
-                    </select>
-                </td>
                 {% for i in range(4) %}
                 <td><input type="radio" name="event_date" value="{{ i }}"></td>
                 {% endfor %}
@@ -51,7 +51,7 @@
                 {% for i in range(4) %}
                 <td><input type="radio" name="duration" value="{{ i }}"></td>
                 {% endfor %}
-                <td><input type="text" name="note"></td>
+                <td><input class="form-control" type="text" name="note"></td>
             </tr>
         </table>
         <input type="submit">

@@ -1,32 +1,40 @@
 {% macro render_radio_question(question) %}
-    <label class="question-title">{{ question['title'] }}</label><br>
-    {% for value, opt_str in question['options'] %}
-    <div class="form-group">
-        <label>
-        <input type="radio" name="{{ question['q_id'] }}" value="{{ value }}">{{ opt_str }}
-        </label>
+    <div class="radio">
+        <h4>{{ question['title'] }}</h4>
+        {% for value, opt_str in question['options'] %}
+            <div class="form-group">
+                <label>
+                    <input type="radio" name="{{ question['q_id'] }}" value="{{ value }}">{{ opt_str }}
+                </label>
+            </div>
+        {% endfor %}
     </div>
-    {% endfor %}   
 {% endmacro %}
 
 {% macro render_radio_survey(survey, route) %}
-    <h2>{{ survey['survey_title'] }}</h2>
+    <h2>{{ survey['title'] }}</h2>
+    <br>
+    <p>{{ survey['description'] }}</p>
+    <br>
     <form action="{{ url_for(route) }}" method="post">
         {% for question in survey['questions'] %}
             {{ render_radio_question(question) }}
+            <br>
         {% endfor %}
-        <input type="submit">
+        <button class="btn btn-default" type="submit">提交</button>
     </form>
 {% endmacro %}
 
 {% macro render_table_question(question) %}
     <tr>
-        <td>{{ question['title'] }}</td>
+        <td class="col-xs-3"><strong>{{ question['title'] }}</strong></td>
         {% for opt_value in question['opt_values'] %}
-        <td>
-            <label>
-            <input type="radio" name="{{ question['q_id'] }}" value="{{ opt_value }}">{{ opt_value }}
-            </label>
+        <td class="col-xs-1">
+            <div class="radio"">
+                <label>
+                    <input type="radio" name="{{ question['q_id'] }}" value="{{ opt_value }}">{{ opt_value }}
+                </label>
+            </div>
         </td>
         {% endfor %}
     </tr>
@@ -34,26 +42,28 @@
 
 {% macro render_table_survey(survey, route) %}
     <h2>{{ survey['title'] }}</h2>
+    <br>
     <p>{{ survey['description'] }}</p>
+    <br>
     <form method="post" action="{{ url_for(route) }}">
-        <table class="table"> 
+        <table class="table table-condensed table-bordered"> 
             <tr>
                 {% for col in survey['cols'] %}
-                <td>{{ col }}</td>
+                <td><strong>{{ col }}</strong></td>
                 {% endfor %}
             </tr>
             {% for question in survey['questions'] %}
                 {{ render_table_question(question) }}
             {% endfor %}
         </table>
-    <input type="submit">
+        <button class="btn btn-default" type="submit">提交</button>
     </form>
 {% endmacro %}
 
 {% macro render_wrapped_input(question) %}
-    <div class="input-group">
-        <div class="input-group-addon">{{ question['prepend_text'] }}</div>
-        <input type="{{ question['input_type'] }}" class="form-control input-small" name="{{ question['q_id'] }}">
-        <div class="input-group-addon">{{ question['append_text'] }}</div>
+    <div class="form-group">
+        <span for="input">{{ question['prepend_text'] }}</span>
+            <input class="form-control input-sm" form="main-form" type="{{ question['input_type'] }}" name="{{ question['q_id'] }}">
+        <span for="input">{{ question['append_text'] }}</span>
     </div>
 {% endmacro %}
