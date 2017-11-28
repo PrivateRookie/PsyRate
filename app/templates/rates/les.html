@@ -3,15 +3,17 @@
 {% block content %}
 <div class="container">
     <h2>{{ survey['title'] }}</h2>
-    <p>{{ survey['description'] }}</p>
-    <form method="post" action="{{ url_for(route) }}">
+    <br>
+    <form class="form-horizontal" method="post" action="{{ url_for(route) }}">
         <div class="form-group">
-            <label>事件名称</label>
-            <select class="form-contorl" name="event_code">
+            <label class="col-sm-1 control-label">事件名称</label>
+            <div class="col-sm-3">
+            <select class="form-control" name="event_code">
                 {% for code, event in survey['options'] %}
                 <option value="{{ code }}">{{ event }}</option>
                 {% endfor %}
             </select>
+            </div>
         </div>
         <table class="table">
             <tr>
@@ -19,7 +21,6 @@
                 <td colspan=2>性质</td>
                 <td colspan=5>精神影响程度</td>
                 <td colspan=4>影响持续时间</td>
-                <td>备注<td>
             </tr>
             <tr>
                 <td>未发生</td>
@@ -37,21 +38,43 @@
                 <td>半年内</td>
                 <td>一年内</td>
                 <td>一年以上</td>
-                <td>备注</td>
             </tr>
             <tr>
                 {% for i in range(4) %}
-                <td><input type="radio" name="event_date" value="{{ i }}"></td>
+                <td>
+                    <label class="btn btn-default label-full">
+                    <input type="radio" name="event_date" value="{{ i }}">
+                    </label>
+                </td>
                 {% endfor %}
-                <td><input type="radio" name="property" value="1"></td>
-                <td><input type="radio" name="property" value="0"></td>
+                <td>
+                    <label class="btn btn-default label-full">
+                    <input type="radio" name="property" value="1">
+                    </label>
+                </td>
+                <td>
+                    <label class="btn btn-default label-full">
+                    <input type="radio" name="property" value="0">
+                    </label>
+                </td>
                 {% for i in range(5) %}
-                <td><input type="radio" name="degree" value="{{ i }}"></td>
+                <td>
+                    <label class="btn btn-default label-full">
+                    <input type="radio" name="degree" value="{{ i }}">
+                    </label>
+                </td>
                 {% endfor %}
                 {% for i in range(4) %}
-                <td><input type="radio" name="duration" value="{{ i }}"></td>
+                <td>
+                    <label class="btn btn-default label-full">
+                    <input type="radio" name="duration" value="{{ i }}">
+                    </label>
+                </td>
                 {% endfor %}
-                <td><input class="form-control" type="text" name="note"></td>
+            </tr>
+            <tr>
+                <td>备注</td>
+                <td colspan=14><input class="form-control" type="text" name="note"></td>
             </tr>
         </table>
         <input type="submit">

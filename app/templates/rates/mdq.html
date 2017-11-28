@@ -4,12 +4,14 @@
 {% block content %}
 <div class="container">
     <h2>{{ survey['title'] }}</h2>
+    <br>
     <p>{{ survey['description'] }}</p>
+    <br>
     <form method="post" action="{{ url_for(route) }}">
         <table class="table">
             <tr>
                 {% for col in survey['cols'] %}
-                <td>{{ col }}</td>
+                <td><strong>{{ col }}</strong></td>
                 {% endfor %}
             </tr>
             {% for question in survey['questions'][:-1] %}

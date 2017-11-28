@@ -11,6 +11,7 @@
         <ul class="list-unstyled">
         {% for question in survey['questions'][:4] %}
             <li>{{ render_wrapped_input(question) }}</li>
+            <li><label></label></li>
         {% endfor %}
         </ul>
     </form>

@@ -7,50 +7,52 @@ input[type=range] {
     display: inline-block;
     width:auto
 }
+input[type=number] {
+    display: inline-block;
+    width:auto;
+}
+output { 
+    width: auto;
+    display: inline-block;
+}
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="container">
-    <form method='post' action="{{ url_for(route) }}" oninput="pain-score.value=range1.value">
-        <formfield>
-            <h2>疼痛问卷（自评-状态）</h2>
-            <br>
-            <p><strong>{{ survey['q_1']['title'] }}</strong></p>
-            <ul class="list-unstyled">
-            {% for value, opt_str in survey['q_1']['options'] %}
-                <li>
-                    <div class="checkbox">
-                        <label><input type="checkbox" name="{{ survey['q_1']['q_id'] }}" value="{{ value }}">{{ opt_str }}</label>
-                    </div>
-                </li>
-            {% endfor %}
-            </ul>
-            <br>
-            <div class="form-group">
-                <span><strong>如果存在疼痛，最长持续多久？</strong></span>
-                <input type="number" max="100" min="1" name="{{ survey['q_2']['q_id'] }}">
-                <span><strong>{{ survey['q_2']['title'] }}</strong></span>
-                <input type="number" max="31" min="1" name="{{ survey['q_3']['q_id'] }}">
-                <span><strong>{{ survey['q_3']['title'] }}</strong></span>
-            </div>
-        </formfield>
+    <form method='post' action="{{ url_for(route) }}" oninput="score.value=parseInt(range1.value)">
+        <h2>疼痛问卷（自评-状态）</h2>
+        <br>
+        <p><strong>{{ survey['q_1']['title'] }}</strong></p>
+        <ul class="list-unstyled">
+        {% for value, opt_str in survey['q_1']['options'] %}
+            <li>
+                <label class="btn btn-default">
+                    <input type="checkbox" name="{{ survey['q_1']['q_id'] }}" value="{{ value }}">{{ opt_str }}
+                </label>
+            </li>
+        {% endfor %}
+        </ul>
+        <br>
+        <div class="form-group">
+            <span><strong>如果存在疼痛，最长持续多久？</strong></span>
+            <input type="number" class="form-control" max="100" min="1" name="{{ survey['q_2']['q_id'] }}">
+            <span><strong>{{ survey['q_2']['title'] }}</strong></span>
+            <input type="number" class="form-control" max="31" min="1" name="{{ survey['q_3']['q_id'] }}">
+            <span><strong>{{ survey['q_3']['title'] }}</strong></span>
+        </div>
         <hr>
-        <formfield>
-            <h2>疼痛视觉模拟量表（VAS） （自评-状态）</h2>
-            <br>
-            <p><strong>{{ survey['q_4']['title'] }}</strong></p>
-            <br>
-            <div class="form-group">
-                <label for="input">无疼痛（0）</label>
-                <input id="range1" type="range" name="{{ survey['q_4']['q_id'] }}" min="0" max="10">
-                <label for="input">最严重疼痛（10）</label>
-            </div>
-            <div class="pain-score">
-            <span>疼痛分数</span>
-            <output id="pain-score"></output>
-            </div>
-        </formfield>
+        <h2>疼痛视觉模拟量表（VAS） （自评-状态）</h2>
+        <br>
+        <p><strong>{{ survey['q_4']['title'] }}</strong></p>
+        <br>
+        <div class="form-group">
+            <label>无疼痛（0）</label>
+            <input id="range1" type="range" name="{{ survey['q_4']['q_id'] }}" min="0" max="10" value="0">
+            <label>最严重疼痛（10）</label>
+        <label>疼痛分数: </label>
+        <output class="text-danger" name="score" id="score" for="range1"></output>
+        </div>
         <button class="btn btn-default" type="submit">提交</button>
     </form>
 </div>

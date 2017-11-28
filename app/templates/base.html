@@ -6,10 +6,22 @@
 {{ super() }}
 <link rel="shortcut icon" href="{{url_for('static', filename='favicon.icon')}}" type="image/x-icon">
 <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+<style>
+body { padding-top: 70px;}
+label.btn-default {
+    color: #333;
+    background-color: #fff;
+    border-color: #fff;
+}
+label.label-full {
+    text-align: left;
+    width: 100%;
+}
+</style>
 {% endblock %}
 
 {% block navbar %}
-<div class="navbar navbar-inverse" role="navigation">
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">

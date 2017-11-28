@@ -1,13 +1,15 @@
 {% macro render_radio_question(question) %}
     <div class="radio">
-        <h4>{{ question['title'] }}</h4>
+        <p><strong>{{ question['title'] }}</strong></p>
+        <ul class="list-unstyled">
         {% for value, opt_str in question['options'] %}
-            <div class="form-group">
-                <label>
-                    <input type="radio" name="{{ question['q_id'] }}" value="{{ value }}">{{ opt_str }}
-                </label>
-            </div>
+        <li>
+            <label class="btn btn-default">
+                <input type="radio" name="{{ question['q_id'] }}" value="{{ value }}">{{ opt_str }}
+            </label>
+         </li>
         {% endfor %}
+        </ul>
     </div>
 {% endmacro %}
 
@@ -30,11 +32,9 @@
         <td class="col-xs-3"><strong>{{ question['title'] }}</strong></td>
         {% for opt_value in question['opt_values'] %}
         <td class="col-xs-1">
-            <div class="radio"">
-                <label>
+                <label class="btn btn-default label-full">
                     <input type="radio" name="{{ question['q_id'] }}" value="{{ opt_value }}">{{ opt_value }}
                 </label>
-            </div>
         </td>
         {% endfor %}
     </tr>
