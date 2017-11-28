@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 
+import os
 from flask import render_template, redirect, url_for, flash, session, request
 from . import main
 from .forms import *
 from .. import db
 from ..static import raw_forms
 
+rates_path = r'F:\Git\PsyRates\app\templates\rates'
+
 @main.route('/', methods=['GET', 'POST'])
 def index():
-    form = DemoForm()
-    if form.validate_on_submit():
-        session['msg'] = form.msg.data
-        return redirect(url_for('.index'))
-    return render_template('index.html', form=form, msg=session.get('msg'))
+    rates = [filename.split('.')[0] for filename in os.listdir(rates_path)]
+    return render_template('index.html', rates=rates)
 
 @main.route('/forms')
 def forms():
