@@ -1,8 +1,9 @@
 {% extends "base.html" %}
-{% from "macroes.html" import render_radio_survey %}
+{% from "macroes.html" import render_radio_survey, render_pager %}
 
 {% block content %}
 <div class="container">
     {{ render_radio_survey(survey, route) }}
+    {{ render_pager(previous, next) }}
 </div>
 {% endblock content %}

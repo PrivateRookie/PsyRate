@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "macroes.html" import render_table_question %}
+{% from "macroes.html" import render_table_question, render_pager %}
 
 {% block content %}
 <div class="container">
@@ -27,5 +27,6 @@
         <br>
         <input type="submit">
     </form>
+    {{ render_pager(previous, next) }}
 </div>
 {% endblock content %}
