@@ -67,3 +67,18 @@
         <span for="input">{{ question['append_text'] }}</span>
     </div>
 {% endmacro %}
+
+{% macro render_pager(previous, next) %}
+<ul class="pager">
+    <li class="previous">
+        <a href="{{ url_for(**previous) }}">
+            <span class="glyphicon glyphicon-arrow-left"></span>上一页
+        </a>
+    </li>
+    <li class="next">
+        <a href="{{ url_for(**next) }}">
+            下一页<span class="glyphicon glyphicon-arrow-right"></span>
+        </a>
+    <li>
+</ul>
+{% endmacro %}
