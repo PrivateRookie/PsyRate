@@ -5,6 +5,9 @@
 
 {% block content %}
 <div class="container">
+    <h2>Self Reposrt</h2>
+    <p><a href="{{ url_for('main.selfreport') }}" class="btn btn-primary">Self Reposrt</a></p>
+    <br>
     <h2>All forms used by PsyRates</h2>
     <ul>
         <li><a href="{{ url_for('main.forms', form_name='qids') }}">QIDS-SR16</a></li>

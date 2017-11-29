@@ -7,7 +7,8 @@ from .forms import *
 from .. import db
 from ..static import raw_forms
 
-rates_path = r'F:\Git\PsyRates\app\templates\rates'
+app_path = '\\'.join(os.path.split(os.path.abspath(__file__))[0].split('\\')[:-1])
+rates_path = app_path + '\\templates\\rates'
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
@@ -27,3 +28,11 @@ def forms():
 def echo():
     data = [(attr, request.form.getlist(attr)) for attr in request.form.keys() if attr.startswith('q')]
     return render_template('echo.html', data=data)
+    
+@main.route('/selfreport', methods=['GET', 'POST'])
+def selfreport():
+    return render_template('selfreport/' + 'cover' + '.html', action_route='main.echo')
+    
+@main.route('/test')
+def test():
+    return render_template('rates/visit.html')
