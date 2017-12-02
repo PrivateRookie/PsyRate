@@ -6,6 +6,8 @@ from . import main
 from .forms import *
 from .. import db
 from ..static import raw_forms, schema
+from ..models import Permission
+from ..decorators import permission_required, admin_required
 
 app_path = '\\'.join(os.path.split(os.path.abspath(__file__))[0].split('\\')[:-1])
 rates_path = app_path + '\\templates\\rates'
@@ -35,11 +37,12 @@ def index():
     return render_template('index.html', rates=rates)
 
 @main.route('/forms')
+@permission_required(Permission.SELFREPORT)
 def forms():
     form_name = request.args.get('form_name', None)
     status = request.args.get('status', None)
     report_type = request.args.get('report_type', None)
-    if not form_name:
+    if not all((form_name, status, report_type)):
         return render_template('allforms.html')
     raw_form = getattr(raw_forms, form_name, None)
     previous, next = get_pager(report_type, status, form_name)

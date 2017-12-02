@@ -10,9 +10,9 @@ from .forms import LoginForm, RegisterForm
 def login():
     form = LoginForm()
     if form.validate_on_submit():
+        password = form.password.data
         user = User.query.filter_by(email=form.email.data).first()
-        if user is not None:
-            user.password = form.password.data
+        if user is not None and user.verify_password(password):
             login_user(user, form.remember_me.data)
             return redirect(request.args.get('next') or url_for('main.index'))
         flash('你已成功登陆')
@@ -31,9 +31,14 @@ def register():
         email = form.email.data
         username = form.username.data
         password = form.password.data
-        u = User(email=email, username=username, password=password)
-        db.session.add(u)
-        db.session.commit()
-        flash('你已成功注册')
-        return redirect(url_for('auth.login'))
+        invite_code = form.invite_code.data
+        role = User.verify_invite_code(invite_code)
+        if role is None:
+            return render_template('register.html', form=form)
+        else:
+            u = User(email=email, username=username, password=password, role=role)
+            db.session.add(u)
+            db.session.commit()
+            flash('你已成功注册')
+            return redirect(url_for('auth.login'))
     return render_template('register.html', form=form)
