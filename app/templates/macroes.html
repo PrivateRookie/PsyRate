@@ -60,6 +60,19 @@
     </form>
 {% endmacro %}
 
+{% macro render_checkbox_question(question) %}
+<p><strong>{{ question['title'] }}</strong></p>
+<ul class="list-unstyled">
+{% for value, opt_str in question['options'] %}
+    <li>
+        <label class="btn btn-default">
+            <input type="checkbox" name="{{ question['q_id'] }}" value="{{ value }}">{{ opt_str }}
+        </label>
+    </li>
+{% endfor %}
+</ul>
+{% endmacro %}
+
 {% macro render_wrapped_input(question) %}
     <div class="form-group">
         <span for="input">{{ question['prepend_text'] }}</span>
