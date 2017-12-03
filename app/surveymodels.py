@@ -504,3 +504,66 @@ class LES(db.Model, Export):
     degree = db.Column(db.Integer)
     duration = db.Column(db.Integer)
     note = db.Column(db.Text)
+
+class InOut(db.Model, Export):
+    __tablename__ = 'inout'
+    export_cols = ('p_id', 'status', 'q_1', 'q_2')
+    id = db.Column(db.Integer, primary_key=True)
+    p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
+    status = db.Column(db.String(16), db.ForeignKey('follow_ups.status'))
+    q_1 = db.Column(db.String(16))
+    q_2 = db.Column(db.String(16))
+    
+class HAMD(db.Model, Export):
+    __tablename__ = 'hamd'
+    export_cols = ('p_id', 'status', 'q_1', 'q_2', 'q_3', 'q_4', 'q_5', 'q_6', 'q_7', 'q_8',
+    'q_9', 'q_10', 'q_11', 'q_12', 'q_13', 'q_14', 'q_15', 'q_16', 'q_17')
+    id = db.Column(db.Integer, primary_key=True)
+    p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
+    status = db.Column(db.String(16), db.ForeignKey('follow_ups.status'))
+    q_1 = db.Column(db.Integer)
+    q_2 = db.Column(db.Integer)
+    q_3 = db.Column(db.Integer)
+    q_4 = db.Column(db.Integer)
+    q_5 = db.Column(db.Integer)
+    q_6 = db.Column(db.Integer)
+    q_7 = db.Column(db.Integer)
+    q_8 = db.Column(db.Integer)
+    q_9 = db.Column(db.Integer)
+    q_10 = db.Column(db.Integer)
+    q_11 = db.Column(db.Integer)
+    q_12 = db.Column(db.Integer)
+    q_13 = db.Column(db.Integer)
+    q_14 = db.Column(db.Integer)
+    q_15 = db.Column(db.Integer)
+    q_16 = db.Column(db.Integer)
+    q_17 = db.Column(db.Integer)
+    
+class YMRS(db.Model, Export):
+    __tablename__ = 'ymrs'
+    export_cols = ('p_id', 'status', 'q_1', 'q_2', 'q_3', 'q_4', 'q_5', 'q_6', 'q_7', 'q_8', 'q_9',
+    'q_10', 'q_11')
+    id = db.Column(db.Integer, primary_key=True)
+    p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
+    status = db.Column(db.String(16), db.ForeignKey('follow_ups.status'))
+    q_1 = db.Column(db.Integer)
+    q_2 = db.Column(db.Integer)
+    q_3 = db.Column(db.Integer)
+    q_4 = db.Column(db.Integer)
+    q_5 = db.Column(db.Integer)
+    q_6 = db.Column(db.Integer)
+    q_7 = db.Column(db.Integer)
+    q_8 = db.Column(db.Integer)
+    q_9 = db.Column(db.Integer)
+    q_10 = db.Column(db.Integer)
+    q_11 = db.Column(db.Integer)
+    
+class CGI(db.Model, Export):
+    __tablename__ = 'cgi'
+    export_cols = ('p_id', 'status', 'q_1', 'q_2', 'q_3')
+    id = db.Column(db.Integer, primary_key=True)
+    p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
+    status = db.Column(db.String(16), db.ForeignKey('follow_ups.status'))
+    q_1 = db.Column(db.Integer)
+    q_2 = db.Column(db.Integer)
+    q_3 = db.Column(db.Integer)

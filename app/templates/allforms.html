@@ -7,7 +7,7 @@
 <div class="container">
     <p><a href="{{ url_for('main.selfreport') }}" class="btn btn-primary">Self Reposrt</a></p>
     <br>
-    <h2>All forms used by PsyRates</h2>
+    <h2>All self report forms used by PsyRates</h2>
     <ul>
         <li><a href="{{ url_for('main.forms', form_name='qids') }}">QIDS-SR16</a></li>
         <li><a href="{{ url_for('main.forms', form_name='dsss') }}">DSSS</a></li>
@@ -22,6 +22,13 @@
         <li><a href="{{ url_for('main.forms', form_name='pbi') }}">PBI</a></li>
         <li><a href="{{ url_for('main.forms', form_name='ctq') }}">CTQ</a></li>
         <li><a href="{{ url_for('main.forms', form_name='les') }}">LES</a></li>
+    </ul>
+    <h2>All other report forms used by Psyrates</h2>
+    <ul>
+        <li><a href="{{ url_for('main.forms', form_name='inout') }}">InOut</a></li>
+        <li><a href="{{ url_for('main.forms', form_name='hamd') }}">HAMD</a></li>
+        <li><a href="{{ url_for('main.forms', form_name='ymrs') }}">YMRS</a></li>
+        <li><a href="{{ url_for('main.forms', form_name='cgi') }}">CGI</a></li>
     </ul>
 </div>
 {% endblock %}
