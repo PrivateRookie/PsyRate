@@ -1,3 +1,24 @@
+dev_report = \
+['v9|ipas',
+ 'v9|psqi',
+ 'v9|pbi',
+ 'v9|ctq',
+ 'v9|staxi_2',
+ 'v9|visit',
+ 'v9|ssp',
+ 'v9|mfi_20',
+ 'v9|inout',
+ 'v9|meq_sa',
+ 'v9|mdq',
+ 'v9|cover',
+ 'v9|les',
+ 'v9|pain',
+ 'v9|dsss',
+ 'v9|qids',
+ 'v9|hamd',
+ 'v9|ymrs',
+ 'v9|cgi']
+ 
 self_report = \
 ['v0|cover',
  'v2|visit',
