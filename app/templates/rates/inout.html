@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% from "macroes.html" import render_checkbox_question, render_pager %}
+
+{% block content %}
+<div class="container">
+    <form method="post" action="{{ url_for(route) }}">
+        <h2>{{ survey['title'] }}</h2>
+        <br>
+        {{ render_checkbox_question(survey['q_1']) }}
+        <br>
+        {{ render_checkbox_question(survey['q_2']) }}
+        <br>
+        <button class="btn btn-default" type="submit">提交</button>
+    </form>
+    {{ render_pager(previous, next) }}
+</div>
+{% endblock content %}
