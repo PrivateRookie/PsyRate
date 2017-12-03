@@ -14,7 +14,7 @@ rates_path = app_path + '\\templates\\rates'
 
 def get_pager(report_type, current_status, current_form_name):
     report_schema = getattr(schema, report_type, None)
-    index_min, index_max = 0, len(report_schema)
+    index_min, index_max = 0, len(report_schema) - 1
     index = report_schema.index(current_status + '|' + current_form_name)
     if index - 1 < index_min:
         pre = dict(endpoint='main.forms', report_type=report_type)
@@ -40,9 +40,9 @@ def index():
 @permission_required(Permission.SELFREPORT)
 def forms():
     form_name = request.args.get('form_name', None)
-    status = request.args.get('status', None)
-    report_type = request.args.get('report_type', None)
-    if not all((form_name, status, report_type)):
+    status = request.args.get('status', 'v9')
+    report_type = request.args.get('report_type', 'dev_report')
+    if form_name is None:
         return render_template('allforms.html')
     raw_form = getattr(raw_forms, form_name, None)
     previous, next = get_pager(report_type, status, form_name)
