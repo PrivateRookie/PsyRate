@@ -9,9 +9,9 @@ from app.surveymodels import Patient, FollowUp
 class VirtualFillTestCase(unittest.TestCase):
     def setUp(self):
         # initializ app
-        #self.app = create_app('test')
-        #self.app_context = self.app.app_context()
-        #self.app_context.push()
+        self.app = create_app('test')
+        self.app_context = self.app.app_context()
+        self.app_context.push()
         # initializ database
         db.drop_all()
         db.create_all()
@@ -23,7 +23,7 @@ class VirtualFillTestCase(unittest.TestCase):
         # create test patient
         self.test_patient = Patient(code='TEST001', name='Test',
             entry_date=Date(2017,11,21), doctor='Test Doctor',
-            recorder=self.test_user.id)
+            recorder=self.test_user)
         db.session.add(self.test_patient)
         db.session.commit()
         # create follow_ups
@@ -36,7 +36,7 @@ class VirtualFillTestCase(unittest.TestCase):
     def tearDown(self):
         db.session.remove()
         db.drop_all()
-        #self.app_context.pop()
+        self.app_context.pop()
         
     def test_dsss(self):
         from app.surveymodels import DSSS
@@ -133,4 +133,32 @@ class VirtualFillTestCase(unittest.TestCase):
         data = dict(event_code=2, event_date=3, property=1, degree=1, duration=2, note='NOTE')
         data.update(dict(p_id=self.test_patient.id, status='v2'))
         db.session.add(LES(**data))
+        self.assertTrue(db.session.commit () is None)
+        
+    def test_inout(self):
+        from app.surveymodels import InOut
+        data = dict(q_1 = 'abcd', q_2='')
+        data.update(dict(p_id=self.test_patient.id, status='v2'))
+        db.session.add(InOut(**data))
+        self.assertTrue(db.session.commit () is None)
+        
+    def test_hamd(self):
+        from app.surveymodels import HAMD
+        data = {'q_{}'.format(i):randint(1, 4) for i in range(1, 18)}
+        data.update(dict(p_id=self.test_patient.id, status='v2'))
+        db.session.add(HAMD(**data))
+        self.assertTrue(db.session.commit () is None)
+        
+    def test_ymrs(self):
+        from app.surveymodels import YMRS
+        data = {'q_{}'.format(i):randint(1, 4) for i in range(1, 12)}
+        data.update(dict(p_id=self.test_patient.id, status='v2'))
+        db.session.add(YMRS(**data))
+        self.assertTrue(db.session.commit () is None)
+        
+    def test_cgi(self):
+        from app.surveymodels import CGI
+        data = {'q_{}'.format(i):randint(1, 4) for i in range(1, 4)}
+        data.update(dict(p_id=self.test_patient.id, status='v2'))
+        db.session.add(CGI(**data))
         self.assertTrue(db.session.commit () is None)
