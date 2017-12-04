@@ -162,3 +162,10 @@ class VirtualFillTestCase(unittest.TestCase):
         data.update(dict(p_id=self.test_patient.id, status='v2'))
         db.session.add(CGI(**data))
         self.assertTrue(db.session.commit () is None)
+        
+    def test_body_exam(self):
+        from app.surveymodels import BODY_EXAM
+        data = {'q_{}'.format(i):randint(1, 4) for i in range(2, 8)}
+        data.update(dict(p_id=self.test_patient.id, status='v2', q_1_1=120, q_1_2=80))
+        db.session.add(BODY_EXAM(**data))
+        self.assertTrue(db.session.commit () is None)

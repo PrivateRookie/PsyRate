@@ -21,7 +21,7 @@ def test(name=None):
     if name is None:
         tests = unittest.TestLoader().discover('tests')
         unittest.TextTestRunner(verbosity=2).run(tests)
-    else:
+    else:       
         suite = unittest.TestSuite()
         suite.addTest(VirtualFillTestCase('test_' + name))
         unittest.TextTestRunner(verbosity=2).run(suite)

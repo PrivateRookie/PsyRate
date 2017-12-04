@@ -17,7 +17,8 @@ dev_report = \
  'v9|qids',
  'v9|hamd',
  'v9|ymrs',
- 'v9|cgi']
+ 'v9|cgi',
+ 'v9|body_exam']
  
 self_report = \
 ['v0|cover',

@@ -567,3 +567,18 @@ class CGI(db.Model, Export):
     q_1 = db.Column(db.Integer)
     q_2 = db.Column(db.Integer)
     q_3 = db.Column(db.Integer)
+    
+class BODY_EXAM(db.Model, Export):
+    __tablename__ = 'body_exam'
+    export_cols = ('p_id', 'status', 'q_1_1', 'q_1_1', 'q_2', 'q_3', 'q_4', 'q_5', 'q_6', 'q_7')
+    id = db.Column(db.Integer, primary_key=True)
+    p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
+    status = db.Column(db.String(16), db.ForeignKey('follow_ups.status'))
+    q_1_1 = db.Column(db.Float)
+    q_1_2 = db.Column(db.Float)
+    q_2 = db.Column(db.Float)
+    q_3 = db.Column(db.Float)
+    q_4 = db.Column(db.Float)
+    q_5 = db.Column(db.Float)
+    q_6 = db.Column(db.Float)
+    q_7 = db.Column(db.Float)
