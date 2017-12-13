@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% from "macroes.html" import render_pager %}
+
+{% block head %}
+{{ super() }}
+<style>
+td div {
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <form method="post" action="{{ url_for(route) }}">
+        <table class="table">
+            <tr>
+                {% for col in survey['cols'] %}
+                <td>{{ col }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                {% for question in survey['questions'] %}
+                <td>
+                <input class="form-control" name="{{ question['q_id'] }}" type="{{ question['type'] }}">
+                </td>
+                {% endfor %}
+                <td>
+                <div onclick="add()">
+                <span class="add glyphicon glyphicon-plus"></span>
+                </div>
+                </td>
+            </tr>
+        </table>
+        <button class="btn btn-default" type="submit">提交</button>
+    </form>
+    <div class="container">
+    <output></output>
+    {{ render_pager(previous, next) }}
+    </div>
+</div>
+<script>
+    function add(){
+        var input = [];
+        $("input[name^=q]").each(function(i){
+            input[i] = $(this).val();
+        });
+        $("table tr:last").after("<tr></tr>");
+        for (i = 0; i < input.length; i++){
+            $("table tr:last").append("<td>" + input[i] + "</td>");
+        }
+        $("table tr:last").append("<td><div onclick='remove()'><span class='remove glyphicon glyphicon-minus'></span></div></td>");
+    }
+    
+    function remove(){
+        $(this).parent().remove();
+    }
+    
+$(document).on("click", "td div", remove);
+</script>
+{% endblock content %}
