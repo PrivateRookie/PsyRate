@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% from "macroes.html" import render_pager %}
+
+{% block content %}
+<div class="container">
+    <h2>{{ survey['title'] }}</h2>
+    <form method="post" action="{{ url_for(route) }}" class="form-horizontal">
+        {% for question in survey['questions'] %}
+        {% if 'options' in question %}
+        <div class="form-group">
+            <label class="control-label col-md-2">{{ question['title'] }}</label>
+            <div class="col-md-4">
+                <select class="form-control" name="{{ question['q_id'] }}">
+                    {% for val, opt_str in question['options'] %}
+                    <option value="{{ val }}">{{ val }}. {{ opt_str }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        {% else %}
+        <div class="form-group">
+            <label class="control-label col-md-2">{{ question['title'] }}</label>
+            <div class="col-md-4">
+                <input class="form-control" type="{{ question['type'] }}" name="{{ question['q_id'] }}">
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+        <button class="btn btn-default" type="submit">提交</button>
+    </form>
+    {{ render_pager(previous, next) }}
+</div>
+{% endblock content %}
