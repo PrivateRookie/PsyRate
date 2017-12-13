@@ -63,4 +63,4 @@ def echo():
     
 @main.route('/test')
 def test():
-    return render_template('rates/visit.html')
+    return render_template('js.html')

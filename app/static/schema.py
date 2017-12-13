@@ -18,7 +18,10 @@ dev_report = \
  'v9|hamd',
  'v9|ymrs',
  'v9|cgi',
- 'v9|body_exam']
+ 'v9|body_exam',
+ 'v9|demograph',
+ 'v9|psychosis',
+ 'v9|treatment']
  
 self_report = \
 ['v0|cover',
