@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% from "macroes.html" import render_pager, render_radio_question, render_checkbox_question%}
+
+{% block content %}
+<div class="container">
+    <h2>{{ survey['title'] }}</h2>
+    <form method="post" action="{{ url_for(route) }}">
+        {% for question in survey['questions'] %}
+        {% if loop.index == 3 %}
+        {{ render_checkbox_question(question) }}
+        {% else %}
+        {{ render_radio_question(question) }}
+        {% endif %}
+        {% endfor %}
+        <button class="btn btn-default" type="submit">提交</button>
+    </form>
+    {{ render_pager(previous, next) }}
+</div>
+{% endblock content %}
