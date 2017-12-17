@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% from "macroes.html" import render_pager, render_checkbox_question %}
+
+{% block content %}
+<div class="container">
+    <h2>{{ survey['title'] }}</h2>
+    <p>{{ survey['description'] }}</h2>
+    <form class="form-horizontal" method="post" action="{{ url_for(route) }}">
+        {% for question in survey['questions'] %}
+            {% if 'options' not in question %}
+            <div class="form-group">
+                <label class="control-label col-md-2">{{ question['title'] }}</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control">
+                </div>
+            </div>
+            {% else %}
+            <div class="row">
+                <div class="col-md-2">
+                    {{ render_checkbox_question(question) }}
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+            <button class="btn btn-primary" type="submit">提交</button>
+    </form>
+    {{ render_pager(previous, next) }}
+</div>
+{% endblock content %}
