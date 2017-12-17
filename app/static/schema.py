@@ -21,7 +21,14 @@ dev_report = \
  'v9|body_exam',
  'v9|demograph',
  'v9|psychosis',
- 'v9|treatment']
+ 'v9|treatment',
+ 'v9|attacks',
+ 'v9|common_diease',
+ 'v9|somatopathy',
+ 'v9|longterm_diease',
+ 'v9|mense_pregnancy',
+ 'v9|abuse',
+ 'v9|family_history']
  
 self_report = \
 ['v0|cover',

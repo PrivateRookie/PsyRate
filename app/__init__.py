@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from flask import Flask
-from flask_bootstrap import Bootstrap
+from flask_bootstrap import Bootstrap, WebCDN
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
@@ -20,6 +20,8 @@ def create_app(config_name):
     config[config_name].init_app(app)
 
     bootstrap.init_app(app)
+    #app.extensions['bootstrap']['cdns']['jquery'] = WebCDN(
+        #'//upcdn.b0.upaiyun.com/libs/jquery/jquery-2.0.2.min.js')
     moment.init_app(app)
     db.init_app(app)
     login_manager.init_app(app)
