@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% from "macroes.html" import render_pager, render_radio_question %}
+
+{% block content %}
+<div class="container">
+    <h2>{{ survey['title'] }}</h2>
+    <form class="form-horizontal" method="post" action="{{ url_for(route) }}">
+        {% for question in survey['questions'] %}
+        {% if 'options' in question %}
+        {{ render_radio_question(question) }}
+        {% else %}
+        <div class="form-group">
+            <label class="control-lable col-md-2">{{ question['title'] }}</label>
+            <div class="col-md-10">
+                <input class="form-control" name="{{ question['q_id'] }}">
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+        <button class="btn btn-primary" type="submit">提交</button>
+    </form>
+    {{ render_pager(previous, next) }}
+</div>
+{% endblock content %}
