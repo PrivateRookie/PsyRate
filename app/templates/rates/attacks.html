@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% from "macroes.html" import render_pager, render_checkbox_question %}
+{% from "macroes.html" import render_radio_question, render_wrapped_input %}
+
+{% block content %}
+<div class="container">
+    <h1>{{ survey['title'] }}</h1>
+    <form method="post" action="{{ url_for(route) }}">
+        <h2>{{ survey['part_1']['title'] }}</h2>
+        {{ render_radio_question(survey['part_1']['questions'][0]) }}
+        <div class="form-group">
+            <label class="control-label">{{ survey['part_1']['questions'][1]['title'] }}</label>
+            <input class="form-control" name="{{ survey['part_1']['questions'][1]['q_id'] }}" type="{{ survey['part_1']['questions'][1]['type'] }}">
+        </div>
+        <h2>{{ survey['part_2']['title'] }}</h2>
+        {% for question in survey['part_2']['questions'] %}
+            {% if question['options'][0][0] == 'a' %}
+            {{ render_checkbox_question(question) }}
+            {% else %}
+            {{ render_radio_question(question) }}
+            {% endif %}
+        {% endfor %}
+        <h2>{{ survey['part_3']['title'] }}</h2>
+        {% for question in survey['part_3']['questions'] %}
+            {% if question['options'][0][0] == 'a' %}
+            {{ render_checkbox_question(question) }}
+            {% else %}
+            {{ render_radio_question(question) }}
+            {% endif %}
+        {% endfor %}
+        <button class="btn btn-primary", type="submit">提交</button>
+    </form>
+    {{ render_pager(previous, next) }}
+</div>
+{% endblock content %}
