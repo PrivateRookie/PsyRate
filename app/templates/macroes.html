@@ -95,3 +95,31 @@
     <li>
 </ul>
 {% endmacro %}
+
+{% macro render_option_question(question) %}
+    <tr>
+        <td>{{ question['title'] }}</td>
+        <td>
+            <select class="form-control" name="{{ question['q_id'] }}">
+                {% for val in question['opt_values'] %}
+                <option value="{{ val }}">{{ val }}</option>
+                {% endfor %}
+            </select>
+        </td>
+    </tr>
+{% endmacro %}
+
+{% macro render_option_survey(survey, route) %}
+    <h2>{{ survey['title'] }}</h2>
+    <br>
+    <p>{{ survey['description'] }}</p>
+    <br>
+    <form method="post" action="{{ url_for(route) }}">
+    <table class="table col-md-4">
+        {% for question in survey['questions'] %}
+        {{ render_option_question(question) }}
+        {% endfor %}
+    </table>
+    <button class="btn btn-default" type="submit">提交</button>
+    </form>
+{% endmacro %}

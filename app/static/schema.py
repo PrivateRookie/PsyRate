@@ -28,7 +28,13 @@ dev_report = \
  'v9|longterm_diease',
  'v9|mense_pregnancy',
  'v9|abuse',
- 'v9|family_history']
+ 'v9|family_history',
+ 'v9|hama',
+ 'v9|panns',
+ 'v9|moas',
+ 'v9|ybocs',
+ 'v9|gaf',
+ 'v9|tess']
  
 self_report = \
 ['v0|cover',
