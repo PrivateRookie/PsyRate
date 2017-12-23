@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% from "macroes.html" import render_pager %}
+
+{% block content %}
+<div class="container">
+    <h2>{{ survey['title'] }}</h2>
+    <p>{{ survey['description'] }}</p>
+    <form method="post" action="{{ url_for(route) }}">
+        <div class="row">
+            <div class="col-md-3">
+                <input class="form-control" type="number" name="q_1" min="0" max="100">
+            </div>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-default">提交</button>
+    </form>
+    {{ render_pager(previous, next) }}
+</div>
+{% endblock content %}
