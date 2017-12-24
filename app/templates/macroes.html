@@ -1,5 +1,5 @@
 {% macro render_radio_question(question) %}
-    <div class="radio">
+    <div class="form-group">
         <p><strong>{{ question['title'] }}</strong></p>
         <ul class="list-unstyled">
         {% for value, opt_str in question['options'] %}
@@ -96,9 +96,21 @@
 </ul>
 {% endmacro %}
 
-{% macro render_option_question(question) %}
+{% macro render_slip(questions) %}
+<table class="table">
+    <tr>
+        <td>项目</td>
+        <td>检查结果</td>
+        <td>临床判断</td>
+    </td>
+    {% for question in questions %}
+    {% if loop.index % 2 == 1 %}
     <tr>
         <td>{{ question['title'] }}</td>
+        <td>
+            <input class="form-control" name="{{ question['q_id'] }}" type="number" step="0.1">
+        </td>
+    {% else %}
         <td>
             <select class="form-control" name="{{ question['q_id'] }}">
                 {% for val in question['opt_values'] %}
@@ -107,19 +119,7 @@
             </select>
         </td>
     </tr>
-{% endmacro %}
-
-{% macro render_option_survey(survey, route) %}
-    <h2>{{ survey['title'] }}</h2>
-    <br>
-    <p>{{ survey['description'] }}</p>
-    <br>
-    <form method="post" action="{{ url_for(route) }}">
-    <table class="table col-md-4">
-        {% for question in survey['questions'] %}
-        {{ render_option_question(question) }}
-        {% endfor %}
-    </table>
-    <button class="btn btn-default" type="submit">提交</button>
-    </form>
+    {% endif %}
+    {% endfor %}
+ </table>
 {% endmacro %}

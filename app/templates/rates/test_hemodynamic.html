@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% from "macroes.html" import render_slip, render_pager %}
+
+{% block content %}
+<div class="container">
+    <h2>{{ survey['title'] }}</h2>
+    <p>{{ survey['description'] }}</p>
+    <form class="form-horizontal" method="post" action="{{ url_for(route) }}">
+        {% for question in survey['questions'][:5] %}
+        <div class="form-group">
+            <label class="control-label col-md-1">{{ question['title'] }}</label>
+            <div class="input-group col-md-2">
+                <input class="form-control" name="{{ question['q_id'] }}" type="{{ question['type'] }}" step="{{ question['step'] }}">
+                {% if question['unit'] != '' %}
+                <div class="input-group-addon">{{ question['unit'] }}</div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table">
+                    <tr>
+                        <td>项目</td>
+                        <td>结果</td>
+                    </tr>
+                    {% for question in survey['questions'][1:] %}
+                    <tr>
+                        <td>{{ question['title'] }}</td>
+                        <td>
+                            <input class="form-control" name="{{ question['q_id'] }}" type="number" step="0.1">
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <button class="btn btn-default" type="submit">提交</button>
+    </form>
+    {{ render_pager(previous, next) }}
+</div>
+{% endblock content %}

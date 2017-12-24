@@ -34,7 +34,27 @@ dev_report = \
  'v9|moas',
  'v9|ybocs',
  'v9|gaf',
- 'v9|tess']
+ 'v9|tess',
+ 'v9|test_ekg',
+ 'v9|test_brs',
+ 'v9|test_bods',
+ 'v9|test_bfs',
+ 'v9|test_imms',
+ 'v9|test_drug',
+ 'v9|test_tm',
+ 'v9|test_hemodynamic',
+ 'v9|test_supersonic',
+ 'v9|test_bmd',
+ 'v9|test_ssep',
+ 'v9|test_baep',
+ 'v9|test_vep_pre',
+ 'v9|test_rep',
+ 'v9|test_cnv',
+ 'v9|test_emt',
+ 'v9|test_wm',
+ 'v9|test_wais_rc',
+ 'v9|test_wcst',
+ 'v9|sae']
  
 self_report = \
 ['v0|cover',

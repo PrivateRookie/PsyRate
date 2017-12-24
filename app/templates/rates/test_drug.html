@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% from "macroes.html" import render_pager %}
+
+{% block head %}
+{{ super() }}
+<script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script src="{{ url_for('static', filename='custom.js') }}"></script>
+{% endblock head %}
+
+{% block content %}
+<div class="container">
+    <h2>{{ survey['title'] }}</h2>
+    <p>{{ survey['description'] }}</p>
+    <form method="post" action="{{ url_for(route) }}">
+        <table class="table">
+            <tr>
+                <td>药品种类</td>
+                <td>检查日期</td>
+                <td>结果</td>
+                <td>操作</td>
+            </tr>
+            <tr>
+                {% for question in survey['questions'] %}
+                <td>
+                    <input class="form-control" name="{{ question['q_id'] }}" type="{{ question['type'] }}" step="{{ question['step'] }}">
+                </td>
+                {% endfor %}
+                <td>
+                    <button class="add btn btn-default" type="button"><span class="glyphicon glyphicon-plus"></span></button>
+                </td>
+                <td>
+                    <button class="btn btn-primary"  type="button" disabled><span class="glyphicon glyphicon-chevron-down"></span></button>
+                </td>
+            </tr>
+        </table>
+        <button class="sub btn btn-default" type="button">提交</button>
+    </form>
+    {{ render_pager(previous, next) }}
+</div>
+{% endblock content %}
