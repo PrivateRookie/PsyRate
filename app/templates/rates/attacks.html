@@ -8,9 +8,11 @@
     <form method="post" action="{{ url_for(route) }}">
         <h2>{{ survey['part_1']['title'] }}</h2>
         {{ render_radio_question(survey['part_1']['questions'][0]) }}
-        <div class="form-group">
-            <label class="control-label">{{ survey['part_1']['questions'][1]['title'] }}</label>
-            <input class="form-control" name="{{ survey['part_1']['questions'][1]['q_id'] }}" type="{{ survey['part_1']['questions'][1]['type'] }}">
+        <div class="form-group row">
+            <label class="control-label col-md-2">{{ survey['part_1']['questions'][1]['title'] }}</label>
+            <div class="col-md-2">
+                <input class="form-control" name="{{ survey['part_1']['questions'][1]['q_id'] }}" type="{{ survey['part_1']['questions'][1]['type'] }}">
+            </div>
         </div>
         <h2>{{ survey['part_2']['title'] }}</h2>
         {% for question in survey['part_2']['questions'] %}

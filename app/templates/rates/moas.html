@@ -1,10 +1,37 @@
 {% extends "base.html" %}
-{% from "macroes.html" import render_table_survey, render_pager %}
+{% from "macroes.html" import render_option_survey, render_pager %}
 
 {% block content %}
 <div class="container">
-    {{ render_table_survey(survey, route) }}
+    <h2>{{ survey['title'] }}</h2>
+    <p>{{ survey['description'] }}</p>
+    <form method="post" action="{{ url_for(route) }}">
+        <ul class="list-unstyled">
+        {% for question in survey['questions'] %}
+        <li>
+            <div class="row">
+                <label class="control-label">{{ question['title'] }}</label>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <select class="form-control" name="{{ question['q_id'] }}">
+                        {% for val in question['opt_values'] %}
+                        <option val="{{ val }}">{{ val }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <input class="form-control" name="{{ question['q_id'] }}" type="number"
+                    min="{{ question['opt_values'][0] }}" max="{{ question['opt_values'][-1] }}"
+                    tabindex={{ loop.index }}>
+                </div>
+            </div>
+        </li>
+        {% endfor %}
+        </ul>
     <br>
+    <button class="btn btn-primary" type="submit">提交</button>
+    </form>
     {{ render_pager(previous, next) }}
 </div>
 {% endblock content %}

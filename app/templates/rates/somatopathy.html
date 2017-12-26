@@ -6,23 +6,32 @@
     <h2>{{ survey['title'] }}</h2>
     <p>{{ survey['description'] }}</h2>
     <form class="form-horizontal" method="post" action="{{ url_for(route) }}">
-        {% for question in survey['questions'] %}
-            {% if 'options' not in question %}
-            <div class="form-group">
-                <label class="control-label col-md-2">{{ question['title'] }}</label>
-                <div class="col-md-10">
-                    <input type="text" class="form-control">
-                </div>
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table">
+                    <tr>
+                        <td>系统</td>
+                        <td>疾病名称</td>
+                        <td>严重程度</td>
+                        <td>治疗结果</td>
+                    </tr>
+                {% for question in survey['questions'][:16] %}
+                    <tr>
+                        <td>{{ question['title'] }}</td>
+                        {% for i in range(3) %}
+                        <td>
+                            <input class="form-control" name="{{ question['q_id'] }}">
+                        </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+                </table>
             </div>
-            {% else %}
-            <div class="row">
-                <div class="col-md-2">
-                    {{ render_checkbox_question(question) }}
-                </div>
-            </div>
-            {% endif %}
-            {% endfor %}
-            <button class="btn btn-primary" type="submit">提交</button>
+        </div>
+        <div class="row">
+            {{ render_checkbox_question(survey['questions'][-1]) }}
+        </div>
+        <button class="btn btn-primary" type="submit">提交</button>
     </form>
     {{ render_pager(previous, next) }}
 </div>

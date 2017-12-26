@@ -123,3 +123,37 @@
     {% endfor %}
  </table>
 {% endmacro %}
+
+{% macro render_option_input(question, index) %}
+<li>
+    <div class="row">
+    <label class="control-label col-md-2">{{ question['title'] }}</label>
+    <div class="col-md-2">
+        <select class="form-control" name="{{ question['q_id'] }}">
+            {% for val in question['opt_values'] %}
+            <option val="{{ val }}">{{ val }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-2">
+        <input class="form-control" name="{{ question['q_id'] }}" type="number"
+        min="{{ question['opt_values'][0] }}" max="{{ question['opt_values'][-1] }}"
+        tabindex={{ index }}>
+    </div>
+    </div>
+</li>
+{% endmacro %}
+
+{% macro render_option_survey(survey, route) %}
+<h2>{{ survey['title'] }}</h2>
+<p>{{ survey['description'] }}</p>
+<form method="post" action="{{ url_for(route) }}">
+    <ul class="list-unstyled">
+    {% for question in survey['questions'] %}
+    {{ render_option_input(question, loop.index) }}
+    {% endfor %}
+    </ul>
+    <br>
+    <button class="btn btn-primary" type="submit">提交</button>
+</form>
+{% endmacro %}

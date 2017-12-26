@@ -6,29 +6,30 @@
     <h2>{{ survey['title'] }}></h2>
     <p>{{ survey['description'] }}</p>
     <form method="post" action="{{ url_for(route) }}">
-        <table class="table">
         <div class="row">
-            <div class="col-md-3"><p>评定项目</p></div>
-            <div class="col-md-3"><p>严重程度</p></div>
-            <div class="col-md-3"><p>与目前治疗的关系</p></div>
-            <div class="col-md-3"><p>处理</p></div>
-        </div>
-        {% for i in range(0, 102, 3) %}
-        <div class="row">
-            <div class="col-md-3"><p><strong>{{ survey['questions'][i]['title'] }}</strong></p></div>
-            {% for question in survey['questions'][i:i+3] %}
-            <div class="col-md-3">
-                <input type="number" class="form-control" name="{{ question['q_id'] }}"
-                min="{{ question['opt_values'][0] }}" max="{{ question['opt_values'][-1] }}">
-            </div>
+            <div class="col-md-6">
+                <table class="table">
+            <tr>
+                <td>评定项目</td>
+                <td>严重程度</td>
+                <td>与目前治疗的关系</td>
+                <td>处理</td>
+            </tr>
+            {% for i in range(0, 102, 3) %}
+            <tr>
+                <td><strong>{{ survey['questions'][i]['title'] }}</strong></td>
+                {% for question in survey['questions'][i:i+3] %}
+                <td>
+                    <input type="number" class="form-control" name="{{ question['q_id'] }}"
+                    min="{{ question['opt_values'][0] }}" max="{{ question['opt_values'][-1] }}">
+                </td>
+                {% endfor %}
+            </tr>
             {% endfor %}
-        </div>
-        <div class="row">
-            <div class="col-md-12"></div>
-        </div>
-        {% endfor %}
         </table>
-        <button class="btn btn-default" type="submit">提交</button>
+            </div>
+        </div>
+        <button class="btn btn-primary" type="submit">提交</button>
     </form>
     </br>
     {{ render_pager(previous, next) }}

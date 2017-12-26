@@ -6,10 +6,14 @@
     <h2>{{ survey['title'] }}</h2>
     <form method="post" action="{{ url_for(route) }}" class="form-horizontal">
         {% for question in survey['questions'] %}
+        {% if loop.index == 15 %}
+        <fieldset>
+        <legend>患者伴侣或重要的一半</legend>
+        {% endif %}
         {% if 'options' in question %}
         <div class="form-group">
-            <label class="control-label col-md-2">{{ question['title'] }}</label>
-            <div class="col-md-4">
+            <label class="control-label col-md-1">{{ question['title'] }}</label>
+            <div class="col-md-3">
                 <select class="form-control" name="{{ question['q_id'] }}">
                     {% for val, opt_str in question['options'] %}
                     <option value="{{ val }}">{{ val }}. {{ opt_str }}</option>
@@ -19,11 +23,14 @@
         </div>
         {% else %}
         <div class="form-group">
-            <label class="control-label col-md-2">{{ question['title'] }}</label>
-            <div class="col-md-4">
+            <label class="control-label col-md-1">{{ question['title'] }}</label>
+            <div class="col-md-3">
                 <input class="form-control" type="{{ question['type'] }}" name="{{ question['q_id'] }}">
             </div>
         </div>
+        {% endif %}
+        {% if loop.index == 17 %}
+        </fieldset>
         {% endif %}
         {% endfor %}
         <button class="btn btn-default" type="submit">提交</button>

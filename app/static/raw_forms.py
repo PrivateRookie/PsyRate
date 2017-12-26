@@ -1776,6 +1776,7 @@ somatopathy = \
                {'q_id': 'q_13', 'title': '内分泌及代谢'},
                {'q_id': 'q_14', 'title': '过敏(包括药物过敏)'},
                {'q_id': 'q_15', 'title': '风湿免疫类疾病'},
+               {'q_id': 'q_17', 'title': '其他上述未列入的疾病'},
                {'options': [(1, ' 恶性贫血'),
                             (2, ' 自体免疫溶血性疾病'),
                             (3, ' 贫血'),
@@ -1809,8 +1810,7 @@ somatopathy = \
                             (31, ' 干燥综合征'),
                             (32, ' 强直性脊柱炎')],
                 'q_id': 'q_16',
-                'title': '风湿免疫类疾病'},
-               {'q_id': 'q_17', 'title': '其他上述未列入的疾病'}],
+                'title': '风湿免疫类疾病'}],
  'title': '身心疾病',
  'description':'具体记录疾病名称、严重程度及治疗结果'}
 
@@ -1842,10 +1842,10 @@ longterm_diease = \
  
 mense_pregnancy = \
 {'description': '',
- 'questions': [{'q_id': 'q_1', 'title': '初潮年龄', 'unit': ''},
-               {'q_id': 'q_2', 'title': '周期', 'unit': ''},
-               {'q_id': 'q_3', 'title': '带经时间', 'unit': ''},
-               {'q_id': 'q_4', 'title': '末次月经', 'unit': ''},
+ 'questions': [{'q_id': 'q_1', 'title': '初潮年龄', 'unit': '岁', 'type':'number'},
+               {'q_id': 'q_2', 'title': '周期', 'unit': '天', 'type':'number'},
+               {'q_id': 'q_3', 'title': '带经时间', 'unit': '天', 'type':'number'},
+               {'q_id': 'q_4', 'title': '末次月经', 'unit': '', 'type':'date'},
                {'options': [(1, '规律'), (2, '不规律')],
                 'q_id': 'q_5',
                 'title': '月经是否规律'},
@@ -1855,9 +1855,9 @@ mense_pregnancy = \
                {'options': [(1, '是'), (2, '否')],
                 'q_id': 'q_7',
                 'title': '是否曾有过闭经（不包括绝经）'},
-               {'q_id': 'q_8', 'title': '开始', 'unit': ''},
-               {'q_id': 'q_9', 'title': '结束', 'unit': ''},
-               {'q_id': 'q_10', 'title': '原因', 'unit': ''},
+               {'q_id': 'q_8', 'title': '开始', 'unit': '', 'type':'date'},
+               {'q_id': 'q_9', 'title': '结束', 'unit': '', 'type':'date'},
+               {'q_id': 'q_10', 'title': '原因', 'unit': '', 'type':'text'},
                {'options': [(1, '有'), (2, '无')],
                 'q_id': 'q_11',
                 'title': '是否患过多囊卵巢综合征'},
@@ -1867,8 +1867,8 @@ mense_pregnancy = \
                             ('2', '无关')],
                 'q_id': 'q_12',
                 'title': '情绪变化是否与月经周期有关'},
-               {'q_id': 'q_13', 'title': '怀孕次数', 'unit': ''},
-               {'q_id': 'q_14', 'title': '妊娠次数', 'unit': ''},
+               {'q_id': 'q_13', 'title': '怀孕次数', 'unit': '次', 'type':'number'},
+               {'q_id': 'q_14', 'title': '妊娠次数', 'unit': '次', 'type':'number'},
                {'options': [('1a', '孕期'),
                             ('1b', '产后1月内'),
                             ('1c', '都有'),
@@ -2197,7 +2197,7 @@ gaf = \
  'title': '功能大体评定量表（GAF）（他评）'}
  
 tess = \
-{'descripiton': ['严重程度： 0 无 1 可疑或极轻 2 轻度 3 中度 4 重度',
+{'description': ['严重程度： 0 无 1 可疑或极轻 2 轻度 3 中度 4 重度',
                  '与目前治疗的关系： 0 无 1 很少 2 可能 3 很可能 4 肯定；',
                  '处理： 0 无 1 加强观察 2 给拮抗药 3 减量 4 减量+拮抗药 5 暂停治疗 6 终止治疗'],
  'questions': [{'opt_values': [0, 1, 2, 3, 4],
