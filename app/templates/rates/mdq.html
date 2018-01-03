@@ -2,7 +2,7 @@
 {% from "macroes.html" import render_table_question, render_radio_question %}
 {% from "macroes.html" import render_pager %}
 
-{% block content %}
+{% block form %}
 <div class="container">
     <h2>{{ survey['title'] }}</h2>
     <br>
@@ -22,7 +22,6 @@
         {{ render_radio_question(survey['questions'][-1]) }}
         <input type="submit">
     </form>
-    {{ render_pager(previous, next) }}
 </div>
 {% endblock %}
             

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% from "macroes.html" import render_table_question, render_pager %}
 
-{% block content %}
+{% block form %}
 <div class="container">
     <h2>{{ survey['title'] }}</h2>
     <form method="post" action="{{ url_for(route) }}" class="form-inline">
@@ -27,6 +27,5 @@
         <br>
         <input type="submit">
     </form>
-    {{ render_pager(previous, next) }}
 </div>
-{% endblock content %}
+{% endblock form %}

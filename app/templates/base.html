@@ -1,4 +1,5 @@
 {% extends "bootstrap/base.html" %}
+{% from "macroes.html" import render_pager %}
 
 {% block title %}Psy Rates{% endblock %}
 
@@ -17,6 +18,8 @@ label.label-full {
     text-align: left;
     width: 100%;
 }
+.sidebar {
+    background-color: coral;
 </style>
 {% endblock %}
 
@@ -59,7 +62,20 @@ label.label-full {
     </div>
     {% endfor %}
 
-    {% block page_content %}{% endblock %}
+    <div class="row">
+    <div class="container col-md-9">
+    {% block form %}
+    {% endblock %}
+    </div>
+    <div class="container col-md-3 sidebar">
+    {% block sidebar %}
+    {% for i in range(5) %}
+    <h2>side bar</h2>
+    {% endfor %}
+    {% endblock sidebar %}
+    </div>
+    </div>
+    {{ render_pager(previous, next) }}
 </div>
 {% endblock %}
 

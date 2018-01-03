@@ -1,9 +1,8 @@
 {% extends "base.html" %}
 {% from "macroes.html" import render_table_survey, render_pager %}
 
-{% block content %}
+{% block form %}
 <div class="container">
     {{ render_table_survey(survey, route) }}
-    {{ render_pager(previous, next) }}
 </div>
-{% endblock content %}
+{% endblock form %}

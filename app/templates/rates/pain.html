@@ -19,7 +19,7 @@ output {
 </style>
 {% endblock %}
 
-{% block content %}
+{% block form %}
 <div class="container">
     <form method='post' action="{{ url_for(route) }}" oninput="score.value=parseInt(range1.value)">
         <h2>疼痛问卷（自评-状态）</h2>
@@ -56,6 +56,5 @@ output {
         </div>
         <button class="btn btn-default" type="submit">提交</button>
     </form>
-    {{ render_pager(previous, next) }}
 </div>
-{% endblock content %}
+{% endblock form %}

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% from "macroes.html" import render_option_survey, render_pager %}
 
-{% block content %}
+{% block form %}
 <div class="container">
     <h2>{{ survey['title'] }}</h2>
     <p>{{ survey['description'] }}</p>
@@ -32,6 +32,5 @@
     <br>
     <button class="btn btn-primary" type="submit">提交</button>
     </form>
-    {{ render_pager(previous, next) }}
 </div>
-{% endblock content %}
+{% endblock form %}

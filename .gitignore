@@ -16,3 +16,6 @@ forms_raw
 
 # 忽略sqlite文件
 *.sqlite
+
+# 忽略backup文件夹
+backup

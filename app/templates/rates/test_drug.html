@@ -8,7 +8,7 @@
 <script src="{{ url_for('static', filename='custom.js') }}"></script>
 {% endblock head %}
 
-{% block content %}
+{% block form %}
 <div class="container">
     <h2>{{ survey['title'] }}</h2>
     <p>{{ survey['description'] }}</p>
@@ -36,6 +36,5 @@
         </table>
         <button class="sub btn btn-default" type="button">提交</button>
     </form>
-    {{ render_pager(previous, next) }}
 </div>
-{% endblock content %}
+{% endblock form %}

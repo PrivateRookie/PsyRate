@@ -56,6 +56,12 @@ def selfreport():
     return render_template('rates/cover.html', status='v0', route='main.echo',
     previous=previous, next=next, report_type='self_report')
     
+@main.route('/ohterreport')
+def otherreport():
+    previous, next = get_pager('other_report', 'v0', 'cover')
+    return render_template('rates/cover.html', status='v0', route='main.echo',
+    previous=previous, next=next, report_type='other_report')
+    
 @main.route('/echo', methods=['GET', 'POST'])
 def echo():
     data = [(attr, request.form.getlist(attr)) for attr in request.form.keys() if attr.startswith('q')]

@@ -8,7 +8,7 @@
 <script src="{{ url_for('static', filename='custom.js') }}"></script>
 {% endblock %}
 
-{% block content %}
+{% block form %}
 <div class="container">
     <form method="post" action="{{ url_for(route) }}">
         <table class="table">
@@ -39,7 +39,6 @@
     </form>
     <div class="container">
     <output></output>
-    {{ render_pager(previous, next) }}
     </div>
 </div>
-{% endblock content %}
+{% endblock form %}
