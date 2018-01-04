@@ -1,8 +1,9 @@
-{% extends "base.html" %}
+{% extends "formlayout.html" %}
+
 {% from "macroes.html" import render_pager, render_radio_question, render_checkbox_question%}
 
 {% block form %}
-<div class="container">
+<div class="container-fluid">
     <h2>{{ survey['title'] }}</h2>
     <form method="post" action="{{ url_for(route) }}">
         {% for question in survey['questions'] %}

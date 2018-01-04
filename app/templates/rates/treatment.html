@@ -1,4 +1,5 @@
-{% extends "base.html" %}
+{% extends "formlayout.html" %}
+
 {% from "macroes.html" import render_pager %}
 
 {% block head %}
@@ -9,7 +10,7 @@
 {% endblock %}
 
 {% block form %}
-<div class="container">
+<div class="container-fluid">
     <form method="post" action="{{ url_for(route) }}">
         <table class="table">
             <tr>
@@ -37,7 +38,7 @@
         </table>
         <button class="sub btn btn-primary" type="button">提交</button>
     </form>
-    <div class="container">
+    <div class="container-fluid">
     <output></output>
     </div>
 </div>

@@ -1,4 +1,5 @@
-{% extends "base.html" %}
+{% extends "formlayout.html" %}
+
 {% from "macroes.html" import render_pager %}
 
 {% block form %}
@@ -9,7 +10,7 @@
         <li><p>(V1-V8 自评)</p></li>
         <li><label></label></li>
     </ul>
-    <div class="container">
+    <div class="container-fluid">
         <form class="form-horizontal main-form" action="{{ url_for(route) }}" method="post">
             <div class="form-group">
                 <label class="control-label col-md-2">患者编号</label>

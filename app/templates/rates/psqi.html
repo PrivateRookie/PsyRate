@@ -1,8 +1,9 @@
-{% extends "base.html" %}
+{% extends "formlayout.html" %}
+
 {% from "macroes.html" import render_radio_question, render_table_question, render_wrapped_input, render_pager %}
 
 {% block form %}
-<div class="container">
+<div class="container-fluid">
     <h1>{{ survey['title'] }}</h1>
     <br>
     <p>{{ survey['description'] }}</p>

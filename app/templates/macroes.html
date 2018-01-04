@@ -29,9 +29,9 @@
 
 {% macro render_table_question(question) %}
     <tr>
-        <td class="col-xs-3"><strong>{{ question['title'] }}</strong></td>
+        <td class="col-md-3"><strong>{{ question['title'] }}</strong></td>
         {% for opt_value in question['opt_values'] %}
-        <td class="col-xs-1">
+        <td class="col-md-1">
                 <label class="btn btn-default label-full">
                     <input type="radio" name="{{ question['q_id'] }}" value="{{ opt_value }}">{{ opt_value }}
                 </label>

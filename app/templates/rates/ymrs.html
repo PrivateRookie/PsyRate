@@ -1,8 +1,9 @@
-{% extends "base.html" %}
+{% extends "formlayout.html" %}
+
 {% from "macroes.html" import render_option_survey, render_pager %}
 
 {% block form %}
-<div class="container">
+<div class="container-fluid">
     {{ render_option_survey(survey, route) }}
 </div>
 {% endblock %}
