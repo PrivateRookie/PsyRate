@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% from "macroes.html" import render_pager %}
+
+{% block head %}
+{{ super() }}
+<style>
+label.btn-default {
+    color: #333;
+    background-color: #fff;
+    border-color: #fff;
+}
+label.label-full {
+    text-align: left;
+    width: 100%;
+}
+ 
+.forms {
+    padding-left:10px;
+    padding-right:10px;
+}
+</style>
+{% endblock head %}
+
+{% block inner %}
+<div class="row">
+    <div class="col-md-9 forms">
+        {% block form %}
+        {% endblock form %}
+    </div>
+    <div class="col-md-3 sidebar">
+        {% block sidebar %}
+        <div class="container-fulid">
+        {% if report_type == 'self_report' %}
+        {% include "self_nav.html" %}
+        {% else %}
+        {% include "other_nav.html" %}
+        {% endif %}
+        </div>
+        {% endblock sidebar %}
+    </div>
+</div>
+{{ render_pager(previous, next) }}
+{% endblock inner %}
