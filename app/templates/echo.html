@@ -5,7 +5,7 @@
 {% block content %}
 <h2>Echo</h2>
 <ul class="unstyled">
-    {% for q_id, value in data %}
+    {% for q_id, value in data.items() %}
     <li>{{ q_id }}: {{ value }}</li>
     {% endfor %}
 </ul>
