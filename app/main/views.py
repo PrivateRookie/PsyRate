@@ -54,20 +54,20 @@ def forms():
     raw_form = getattr(raw_forms, form_name, None)
     previous, next = get_pager(report_type, status, form_name)
     options = dict(survey=raw_form, route='main.recevie', status=status, report_type=report_type,
-    previous=previous, next=next)
+    form_name=form_name, previous=previous, next=next)
     return render_template('rates/{}.html'.format(form_name), **options)
 
 @main.route('/selfreport')
 def selfreport():
     previous, next = get_pager('self_report', 'v0', 'cover')
     return render_template('rates/cover.html', status='v0', route='main.recevie',
-    previous=previous, next=next, report_type='self_report')
+    previous=previous, next=next, report_type='self_report', form_name='cover')
     
 @main.route('/ohterreport')
 def otherreport():
     previous, next = get_pager('other_report', 'v0', 'cover')
     return render_template('rates/cover.html', status='v0', route='main.recevie',
-    previous=previous, next=next, report_type='other_report')
+    previous=previous, next=next, report_type='other_report', form_name='cover')
     
 @main.route('/echo', methods=['GET', 'POST'])
 def echo():
@@ -79,11 +79,6 @@ def recevie():
     """
     patient_info = session.get('patient_info', None)
     
-    if patient_info is None:
-        patient_info = dict()
-        patient_info['name'] = request.form.get('q_2')
-        patient_info['code'] = request.form.get('q_1')
-        patient_info['writer'] = current_user.username
         # 提交新患者信息
         data = [flat(request.form.getlist(attr)) for attr in request.form.keys() if attr.startswith('q')]
         data = {k:v for k, v in zip(['code', 'name', 'entry_date', 'doctor'], data)}
@@ -107,6 +102,13 @@ def recevie():
     """
     data = {attr:flat(request.form.getlist(attr)) for attr in request.form.keys() if attr.startswith('q')}
     patient_info = session.get('patient_info', None)
+    if patient_info is None or request.args.get('form_name') is 'cover':
+        patient_info = dict()
+        patient_info['name'] = request.form.get('q_2')
+        patient_info['code'] = request.form.get('q_1')
+        patient_info['writer'] = current_user.username
+        session['patinent_info'] = patient_info
+        
     data.update(patient_info)
     return render_template('echo.html', data=data)
         

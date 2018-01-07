@@ -1,6 +1,6 @@
 {% extends "formlayout.html" %}
 
-{% from "macroes.html" import render_pager %}
+{% from "macroes.html" import render_pager, render_meta_data %}
 
 {% block head %}
 {{ super() }}
@@ -16,6 +16,10 @@ input[type=number] {
 output { 
     width: auto;
     display: inline-block;
+}
+.text-danger {
+    color: #a94442;
+    font-size: x-large;
 }
 </style>
 {% endblock %}
@@ -55,7 +59,8 @@ output {
         <label>疼痛分数: </label>
         <output class="text-danger" name="score" id="score" for="range1"></output>
         </div>
-        <button class="btn btn-default" type="submit">提交</button>
+        {{ render_meta_data(form_name, status, report_type) }}
+        <button class="btn btn-primary" type="submit">提交</button>
     </form>
 </div>
 {% endblock form %}

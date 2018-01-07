@@ -1,9 +1,9 @@
 {% extends "formlayout.html" %}
 
-{% from "macroes.html" import render_table_survey, render_pager %}
+{% from "macroes.html" import render_option_survey %}
 
 {% block form %}
 <div class="container-fluid">
-    {{ render_table_survey(survey, route) }}
+    {{ render_option_survey(survey, route, form_name, status, report_type) }}
 </div>
 {% endblock form %}

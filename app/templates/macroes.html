@@ -1,3 +1,11 @@
+{% macro render_meta_data(form_name, status, report_type) %}
+<div class="hidden-input">
+    <input type="hidden" name="form_name" value="{{ form_name }}">
+    <input type="hidden" name="status" value="{{ status }}">
+    <input type="hidden" name="report_type" value="{{ report_type }}">
+</div>
+{% endmacro %}
+
 {% macro render_radio_question(question) %}
     <div class="form-group">
         <p><strong>{{ question['title'] }}</strong></p>
@@ -13,7 +21,7 @@
     </div>
 {% endmacro %}
 
-{% macro render_radio_survey(survey, route) %}
+{% macro render_radio_survey(survey, route, form_name, status, report_type) %}
     <h2>{{ survey['title'] }}</h2>
     <br>
     <p>{{ survey['description'] }}</p>
@@ -23,7 +31,8 @@
             {{ render_radio_question(question) }}
             <br>
         {% endfor %}
-        <button class="btn btn-default" type="submit">提交</button>
+        {{ render_meta_data(form_name, status, report_type) }}
+        <button class="btn btn-primary" type="submit">提交</button>
     </form>
 {% endmacro %}
 
@@ -32,15 +41,15 @@
         <td class="col-md-3"><strong>{{ question['title'] }}</strong></td>
         {% for opt_value in question['opt_values'] %}
         <td class="col-md-1">
-                <label class="btn btn-default label-full">
-                    <input type="radio" name="{{ question['q_id'] }}" value="{{ opt_value }}">{{ opt_value }}
-                </label>
+            <label class="btn btn-default label-full">
+                <input type="radio" name="{{ question['q_id'] }}" value="{{ opt_value }}">{{ opt_value }}
+            </label>
         </td>
         {% endfor %}
     </tr>
 {% endmacro %}
 
-{% macro render_table_survey(survey, route) %}
+{% macro render_table_survey(survey, route, form_name, status, report_type) %}
     <h2>{{ survey['title'] }}</h2>
     <br>
     <p>{{ survey['description'] }}</p>
@@ -56,7 +65,8 @@
                 {{ render_table_question(question) }}
             {% endfor %}
         </table>
-        <button class="btn btn-default" type="submit">提交</button>
+        {{ render_meta_data(form_name, status, report_type) }}
+        <button class="btn btn-primary" type="submit">提交</button>
     </form>
 {% endmacro %}
 
@@ -144,7 +154,7 @@
 </li>
 {% endmacro %}
 
-{% macro render_option_survey(survey, route) %}
+{% macro render_option_survey(survey, route, form_name, status, report_type) %}
 <h2>{{ survey['title'] }}</h2>
 <p>{{ survey['description'] }}</p>
 <form method="post" action="{{ url_for(route) }}">
@@ -154,6 +164,7 @@
     {% endfor %}
     </ul>
     <br>
+    {{ render_meta_data(form_name, status, report_type) }}
     <button class="btn btn-primary" type="submit">提交</button>
 </form>
 {% endmacro %}

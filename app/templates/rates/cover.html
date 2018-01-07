@@ -1,6 +1,6 @@
 {% extends "formlayout.html" %}
 
-{% from "macroes.html" import render_pager %}
+{% from "macroes.html" import render_meta_data %}
 
 {% block form %}
 <div class="container col-md-offset-3 col-md-6 text-center">
@@ -36,6 +36,7 @@
                     <input type="text" class="form-control" name="q_4">
                 </div>
             </div>
+            {{ render_meta_data(form_name, status, report_type) }}
             <div class="form-group">
                 <button class="btn btn-primary" type="submit">提交</button>
             </div>

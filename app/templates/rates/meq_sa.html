@@ -1,9 +1,9 @@
 {% extends "formlayout.html" %}
 
-{% from "macroes.html" import render_radio_survey, render_pager %}
+{% from "macroes.html" import render_radio_survey %}
 
 {% block form %}
 <div class="container-fluid">
-{{ render_radio_survey(survey, route) }}
+{{ render_radio_survey(survey, route, form_name, status, report_type) }}
 </div>
 {% endblock form %}

@@ -1,6 +1,6 @@
 {% extends "formlayout.html" %}
 
-{% from "macroes.html" import render_pager %}
+{% from "macroes.html" import render_pager, render_meta_data %}
 
 {% block form %}
 <div class="container-fluid">
@@ -21,6 +21,7 @@
     {% endfor %}
     </div>
     <br>
+    {{ render_meta_data(form_name, status, report_type) }}
     <button type="submit" class="btn btn-primary">提交</button>
     </form>
 </div>

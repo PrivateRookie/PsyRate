@@ -1,85 +1,49 @@
 {% extends "formlayout.html" %}
 
-{% from "macroes.html" import render_pager %}
+{% from "macroes.html" import render_meta_data %}
+
+{% block head %}
+{{ super() }}
+<script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script src="{{ url_for('static', filename='custom.js') }}"></script>
+{% endblock head %}
 
 {% block form %}
 <div class="container-fluid">
     <h2>{{ survey['title'] }}</h2>
-    <br>
-    <form class="form-horizontal" method="post" action="{{ url_for(route) }}">
-        <div class="form-group">
-            <label class="col-sm-1 control-label">事件名称</label>
-            <div class="col-sm-3">
-            <select class="form-control" name="event_code">
-                {% for code, event in survey['options'] %}
-                <option value="{{ code }}">{{ event }}</option>
-                {% endfor %}
-            </select>
-            </div>
-        </div>
+    <p>{{ survey['description'] }}</p>
+    <form method="post" action="{{ url_for(route) }}">
         <table class="table">
             <tr>
-                <td colspan=4>事件发生时间</td>
-                <td colspan=2>性质</td>
-                <td colspan=5>精神影响程度</td>
-                <td colspan=4>影响持续时间</td>
-            </tr>
-            <tr>
-                <td>未发生</td>
-                <td>一年前</td>
-                <td>一年内</td>
-                <td>长期性</td>
-                <td>好</td>
-                <td>坏</td>
-                <td>无影响</td>
-                <td>轻</td>
-                <td>中</td>
-                <td>重</td>
-                <td>极重</td>
-                <td>三月内</td>
-                <td>半年内</td>
-                <td>一年内</td>
-                <td>一年以上</td>
-            </tr>
-            <tr>
-                {% for i in range(4) %}
-                <td>
-                    <label class="btn btn-default label-full">
-                    <input type="radio" name="event_date" value="{{ i }}">
-                    </label>
-                </td>
-                {% endfor %}
-                <td>
-                    <label class="btn btn-default label-full">
-                    <input type="radio" name="property" value="1">
-                    </label>
-                </td>
-                <td>
-                    <label class="btn btn-default label-full">
-                    <input type="radio" name="property" value="0">
-                    </label>
-                </td>
-                {% for i in range(5) %}
-                <td>
-                    <label class="btn btn-default label-full">
-                    <input type="radio" name="degree" value="{{ i }}">
-                    </label>
-                </td>
-                {% endfor %}
-                {% for i in range(4) %}
-                <td>
-                    <label class="btn btn-default label-full">
-                    <input type="radio" name="duration" value="{{ i }}">
-                    </label>
-                </td>
+                {% for col in survey['cols'] %}
+                <td class="input">{{ col }}</td>
                 {% endfor %}
             </tr>
             <tr>
-                <td>备注</td>
-                <td colspan=14><input class="form-control" type="text" name="note"></td>
+                {% for question in survey['questions'] %}
+                <td>
+                {% if 'options' in question %}
+                    <select class="form-control" name="{{ question['q_id'] }}">
+                        {% for val, opt_str in question['options'] %}
+                        <option value="{{ val }}">{{ opt_str }}</option>
+                        {% endfor %}
+                    </select>
+                {% else %}
+                    <input class="form-control" name="{{ question['q_id'] }}" type="{{ question['type'] }}">
+                {% endif %}
+                </td>
+                {% endfor %}
+                <td>
+                    <button class="add btn btn-default" type="button"><span class="glyphicon glyphicon-plus"></span></button>
+                </td>
+                <td>
+                    <button class="btn btn-primary"  type="button" disabled><span class="glyphicon glyphicon-chevron-down"></span></button>
+                </td>
             </tr>
         </table>
-        <input type="submit">
+        {{ render_meta_data(form_name, status, report_type) }}
+        <button class="sub btn btn-primary" type="button">提交</button>
     </form>
 </div>
-{% endblock %}
+{% endblock form %}

@@ -1,6 +1,6 @@
 {% extends "formlayout.html" %}
 
-{% from "macroes.html" import render_radio_question, render_pager %}
+{% from "macroes.html" import render_radio_question, render_meta_data %}
 
 {% block form %}
 <div class="container-fluid">
@@ -14,7 +14,6 @@
             </div>
         </div>        
         <div class="row">
-            <div class="col-md-6">
                 <table class="table">
                     <tr>
                         <td>项目</td>
@@ -29,9 +28,9 @@
                     </tr>
                     {% endfor %}
                 </table>
-            </div>
         </div>
-        <button class="btn btn-default" type="submit">提交</button>
+        {{ render_meta_data(form_name, status, report_type) }}
+        <button class="btn btn-primary" type="submit">提交</button>
     </form>
 </div>
 {% endblock form %}

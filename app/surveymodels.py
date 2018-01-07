@@ -498,12 +498,12 @@ class LES(db.Model, Export):
     id = db.Column(db.Integer, primary_key=True)
     p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
     status = db.Column(db.String(16), db.ForeignKey('follow_ups.status'))
-    event_code = db.Column(db.Integer)
-    event_date = db.Column(db.Integer)
-    property = db.Column(db.Integer)
-    degree = db.Column(db.Integer)
-    duration = db.Column(db.Integer)
-    note = db.Column(db.Text)
+    q_1 = db.Column(db.Integer)
+    q_2 = db.Column(db.Integer)
+    q_3 = db.Column(db.Integer)
+    q_4 = db.Column(db.Integer)
+    q_5 = db.Column(db.Integer)
+    q_6 = db.Column(db.Text)
 
 class InOut(db.Model, Export):
     __tablename__ = 'inout'

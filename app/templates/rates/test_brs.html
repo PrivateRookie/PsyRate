@@ -1,6 +1,6 @@
 {% extends "formlayout.html" %}
 
-{% from "macroes.html" import render_slip, render_pager %}
+{% from "macroes.html" import render_slip, render_meta_data %}
 
 {% block form %}
 <div class="container-fluid">
@@ -18,7 +18,8 @@
                 {{ render_slip(survey['questions'][1:]) }}
             </div>
         </div>
-        <button class="btn btn-default" type="submit">提交</button>
+        {{ render_meta_data(form_name, status, report_type) }}
+        <button class="btn btn-primary" type="submit">提交</button>
     </form>
 </div>
 {% endblock form %}
