@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+<h1>病人信息</h1>
+{% for p in patients %}
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <ul class="list-unstyled">
+                <li><strong>病人姓名：</strong>{{ p.name }}</li>
+                <li><strong>编号：</strong>{{ p.code }}</li>
+                <li><strong>入组日期：</strong>{{ p.entry_date }}</li>
+                <li><strong>负责医生：</strong>{{ p.doctor }}</li>
+            </ul>
+        </div>
+    </div>
+{% endfor %}
+{% endblock content %}
