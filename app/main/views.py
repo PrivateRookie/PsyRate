@@ -52,22 +52,62 @@ def forms():
     if form_name is None:
         return render_template('allforms.html')
     raw_form = getattr(raw_forms, form_name, None)
+    patient = dict()
+    patient['name'] = session.get('patient_name', '')
+    patient['code'] = session.get('patient_code', '')
+    patient['writer'] = session.get('writer', '')
     previous, next = get_pager(report_type, status, form_name)
     options = dict(survey=raw_form, route='main.recevie', status=status, report_type=report_type,
-    form_name=form_name, previous=previous, next=next)
+    form_name=form_name, patient=patient, previous=previous, next=next)
     return render_template('rates/{}.html'.format(form_name), **options)
 
 @main.route('/selfreport')
 def selfreport():
     previous, next = get_pager('self_report', 'v0', 'cover')
-    return render_template('rates/cover.html', status='v0', route='main.recevie',
-    previous=previous, next=next, report_type='self_report', form_name='cover')
+    patient = dict()
+    patient['name'] = session.get('patient_name', '')
+    patient['code'] = session.get('patient_code', '')
+    patient['writer'] = session.get('writer', '')
+    return render_template('rates/cover.html', status='v0', route='main.patient_regist',
+    previous=previous, next=next, patient=patient, report_type='self_report', form_name='cover')
     
 @main.route('/ohterreport')
 def otherreport():
     previous, next = get_pager('other_report', 'v0', 'cover')
+    patient = dict()
+    patient['name'] = session.get('patient_name', '')
+    patient['code'] = session.get('patient_code', '')
+    patient['writer'] = session.get('writer', '')
     return render_template('rates/cover.html', status='v0', route='main.recevie',
-    previous=previous, next=next, report_type='other_report', form_name='cover')
+    previous=previous, next=next, patient=patient, report_type='other_report', form_name='cover')
+    
+@main.route('/patient_regist', methods=['GET', 'POST'])
+def patient_regist():
+    data = [flat(request.form.getlist(attr)) for attr in request.form.keys() if attr.startswith('q')]
+    data = {k:v for k, v in zip(['code', 'name', 'entry_date', 'doctor'], data)}
+    patient_info = dict()
+    session['patient_name'] = patient_info['name'] = request.form.get('q_2')
+    session['patient_code'] = patient_info['code'] = request.form.get('q_1')
+    session['writer'] = patient_info['writer'] = current_user.username
+    
+    
+    p = models.Patient(**data)
+    p.recorder = current_user._get_current_object()
+    try:
+        db.session.add(p)
+        db.session.commit()
+    except Exception as e:
+        print(e)
+    print(data)
+    return redirect(url_for('main.forms', status='v2', route='main.recevie', report_type='self_report', form_name='visit'))
+    
+@main.route('/logoutpatient')
+def logoutpatient():
+    del session['patient_name']
+    del session['patient_code']
+    del session['writer']
+    flash('你已经退出填写')
+    return redirect(url_for('main.forms'))
     
 @main.route('/echo', methods=['GET', 'POST'])
 def echo():
@@ -100,21 +140,14 @@ def recevie():
     db.session.commit()
     return render_template('echo.html', data=data)
     """
-    data = {attr:flat(request.form.getlist(attr)) for attr in request.form.keys() if attr.startswith('q')}
     patient_info = session.get('patient_info', None)
-    if patient_info is None or request.args.get('form_name') is 'cover':
-        patient_info = dict()
-        patient_info['name'] = request.form.get('q_2')
-        patient_info['code'] = request.form.get('q_1')
-        patient_info['writer'] = current_user.username
-        session['patinent_info'] = patient_info
-        
-    data.update(patient_info)
+    data = {attr:flat(request.form.getlist(attr)) for attr in request.form.keys() if attr.startswith('q')}
+    data['patient_name'] = session.get('patient_name', '')
+    data['patient_code'] = session.get('patient_code', '')
+    data['writer'] = session.get('writer', '')
     return render_template('echo.html', data=data)
-        
-        
     
-    
-@main.route('/test')
-def test():
-    return render_template('js.html')
+@main.route('/patients')
+def get_all_patients():
+    patients = current_user.patients
+    return render_template('patients.html', patients=patients)
