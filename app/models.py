@@ -96,7 +96,7 @@ class Patient(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     code = db.Column(db.String(32), unique=True)
     name = db.Column(db.String(32))
-    entry_date = db.Column(db.Date)
+    entry_date = db.Column(db.String(64))
     doctor = db.Column(db.String(32))
     recorder_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     
