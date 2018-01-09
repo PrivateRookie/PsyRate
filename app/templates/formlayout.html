@@ -30,6 +30,17 @@ label.label-full {
     <div class="col-md-3 sidebar">
         {% block sidebar %}
         <div class="container-fulid">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <ul class="list-unstyled">
+                    <li><strong>病人姓名：</strong>{{ patient['name'] }}</li>
+                    <li><strong>编号：</strong>{{ patient['code'] }}</li>
+                    <li><strong>当前编写者：</strong>{{ patient['writer'] }}</li>
+                </ul>
+                <a class="btn btn-primary" href="{{ url_for('main.logoutpatient') }}">退出填写</a>
+                <a class="btn btn-primary" href="{{ url_for('main.get_all_patients') }}">选择病人</a>
+            </div>
+        </div>
         {% if report_type == 'self_report' %}
         {% include "self_nav.html" %}
         {% else %}
