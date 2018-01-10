@@ -4,14 +4,25 @@
 <div class="container">
 <h1>病人信息</h1>
 {% for p in patients %}
-    <div class="panel panel-default">
+    <div class="panel panel-default col-md-4">
         <div class="panel-body">
             <ul class="list-unstyled">
+                {% if p.finished %}
+                <li><strong>填写状态：</strong><span class="label label-success">填写完成</span></li>
+                {% else %}
+                <li><strong>填写状态：</strong><span class="label label-warning">尚未完成</span></li>
+                {% endif %}
                 <li><strong>病人姓名：</strong>{{ p.name }}</li>
                 <li><strong>编号：</strong>{{ p.code }}</li>
                 <li><strong>入组日期：</strong>{{ p.entry_date }}</li>
                 <li><strong>负责医生：</strong>{{ p.doctor }}</li>
             </ul>
+            <a class="btn btn-primary" href="{{ url_for('main.editpatient', id=p.id) }}">编辑</a>
+            {% if p.finished %}
+            <a class="btn btn-warning" href="{{ url_for('main.change_status', id=p.id) }}">取消确认</a>
+            {% else %}
+            <a class="btn btn-primary" href="{{ url_for('main.change_status', id=p.id) }}">确认</a>
+            {% endif %}
         </div>
     </div>
 {% endfor %}

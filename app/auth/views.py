@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import render_template, redirect, request, url_for, flash
+from flask import render_template, redirect, request, session, url_for, flash
 from flask_login import login_user, logout_user
 from . import auth
 from .. import db
@@ -21,6 +21,7 @@ def login():
 @auth.route('/logout')
 def logout():
     logout_user()
+    session['patient'] = "{}"
     flash('你已退出登陆')
     return redirect(url_for('main.index'))
 

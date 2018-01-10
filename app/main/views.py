@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import json
 from datetime import datetime
 from flask import render_template, redirect, url_for, flash, session, request
 from flask_login import current_user
@@ -52,10 +53,13 @@ def forms():
     if form_name is None:
         return render_template('allforms.html')
     raw_form = getattr(raw_forms, form_name, None)
+    """
     patient = dict()
     patient['name'] = session.get('patient_name', '')
     patient['code'] = session.get('patient_code', '')
     patient['writer'] = session.get('writer', '')
+    """
+    patient = json.loads(session.get('patient', "{}"))
     previous, next = get_pager(report_type, status, form_name)
     options = dict(survey=raw_form, route='main.recevie', status=status, report_type=report_type,
     form_name=form_name, patient=patient, previous=previous, next=next)
@@ -64,20 +68,26 @@ def forms():
 @main.route('/selfreport')
 def selfreport():
     previous, next = get_pager('self_report', 'v0', 'cover')
+    """
     patient = dict()
     patient['name'] = session.get('patient_name', '')
     patient['code'] = session.get('patient_code', '')
     patient['writer'] = session.get('writer', '')
+    """
+    patient = json.loads(session.get('patient', "{}"))
     return render_template('rates/cover.html', status='v0', route='main.patient_regist',
     previous=previous, next=next, patient=patient, report_type='self_report', form_name='cover')
     
 @main.route('/ohterreport')
 def otherreport():
     previous, next = get_pager('other_report', 'v0', 'cover')
+    """
     patient = dict()
     patient['name'] = session.get('patient_name', '')
     patient['code'] = session.get('patient_code', '')
     patient['writer'] = session.get('writer', '')
+    """
+    patient = json.loads(session.get('patient', "{}"))
     return render_template('rates/cover.html', status='v0', route='main.recevie',
     previous=previous, next=next, patient=patient, report_type='other_report', form_name='cover')
     
@@ -85,29 +95,27 @@ def otherreport():
 def patient_regist():
     data = [flat(request.form.getlist(attr)) for attr in request.form.keys() if attr.startswith('q')]
     data = {k:v for k, v in zip(['code', 'name', 'entry_date', 'doctor'], data)}
-    patient_info = dict()
-    session['patient_name'] = patient_info['name'] = request.form.get('q_2')
-    session['patient_code'] = patient_info['code'] = request.form.get('q_1')
-    session['writer'] = patient_info['writer'] = current_user.username
-    
-    
+      
     p = models.Patient(**data)
     p.recorder = current_user._get_current_object()
     try:
         db.session.add(p)
         db.session.commit()
+        patient = dict()
+        patient['name'] = request.form.get('q_2')
+        patient['code'] = request.form.get('q_1')
+        patient['id'] = p.id
+        patient['writer'] = current_user.username
+        session['patient'] = json.dumps(patient)
     except Exception as e:
         print(e)
-    print(data)
     return redirect(url_for('main.forms', status='v2', route='main.recevie', report_type='self_report', form_name='visit'))
     
 @main.route('/logoutpatient')
 def logoutpatient():
-    del session['patient_name']
-    del session['patient_code']
-    del session['writer']
+    session['patient'] = "{}"
     flash('你已经退出填写')
-    return redirect(url_for('main.forms'))
+    return redirect(url_for('main.get_all_patients'))
     
 @main.route('/echo', methods=['GET', 'POST'])
 def echo():
@@ -151,3 +159,37 @@ def recevie():
 def get_all_patients():
     patients = current_user.patients
     return render_template('patients.html', patients=patients)
+    
+@main.route('/editpatient')
+def editpatient():
+    id = request.args.get('id', 0)
+    p = models.Patient.query.filter_by(id=id).first()
+    if p is None:
+        flash('该患者不存在')
+        return redirect(url_for('main.get_all_patients'))
+    else:
+        patient = dict()
+        patient['name'] = p.name
+        patient['code'] = p.code
+        patient['writer'] = p.recorder.username
+        patient['id'] = p.id
+        session['patient'] = json.dumps(patient)
+        return redirect(url_for('main.selfreport'))
+
+@main.route('/status')
+def change_status():
+    id = request.args.get('id')
+    if id is None:
+        flash("无此病人，请重新选择")
+        return redirect(url_for("main.get_all_patients"))
+    p = models.Patient.query.filter_by(id=id).first()
+    p.finished = not p.finished
+    try:
+        db.session.add(p)
+        db.session.commit()
+        flash("修改成功")
+        return redirect(url_for('main.logoutpatient'))
+    except Exception as e:
+        print(e)
+        flash('修改失败')
+        return redirect(url_for('main.get_all_patients'))

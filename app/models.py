@@ -98,6 +98,7 @@ class Patient(db.Model):
     name = db.Column(db.String(32))
     entry_date = db.Column(db.String(64))
     doctor = db.Column(db.String(32))
+    finished = db.Column(db.Boolean, default=False)
     recorder_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     
     def __repr__(self):
