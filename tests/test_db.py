@@ -4,7 +4,7 @@ from random import randint
 from flask import current_app
 from app import create_app, db
 from app.models import User
-from app.surveymodels import Patient, FollowUp
+from app.surveymodels import Patient, FOLLOWUP
 
 class VirtualFillTestCase(unittest.TestCase):
     def setUp(self):
@@ -27,7 +27,7 @@ class VirtualFillTestCase(unittest.TestCase):
         db.session.add(self.test_patient)
         db.session.commit()
         # create follow_ups
-        follow_ups = [FollowUp(p_id=self.test_patient.id,
+        follow_ups = [FOLLOWUP(p_id=self.test_patient.id,
             status='v{}'.format(i), follow_up_date=Date(2017, 11, i),
             follow_up_way=2) for i in range(1, 9)]
         db.session.add_all(follow_ups)

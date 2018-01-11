@@ -21,7 +21,7 @@ class Export:
                 line = [getattr(int, attr) for attr in cls.export_cols]
                 writer.writerow(line)
     
-class FollowUp(db.Model):
+class FOLLOWUP(db.Model):
     __tablename__ = 'follow_ups'
     id = db.Column(db.Integer, primary_key=True)
     p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))

@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block head %}
+{{ super() }}
+<style>
+.panel {
+    height: 300px;
+}
+</style>
+{% endblock head %}
+
+{% block inner %}
+<div class="container-fluid">
+    <div class="col-md-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading">工作小结</div>
+            <div class="panel-body">
+                <ul class="list-unstyled">
+                    <li>
+                        <span class="label label-success">已完成</span>
+                        <span class="text-success">{{ finished }}</span>
+                    </li>
+                        <span class="label label-warning">未完成</span>
+                        <span class="text-warning">{{ unfinished }}</span>
+                    </li>
+                    <li>
+                        <span class="label label-info">共填写</span>
+                        <span class="text-info">{{ total }}</span>
+                    </li>
+                </ul>
+                <a class="btn btn-primary pull-right" href="{{ url_for('main.get_all_patients') }}">详细数据</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                当前工作
+            </div>
+            <div class="panel-body">
+                <p>当前病人：{{ p_name}} 编号：{{ p_code }} 报告状态：
+                {% if p_finished %}
+                <span class="label label-success">完成</span>
+                {% else %}
+                <span class="label label-warning">未完成</span>
+                {% endif %}
+                </p>
+                <p>填写人：{{ username }}</p>
+                <a class="btn btn-primary pull-right" href="{{ url_for('main.selfreport') }}">开始新报告</a>
+            </div>
+       </div>
+   </div>
+   <div class="col-md-4">
+       <div class="panel panel-primary">
+           <div class="panel-heading">个人资料</div>
+           <div class="panel-body">
+               <ul class="list-unstyled">
+                   <li><strong>用户名:</strong>{{ username }}</li>
+                   <li><strong>邮箱：</strong>{{ email }}</li>
+               </ul>
+           </div>
+       </div>
+   </div>           
+</div>
+{% endblock inner %}

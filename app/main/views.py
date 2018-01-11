@@ -124,35 +124,14 @@ def echo():
     
 @main.route('/recevie', methods=['GET', 'POST'])
 def recevie():
-    """
-    patient_info = session.get('patient_info', None)
-    
-        # 提交新患者信息
-        data = [flat(request.form.getlist(attr)) for attr in request.form.keys() if attr.startswith('q')]
-        data = {k:v for k, v in zip(['code', 'name', 'entry_date', 'doctor'], data)}
-        #data['entry_date'] = datetime.strptime(data['entry_date'], '%Y-%m-%d')
-        data['entry_date'] = datetime.now()
-        data['recorder_id'] = current_user.id
-        p = models.Patient(**data)
-        db.session.add(p)
-        db.session.commit()
-        patient_info['patient_id'] = p.id
-        session['patient_info'] = patient_info
-    
-    model = getattr(surveymodels, request.args['form_name'].uppercase())
     data = {attr:flat(request.form.getlist(attr)) for attr in request.form.keys() if attr.startswith('q')}
-    data['p_id'] = patient_info['patient_id']
-    data['status'] = request.args['status']
+    patient = json.loads(session.get('patient', "{}"))
+    model = getattr(surveymodels, request.form.get('form_name').upper())
+    data['p_id'] = patient.get('id', '')
+    data['status'] = request.form.get('status')
     record = model(**data)
     db.session.add(record)
     db.session.commit()
-    return render_template('echo.html', data=data)
-    """
-    patient_info = session.get('patient_info', None)
-    data = {attr:flat(request.form.getlist(attr)) for attr in request.form.keys() if attr.startswith('q')}
-    data['patient_name'] = session.get('patient_name', '')
-    data['patient_code'] = session.get('patient_code', '')
-    data['writer'] = session.get('writer', '')
     return render_template('echo.html', data=data)
     
 @main.route('/patients')
@@ -193,3 +172,23 @@ def change_status():
         print(e)
         flash('修改失败')
         return redirect(url_for('main.get_all_patients'))
+        
+@main.route('/user')
+@permission_required(Permission.SELFREPORT)
+def user():
+    u = current_user._get_current_object()
+    finished = models.Patient.query.filter_by(finished=True).filter_by(recorder=u).count()
+    unfinished = models.Patient.query.filter_by(finished=False).filter_by(recorder=u).count()
+    total = finished + unfinished
+    p = json.loads(session.get('patient', "{}"))
+    p_name = p.get('name', '')
+    p_code = p.get('code', '')
+    p_id = p.get('id')
+    if p_id is not None:
+        p_finished = models.Patient.query.filter_by(id=p.get('id')).first().finished
+    else:
+        p_finished = False
+    username = u.username
+    email = u.email
+    return render_template('user.html', finished=finished, unfinished=unfinished, total=total,
+        p_name=p_name, p_code=p_code, p_finished=p_finished, username=username, email=email)
