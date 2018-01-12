@@ -4,7 +4,7 @@ import os
 import json
 from datetime import datetime
 from flask import render_template, redirect, url_for, flash, session, request
-from flask_login import current_user
+from flask_login import current_user, login_required
 from . import main
 from .forms import *
 from .. import db, surveymodels, models
@@ -173,6 +173,15 @@ def change_status():
         flash('修改失败')
         return redirect(url_for('main.get_all_patients'))
         
+@main.route('/delete/patient')
+@login_required
+def delete():
+    p_id = request.args.get('id')
+    patient = models.Patient.query.filter_by(id=p_id).first()
+    db.session.delete(patient)
+    db.session.commit()
+    return redirect(url_for('main.get_all_patients'))
+        
 @main.route('/user')
 @permission_required(Permission.SELFREPORT)
 def user():
@@ -190,5 +199,5 @@ def user():
         p_finished = False
     username = u.username
     email = u.email
-    return render_template('user.html', finished=finished, unfinished=unfinished, total=total,
+    return render_template('user.html', u=u, finished=finished, unfinished=unfinished, total=total,
         p_name=p_name, p_code=p_code, p_finished=p_finished, username=username, email=email)

@@ -23,6 +23,7 @@
             {% else %}
             <a class="btn btn-primary" href="{{ url_for('main.change_status', id=p.id) }}">确认</a>
             {% endif %}
+            <a class="btn btn-danger" href="{{ url_for('main.delete', id=p.id) }}">删除报告</a>
         </div>
     </div>
 {% endfor %}

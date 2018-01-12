@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from flask import render_template, redirect, request, session, url_for, flash
-from flask_login import login_user, logout_user
+from flask_login import login_user, logout_user, current_user
 from . import auth
 from .. import db
 from ..models import User
@@ -43,3 +43,42 @@ def register():
             flash('你已成功注册')
             return redirect(url_for('auth.login'))
     return render_template('register.html', form=form)
+    
+@auth.route('/profile/username', methods=["GET", "POST"])
+def change_username():
+    user = current_user._get_current_object()
+    user.username = request.form.get('username')
+    try:
+        db.session.add(user)
+        db.session.commit()
+        flash("账户修改成功")
+    except Exception as e:
+        flash("账户修改失败")
+        print(e)
+    return redirect(url_for('main.user'))
+
+@auth.route('/profile/password', methods=["GET", "POST"])
+def change_password():
+    user = current_user._get_current_object()
+    old_password = request.form.get('old_password')
+    new_password = request.form.get('new_password')
+    confirm_password = request.form.get('confirm_password')
+    if user.verify_password(old_password) and new_password == confirm_password:
+        user.password = new_password
+    else:
+        flash("旧密码错误或密码确认错误")
+    try:
+        db.session.add(user)
+        db.session.commit()
+        flash("账户修改成功")
+    except Exception as e:
+        flash("账户修改失败")
+        print(e)
+    return redirect(url_for('main.user'))
+    
+@auth.route('delete')
+def delete():
+    u = current_user._get_current_object()
+    db.session.delete(u)
+    db.session.commit()
+    return redirect(url_for('auth.register'))

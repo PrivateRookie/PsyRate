@@ -86,9 +86,16 @@ def load_user(user_id):
     return User.query.get(int(user_id))
             
 class AnonymousUser(AnonymousUserMixin):
+    def verify_password(self, password):
+        return False
+    
     def can(self, permissions):
         return False
-
+    
+    @property
+    def is_authenticated():
+        return False
+        
 login_manager.anonymous_user = AnonymousUser
 
 class Patient(db.Model):

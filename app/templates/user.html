@@ -1,14 +1,5 @@
 {% extends "base.html" %}
 
-{% block head %}
-{{ super() }}
-<style>
-.panel {
-    height: 300px;
-}
-</style>
-{% endblock head %}
-
 {% block inner %}
 <div class="container-fluid">
     <div class="col-md-4">
@@ -49,17 +40,64 @@
                 <a class="btn btn-primary pull-right" href="{{ url_for('main.selfreport') }}">开始新报告</a>
             </div>
        </div>
-   </div>
-   <div class="col-md-4">
-       <div class="panel panel-primary">
-           <div class="panel-heading">个人资料</div>
-           <div class="panel-body">
-               <ul class="list-unstyled">
-                   <li><strong>用户名:</strong>{{ username }}</li>
-                   <li><strong>邮箱：</strong>{{ email }}</li>
-               </ul>
-           </div>
-       </div>
-   </div>           
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading">个人资料</div>
+            <div class="panel-body">
+                <ul class="list-unstyled">
+                    <li>
+                        <form class="form-horizontal" method="post" action="{{ url_for('auth.change_username') }}">
+                            <h3>更改用户名</h3>
+                            <div class="form-group">
+                                <label class="control-label col-md-2">用户名</label>
+                                <div class="col-md-10">
+                                    <input class="form-control" name="username" value="{{ u.username }}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2">邮箱</label>
+                                <div class="col-md-10">
+                                    <input class="form-control" name="email" value="{{ u.email }}" readonly>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <button class="btn btn-primary pull-right" type="submit">提交</button>
+                            </div>
+                        </form>
+                    </li>
+                    <li>
+                        <form class="form-horizontal" method="post" action="{{ url_for('auth.change_password') }}">
+                            <h3>修改密码</h3>
+                            <div class="form-group">
+                                <label class="control-label col-md-2">旧密码</label>
+                                <div class="col-md-10">
+                                    <input class="form-control" type="password" name="old_password">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2">新密码</label>
+                                <div class="col-md-10">
+                                    <input class="form-control" type="password" name="new_password">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2">确认</label>
+                                <div class="col-md-10">
+                                    <input class="form-control" type="password" name="confirm_password">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <button class="btn btn-primary pull-right" type="submit">提交</button>
+                            </div>
+                        </form>
+                    </li>
+                </ul>
+                <h2 class="text-danger">注销账户</h2>
+                <p class="text-danger">这个操作将删除你的账户和通过此账户填写的所有报告!</p>
+                <a class="btn btn-danger pull-right" href="{{ url_for('auth.delete') }}">删除</a>
+            </div>
+        </div>
+    </div>           
 </div>
 {% endblock inner %}
