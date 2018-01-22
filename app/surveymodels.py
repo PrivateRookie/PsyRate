@@ -4,7 +4,7 @@ from . import db
 from .models import Patient
 
 class Export:
-    """helper class for export database as csv file"""
+    """helper class FOR export database as csv file"""
     __tablename__ = None
     export_cols = None
     
@@ -28,6 +28,10 @@ class FOLLOWUP(db.Model):
     q_1 = db.Column(db.String(16))
     q_2 = db.Column(db.String(64))
     q_3 = db.Column(db.Integer)
+    q_4 = db.Column(db.Integer)
+    q_5 = db.Column(db.String(64))
+    q_6 = db.Column(db.String(16))
+    q_7 = db.Column(db.Integer)
     
     def __repr__(self):
         return '<FollowUP {}>'.format(self.status)
@@ -505,7 +509,7 @@ class LES(db.Model, Export):
     q_5 = db.Column(db.Integer)
     q_6 = db.Column(db.Text)
 
-class InOut(db.Model, Export):
+class INOUT(db.Model, Export):
     __tablename__ = 'inout'
     export_cols = ('p_id', 'status', 'q_1', 'q_2')
     id = db.Column(db.Integer, primary_key=True)
@@ -583,11 +587,11 @@ class BODY_EXAM(db.Model, Export):
     q_6 = db.Column(db.Float)
     q_7 = db.Column(db.Float)
  
-class Demograph(db.Model, Export):
+class DEMOGRAPH(db.Model, Export):
     __tablename__ = 'demograph'
     export_cols = ('p_id', 'status', 'q_1', 'q_2', 'q_3', 'q_4', 'q_5', 'q_6', 'q_7', 'q_8', 'q_9', 'q_10', 'q_11', 'q_12', 'q_13', 'q_14', 'q_15', 'q_16', 'q_17', 'q_18', 'q_19', 'q_20', 'q_21', 'q_22', 'q_23', 'q_24')
     id = db.Column(db.Integer, primary_key=True)
-    tp_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
+    p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
     status = db.Column(db.String(16), db.ForeignKey('follow_ups.q_1'))
     q_1 = db.Column(db.String(64))
     q_2 = db.Column(db.String(64))
@@ -614,11 +618,11 @@ class Demograph(db.Model, Export):
     q_23 = db.Column(db.String(64))
     q_24 = db.Column(db.String(64))
     
-class Psychoisi(db.Model, Export):
+class PSYCHOISI(db.Model, Export):
     __tablename__ = 'psychoisi'
     export_cols = ('p_id', 'status', 'q_1', 'q_2', 'q_3', 'q_4', 'q_5', 'q_6', 'q_7', 'q_8', 'q_9', 'q_10', 'q_11', 'q_12', 'q_13', 'q_14', 'q_15', 'q_16', 'q_17', 'q_18', 'q_19', 'q_20', 'q_21', 'q_22', 'q_23', 'q_24', 'q_25', 'q_26', 'q_27', 'q_28', 'q_29', 'q_30', 'q_31_1', 'q_31_2', 'q_31_3', 'q_32', 'q_33', 'q_34', 'q_35', 'q_36', 'q_37', 'q_38', 'q_39', 'q_40', 'q_41', 'q_42', 'q_43', 'q_44', 'q_45', 'q_46', 'q_47', 'q_48', 'q_49')
     id = db.Column(db.Integer, primary_key=True)
-    tp_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
+    p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
     status = db.Column(db.String(16), db.ForeignKey('follow_ups.q_1'))
     q_1 = db.Column(db.Integer)
     q_2 = db.Column(db.Integer)
@@ -672,11 +676,11 @@ class Psychoisi(db.Model, Export):
     q_48 = db.Column(db.Integer)
     q_49 = db.Column(db.Integer)
 
-class Treatment(db.Model, Export):
+class TREATMENT(db.Model, Export):
     __tablename__ = 'treatment'
     export_cols = ('p_id', 'status', 'q_1', 'q_2', 'q_3', 'q_4', 'q_5', 'q_6', 'q_7', 'q_8', 'q_9')
     id = db.Column(db.Integer, primary_key=True)
-    tp_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
+    p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
     status = db.Column(db.String(16), db.ForeignKey('follow_ups.q_1'))
     q_1 = db.Column(db.String(64))
     q_2 = db.Column(db.String(64))
@@ -688,11 +692,11 @@ class Treatment(db.Model, Export):
     q_8 = db.Column(db.String(64))
     q_9 = db.Column(db.String(64))
     
-class Attacks(db.Model, Export):
+class ATTACKS(db.Model, Export):
     __tablename__ = 'attacks'
     export_cols = ('p_id', 'status', 'q_1', 'q_2', 'q_3_1', 'q_3_2', 'q_3_3', 'q_3_4', 'q_4_1', 'q_4_2', 'q_4_3', 'q_4_4', 'q_4_5', 'q_4_6', 'q_5_1', 'q_5_2', 'q_5_3', 'q_6', 'q_7', 'q_8', 'q_9', 'q_10_1', 'q_10_2', 'q_11', 'q_12', 'q_13', 'q_14', 'q_15_1', 'q_15_2', 'q_16', 'q_17')
     id = db.Column(db.Integer, primary_key=True)
-    tp_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
+    p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
     status = db.Column(db.String(16), db.ForeignKey('follow_ups.q_1'))
     q_1 = db.Column(db.Integer)
     q_2 = db.Column(db.String(64))
@@ -724,19 +728,19 @@ class Attacks(db.Model, Export):
     q_16 = db.Column(db.String(64))
     q_17 = db.Column(db.Integer)
     
-class Common_Diease(db.Model, Export):
+class COMMON_DIEASE(db.Model, Export):
     __tablename__ = 'common_diease'
     export_cols = ('p_id', 'status', 'q_1')
     id = db.Column(db.Integer, primary_key=True)
-    tp_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
+    p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
     status = db.Column(db.String(16), db.ForeignKey('follow_ups.q_1'))
     q_1 = db.Column(db.Integer)
     
-class Somatopathy(db.Model, Export):
+class SOMATOPATHY(db.Model, Export):
     __tablename__ = 'somatopathy'
     export_cols = ('p_id', 'status', 'q_1', 'q_2', 'q_3', 'q_4', 'q_5', 'q_6', 'q_7', 'q_8', 'q_9', 'q_10', 'q_11', 'q_12', 'q_13', 'q_14', 'q_15', 'q_16', 'q_17')
     id = db.Column(db.Integer, primary_key=True)
-    tp_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
+    p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
     status = db.Column(db.String(16), db.ForeignKey('follow_ups.q_1'))
     q_1 = db.Column(db.String(64))
     q_2 = db.Column(db.String(64))
@@ -756,11 +760,11 @@ class Somatopathy(db.Model, Export):
     q_16 = db.Column(db.Integer)
     q_17 = db.Column(db.String(64))
 
-class Longterm_Diease(db.Model, Export):
+class LONGTERM_DIEASE(db.Model, Export):
     __tablename__ = 'longterm_diease'
     export_cols = ('p_id', 'status', 'q_1', 'q_2', 'q_3', 'q_4', 'q_5', 'q_6')
     id = db.Column(db.Integer, primary_key=True)
-    tp_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
+    p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
     status = db.Column(db.String(16), db.ForeignKey('follow_ups.q_1'))
     q_1 = db.Column(db.Integer)
     q_2 = db.Column(db.String(64))
@@ -769,11 +773,11 @@ class Longterm_Diease(db.Model, Export):
     q_5 = db.Column(db.String(64))
     q_6 = db.Column(db.String(64))
 
-class Mense_Pregnacy(db.Model, Export):
+class MENSE_PREGNACY(db.Model, Export):
     __tablename__ = 'mense_pregnacy'
     export_cols = ('p_id', 'status', 'q_1', 'q_2', 'q_3', 'q_4', 'q_5', 'q_6', 'q_7', 'q_8', 'q_9', 'q_10', 'q_11', 'q_12', 'q_13', 'q_14', 'q_15', 'q_16', 'q_17')
     id = db.Column(db.Integer, primary_key=True)
-    tp_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
+    p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
     status = db.Column(db.String(16), db.ForeignKey('follow_ups.q_1'))
     q_1 = db.Column(db.String(64))
     q_2 = db.Column(db.String(64))
@@ -793,21 +797,21 @@ class Mense_Pregnacy(db.Model, Export):
     q_16 = db.Column(db.Integer)
     q_17 = db.Column(db.Integer)
 
-class Abuse(db.Model, Export):
+class ABUSE(db.Model, Export):
     __tablename__ = 'abuse'
     export_cols = ('p_id', 'status', 'q_1', 'q_2', 'q_3')
     id = db.Column(db.Integer, primary_key=True)
-    tp_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
+    p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
     status = db.Column(db.String(16), db.ForeignKey('follow_ups.q_1'))
     q_1 = db.Column(db.Integer)
     q_2 = db.Column(db.Integer)
     q_3 = db.Column(db.Integer)
     
-class Family_History(db.Model, Export):
+class FAMILY_HISTORY(db.Model, Export):
     __tablename__ = 'family_history'
     export_cols = ('p_id', 'status', 'q_1', 'q_2', 'q_3', 'q_4', 'q_5', 'q_6')
     id = db.Column(db.Integer, primary_key=True)
-    tp_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
+    p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
     status = db.Column(db.String(16), db.ForeignKey('follow_ups.q_1'))
     q_1 = db.Column(db.Integer)
     q_2 = db.Column(db.String(64))
@@ -816,11 +820,11 @@ class Family_History(db.Model, Export):
     q_5 = db.Column(db.Integer)
     q_6 = db.Column(db.Integer)
     
-class Hama(db.Model, Export):
+class HAMA(db.Model, Export):
     __tablename__ = 'hama'
     export_cols = ('p_id', 'status', 'q_1', 'q_2', 'q_3', 'q_4', 'q_5', 'q_6', 'q_7', 'q_8', 'q_9', 'q_10', 'q_11', 'q_12', 'q_13', 'q_14')
     id = db.Column(db.Integer, primary_key=True)
-    tp_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
+    p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
     status = db.Column(db.String(16), db.ForeignKey('follow_ups.q_1'))
     q_1 = db.Column(db.Integer)
     q_2 = db.Column(db.Integer)
@@ -837,11 +841,11 @@ class Hama(db.Model, Export):
     q_13 = db.Column(db.Integer)
     q_14 = db.Column(db.Integer)
     
-class Panns(db.Model, Export):
+class PANNS(db.Model, Export):
     __tablename__ = 'panns'
     export_cols = ('p_id', 'status', 'q_1', 'q_2', 'q_3', 'q_4', 'q_5', 'q_6', 'q_7', 'q_8', 'q_9', 'q_10', 'q_11', 'q_12', 'q_13', 'q_14', 'q_15', 'q_16', 'q_17', 'q_18', 'q_19', 'q_20', 'q_21', 'q_22', 'q_23', 'q_24', 'q_25', 'q_26')
     id = db.Column(db.Integer, primary_key=True)
-    tp_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
+    p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
     status = db.Column(db.String(16), db.ForeignKey('follow_ups.q_1'))
     q_1 = db.Column(db.Integer)
     q_2 = db.Column(db.Integer)
@@ -870,22 +874,22 @@ class Panns(db.Model, Export):
     q_25 = db.Column(db.Integer)
     q_26 = db.Column(db.Integer)
     
-class Moas(db.Model, Export):
+class MOAS(db.Model, Export):
     __tablename__ = 'moas'
     export_cols = ('p_id', 'status', 'q_1', 'q_2', 'q_3', 'q_4')
     id = db.Column(db.Integer, primary_key=True)
-    tp_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
+    p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
     status = db.Column(db.String(16), db.ForeignKey('follow_ups.q_1'))
     q_1 = db.Column(db.Integer)
     q_2 = db.Column(db.Integer)
     q_3 = db.Column(db.Integer)
     q_4 = db.Column(db.Integer)
     
-class Ybocs(db.Model, Export):
+class YBOCS(db.Model, Export):
     __tablename__ = 'ybocs'
     export_cols = ('p_id', 'status', 'q_1', 'q_2', 'q_3', 'q_4', 'q_1', 'q_2', 'q_3', 'q_4', 'q_5', 'q_6', 'q_7', 'q_8', 'q_9', 'q_10')
     id = db.Column(db.Integer, primary_key=True)
-    tp_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
+    p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
     status = db.Column(db.String(16), db.ForeignKey('follow_ups.q_1'))
     q_1 = db.Column(db.Integer)
     q_2 = db.Column(db.Integer)
@@ -902,19 +906,19 @@ class Ybocs(db.Model, Export):
     q_9 = db.Column(db.Integer)
     q_10 = db.Column(db.Integer)
     
-class Gaf(db.Model, Export):
+class GAF(db.Model, Export):
     __tablename__ = 'gaf'
     export_cols = ('p_id', 'status', 'q_1')
     id = db.Column(db.Integer, primary_key=True)
-    tp_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
+    p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
     status = db.Column(db.String(16), db.ForeignKey('follow_ups.q_1'))
     q_1 = db.Column(db.String(64))
     
-class Tess(db.Model, Export):
+class TESS(db.Model, Export):
     __tablename__ = 'tess'
     export_cols = ('p_id', 'status', 'q_1_1', 'q_1_2', 'q_1_3', 'q_2_1', 'q_2_2', 'q_2_3', 'q_3_1', 'q_3_2', 'q_3_3', 'q_4_1', 'q_4_2', 'q_4_3', 'q_5_1', 'q_5_2', 'q_5_3', 'q_6_1', 'q_6_2', 'q_6_3', 'q_7_1', 'q_7_2', 'q_7_3', 'q_8_1', 'q_8_2', 'q_8_3', 'q_9_1', 'q_9_2', 'q_9_3', 'q_10_1', 'q_10_2', 'q_10_3', 'q_11_1', 'q_11_2', 'q_11_3', 'q_12_1', 'q_12_2', 'q_12_3', 'q_13_1', 'q_13_2', 'q_13_3', 'q_14_1', 'q_14_2', 'q_14_3', 'q_15_1', 'q_15_2', 'q_15_3', 'q_16_1', 'q_16_2', 'q_16_3', 'q_17_1', 'q_17_2', 'q_17_3', 'q_18_1', 'q_18_2', 'q_18_3', 'q_19_1', 'q_19_2', 'q_19_3', 'q_20_1', 'q_20_2', 'q_20_3', 'q_21_1', 'q_21_2', 'q_21_3', 'q_22_1', 'q_22_2', 'q_22_3', 'q_23_1', 'q_23_2', 'q_23_3', 'q_24_1', 'q_24_2', 'q_24_3', 'q_25_1', 'q_25_2', 'q_25_3', 'q_26_1', 'q_26_2', 'q_26_3', 'q_27_1', 'q_27_2', 'q_27_3', 'q_28_1', 'q_28_2', 'q_28_3', 'q_29_1', 'q_29_2', 'q_29_3', 'q_30_1', 'q_30_2', 'q_30_3', 'q_31_1', 'q_31_2', 'q_31_3', 'q_32_1', 'q_32_2', 'q_32_3', 'q_33_1', 'q_33_2', 'q_33_3', 'q_34_1', 'q_34_2', 'q_34_3')
     id = db.Column(db.Integer, primary_key=True)
-    tp_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
+    p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
     status = db.Column(db.String(16), db.ForeignKey('follow_ups.q_1'))
     q_1_1 = db.Column(db.Integer)
     q_1_2 = db.Column(db.Integer)
@@ -1019,11 +1023,11 @@ class Tess(db.Model, Export):
     q_34_2 = db.Column(db.Integer)
     q_34_3 = db.Column(db.Integer)
     
-class Test_Ekg(db.Model, Export):
+class TEST_EKG(db.Model, Export):
     __tablename__ = 'test_ekg'
     export_cols = ('p_id', 'status', 'q_1', 'q_2', 'q_3', 'q_4', 'q_5', 'q_6', 'q_1', 'q_2', 'q_3', 'q_4', 'q_5', 'q_6', 'q_2', 'q_3', 'q_4', 'q_5', 'q_6', 'q_7', 'q_8', 'q_9', 'q_10', 'q_11', 'q_12', 'q_13')
     id = db.Column(db.Integer, primary_key=True)
-    tp_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
+    p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
     status = db.Column(db.String(16), db.ForeignKey('follow_ups.q_1'))
     q_1 = db.Column(db.String(64))
     q_2 = db.Column(db.String(64))
@@ -1050,11 +1054,11 @@ class Test_Ekg(db.Model, Export):
     q_12 = db.Column(db.Integer)
     q_13 = db.Column(db.String(64))
     
-class Test_Brs(db.Model, Export):
+class TEST_BRS(db.Model, Export):
     __tablename__ = 'test_brs'
     export_cols = ('p_id', 'status', 'q_1', 'q_2_1', 'q_2_2', 'q_3_1', 'q_3_2', 'q_4_1', 'q_4_2', 'q_5_1', 'q_5_2', 'q_6_1', 'q_6_2', 'q_7_1', 'q_7_2', 'q_8_1', 'q_8_2', 'q_9_1', 'q_9_2', 'q_10_1', 'q_10_2', 'q_11_1', 'q_11_2', 'q_12_1', 'q_12_2', 'q_13_1', 'q_13_2', 'q_14_1', 'q_14_2', 'q_15_1', 'q_15_2', 'q_16_1', 'q_16_2', 'q_17_1', 'q_17_2', 'q_18_1', 'q_18_2', 'q_19_1', 'q_19_2', 'q_20_1', 'q_20_2', 'q_21_1', 'q_21_2', 'q_22_1', 'q_22_2')
     id = db.Column(db.Integer, primary_key=True)
-    tp_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
+    p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
     status = db.Column(db.String(16), db.ForeignKey('follow_ups.q_1'))
     q_1 = db.Column(db.String(64))
     q_2_1 = db.Column(db.String(64))
@@ -1100,11 +1104,11 @@ class Test_Brs(db.Model, Export):
     q_22_1 = db.Column(db.String(64))
     q_22_2 = db.Column(db.Integer)
     
-class Test_Bods(db.Model, Export):
+class TEST_BODS(db.Model, Export):
     __tablename__ = 'test_bods'
     export_cols = ('p_id', 'status', 'q_1', 'q_2_1', 'q_2_2', 'q_3_1', 'q_3_2', 'q_4_1', 'q_4_2', 'q_5_1', 'q_5_2', 'q_6_1', 'q_6_2', 'q_7_1', 'q_7_2', 'q_8_1', 'q_8_2', 'q_9_1', 'q_9_2', 'q_10_1', 'q_10_2', 'q_11_1', 'q_11_2', 'q_12_1', 'q_12_2', 'q_13_1', 'q_13_2', 'q_14_1', 'q_14_2', 'q_15_1', 'q_15_2', 'q_16_1', 'q_16_2', 'q_17_1', 'q_17_2', 'q_18_1', 'q_18_2', 'q_19_1', 'q_19_2', 'q_20_1', 'q_20_2', 'q_21_1', 'q_21_2', 'q_22_1', 'q_22_2', 'q_23_1', 'q_23_2', 'q_24_1', 'q_24_2', 'q_25_1', 'q_25_2', 'q_26_1', 'q_26_2', 'q_27_1', 'q_27_2', 'q_28_1', 'q_28_2', 'q_29_1', 'q_29_2', 'q_30_1', 'q_30_2', 'q_31_1', 'q_31_2', 'q_32_1', 'q_32_2', 'q_33_1', 'q_33_2', 'q_34_1', 'q_34_2', 'q_35_1', 'q_35_2', 'q_36_1', 'q_36_2', 'q_37_1', 'q_37_2', 'q_38_1', 'q_38_2', 'q_39_1', 'q_39_2', 'q_40_1', 'q_40_2', 'q_41_1', 'q_41_2', 'q_42_1', 'q_42_2', 'q_43_1', 'q_43_2')
     id = db.Column(db.Integer, primary_key=True)
-    tp_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
+    p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
     status = db.Column(db.String(16), db.ForeignKey('follow_ups.q_1'))
     q_1 = db.Column(db.String(64))
     q_2_1 = db.Column(db.String(64))
@@ -1192,11 +1196,11 @@ class Test_Bods(db.Model, Export):
     q_43_1 = db.Column(db.String(64))
     q_43_2 = db.Column(db.Integer)
     
-class Test_Bfs(db.Model, Export):
+class TEST_BFS(db.Model, Export):
     __tablename__ = 'test_bfs'
     export_cols = ('p_id', 'status', 'q_1', 'q_2_1', 'q_2_2', 'q_3_1', 'q_3_2', 'q_4_1', 'q_4_2', 'q_5_1', 'q_5_2', 'q_6_1', 'q_6_2', 'q_7_1', 'q_7_2', 'q_8_1', 'q_8_2', 'q_9_1', 'q_9_2', 'q_10_1', 'q_10_2', 'q_11_1', 'q_11_2', 'q_12_1', 'q_12_2', 'q_13_1', 'q_13_2', 'q_14_1', 'q_14_2', 'q_15_1', 'q_15_2', 'q_16_1', 'q_16_2')
     id = db.Column(db.Integer, primary_key=True)
-    tp_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
+    p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
     status = db.Column(db.String(16), db.ForeignKey('follow_ups.q_1'))
     q_1 = db.Column(db.String(64))
     q_2_1 = db.Column(db.String(64))
@@ -1230,11 +1234,11 @@ class Test_Bfs(db.Model, Export):
     q_16_1 = db.Column(db.String(64))
     q_16_2 = db.Column(db.Integer)
     
-class Test_Imms(db.Model, Export):
+class TEST_IMMS(db.Model, Export):
     __tablename__ = 'test_imms'
     export_cols = ('p_id', 'status', 'q_1', 'q_2_1', 'q_2_2', 'q_3_1', 'q_3_2', 'q_4_1', 'q_4_2', 'q_5_1', 'q_5_2', 'q_6_1', 'q_6_2', 'q_7_1', 'q_7_2', 'q_8_1', 'q_8_2', 'q_9_1', 'q_9_2', 'q_10_1', 'q_10_2', 'q_11_1', 'q_11_2', 'q_12_1', 'q_12_2', 'q_13_1', 'q_13_2', 'q_14_1', 'q_14_2', 'q_15_1', 'q_15_2', 'q_16_1', 'q_16_2', 'q_17_1', 'q_17_2')
     id = db.Column(db.Integer, primary_key=True)
-    tp_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
+    p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
     status = db.Column(db.String(16), db.ForeignKey('follow_ups.q_1'))
     q_1 = db.Column(db.String(64))
     q_2_1 = db.Column(db.String(64))
@@ -1270,21 +1274,21 @@ class Test_Imms(db.Model, Export):
     q_17_1 = db.Column(db.String(64))
     q_17_2 = db.Column(db.Integer)
     
-class Test_Drug(db.Model, Export):
+class TEST_DRUG(db.Model, Export):
     __tablename__ = 'test_drug'
     export_cols = ('p_id', 'status', 'q_1', 'q_2', 'q_3')
     id = db.Column(db.Integer, primary_key=True)
-    tp_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
+    p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
     status = db.Column(db.String(16), db.ForeignKey('follow_ups.q_1'))
     q_1 = db.Column(db.String(64))
     q_2 = db.Column(db.String(64))
     q_3 = db.Column(db.String(64))
     
-class Test_Tm(db.Model, Export):
+class TEST_TM(db.Model, Export):
     __tablename__ = 'test_tm'
     export_cols = ('p_id', 'status', 'q_1', 'q_2', 'q_3', 'q_4', 'q_5', 'q_6')
     id = db.Column(db.Integer, primary_key=True)
-    tp_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
+    p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
     status = db.Column(db.String(16), db.ForeignKey('follow_ups.q_1'))
     q_1 = db.Column(db.String(64))
     q_2 = db.Column(db.String(64))
@@ -1293,11 +1297,11 @@ class Test_Tm(db.Model, Export):
     q_5 = db.Column(db.String(64))
     q_6 = db.Column(db.String(64))
 
-class Test_Hemodynamic(db.Model, Export):
+class TEST_HEMODYNAMIC(db.Model, Export):
     __tablename__ = 'test_hemodynamic'
     export_cols = ('p_id', 'status', 'q_1', 'q_2', 'q_3', 'q_4', 'q_5', 'q_6', 'q_7', 'q_8', 'q_9', 'q_10', 'q_11', 'q_12', 'q_13', 'q_14', 'q_15', 'q_16', 'q_17', 'q_18', 'q_19', 'q_20', 'q_21', 'q_22', 'q_23', 'q_24', 'q_25', 'q_26', 'q_27', 'q_28', 'q_29', 'q_30', 'q_31', 'q_32')
     id = db.Column(db.Integer, primary_key=True)
-    tp_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
+    p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
     status = db.Column(db.String(16), db.ForeignKey('follow_ups.q_1'))
     q_1 = db.Column(db.String(64))
     q_2 = db.Column(db.String(64))
@@ -1332,11 +1336,11 @@ class Test_Hemodynamic(db.Model, Export):
     q_31 = db.Column(db.String(64))
     q_32 = db.Column(db.String(64))
     
-class Test_Supersonic(db.Model, Export):
+class TEST_SUPERSONIC(db.Model, Export):
     __tablename__ = 'test_supersonic'
     export_cols = ('p_id', 'status', 'q_1', 'q_2', 'q_3', 'q_4', 'q_5')
     id = db.Column(db.Integer, primary_key=True)
-    tp_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
+    p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
     status = db.Column(db.String(16), db.ForeignKey('follow_ups.q_1'))
     q_1 = db.Column(db.String(64))
     q_2 = db.Column(db.String(64))
@@ -1344,11 +1348,11 @@ class Test_Supersonic(db.Model, Export):
     q_4 = db.Column(db.String(64))
     q_5 = db.Column(db.String(64))
     
-class Test_Bmd(db.Model, Export):
+class TEST_BMD(db.Model, Export):
     __tablename__ = 'test_bmd'
     export_cols = ('p_id', 'status', 'q_1', 'q_2', 'q_3', 'q_4', 'q_5', 'q_6')
     id = db.Column(db.Integer, primary_key=True)
-    tp_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
+    p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
     status = db.Column(db.String(16), db.ForeignKey('follow_ups.q_1'))
     q_1 = db.Column(db.String(64))
     q_2 = db.Column(db.String(64))
@@ -1357,11 +1361,11 @@ class Test_Bmd(db.Model, Export):
     q_5 = db.Column(db.String(64))
     q_6 = db.Column(db.String(64))
     
-class Test_Ssep(db.Model, Export):
+class TEST_SSEP(db.Model, Export):
     __tablename__ = 'test_ssep'
     export_cols = ('p_id', 'status', 'q_1', 'q_2', 'q_3', 'q_4', 'q_5', 'q_6', 'q_7')
     id = db.Column(db.Integer, primary_key=True)
-    tp_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
+    p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
     status = db.Column(db.String(16), db.ForeignKey('follow_ups.q_1'))
     q_1 = db.Column(db.String(64))
     q_2 = db.Column(db.Integer)
@@ -1371,11 +1375,11 @@ class Test_Ssep(db.Model, Export):
     q_6 = db.Column(db.String(64))
     q_7 = db.Column(db.String(64))
     
-class Test_Baep(db.Model, Export):
+class TEST_BAEP(db.Model, Export):
     __tablename__ = 'test_baep'
     export_cols = ('p_id', 'status', 'q_1', 'q_2', 'q_3', 'q_4', 'q_5', 'q_6', 'q_7')
     id = db.Column(db.Integer, primary_key=True)
-    tp_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
+    p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
     status = db.Column(db.String(16), db.ForeignKey('follow_ups.q_1'))
     q_1 = db.Column(db.String(64))
     q_2 = db.Column(db.Integer)
@@ -1385,11 +1389,11 @@ class Test_Baep(db.Model, Export):
     q_6 = db.Column(db.String(64))
     q_7 = db.Column(db.String(64))
     
-class Test_Vep_Pre(db.Model, Export):
+class TEST_VEP_PRE(db.Model, Export):
     __tablename__ = 'test_vep_pre'
     export_cols = ('p_id', 'status', 'q_1', 'q_2', 'q_3', 'q_4', 'q_5', 'q_6', 'q_7')
     id = db.Column(db.Integer, primary_key=True)
-    tp_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
+    p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
     status = db.Column(db.String(16), db.ForeignKey('follow_ups.q_1'))
     q_1 = db.Column(db.String(64))
     q_2 = db.Column(db.Integer)
@@ -1399,11 +1403,11 @@ class Test_Vep_Pre(db.Model, Export):
     q_6 = db.Column(db.String(64))
     q_7 = db.Column(db.String(64))
     
-class Test_Rep(db.Model, Export):
+class TEST_REP(db.Model, Export):
     __tablename__ = 'test_rep'
     export_cols = ('p_id', 'status', 'q_1', 'q_2', 'q_3', 'q_4', 'q_5', 'q_6')
     id = db.Column(db.Integer, primary_key=True)
-    tp_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
+    p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
     status = db.Column(db.String(16), db.ForeignKey('follow_ups.q_1'))
     q_1 = db.Column(db.String(64))
     q_2 = db.Column(db.Integer)
@@ -1412,11 +1416,11 @@ class Test_Rep(db.Model, Export):
     q_5 = db.Column(db.String(64))
     q_6 = db.Column(db.String(64))
     
-class Test_Cnv(db.Model, Export):
+class TEST_CNV(db.Model, Export):
     __tablename__ = 'test_cnv'
     export_cols = ('p_id', 'status', 'q_1', 'q_2', 'q_3', 'q_4', 'q_5', 'q_6', 'q_7', 'q_8')
     id = db.Column(db.Integer, primary_key=True)
-    tp_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
+    p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
     status = db.Column(db.String(16), db.ForeignKey('follow_ups.q_1'))
     q_1 = db.Column(db.String(64))
     q_2 = db.Column(db.Integer)
@@ -1427,11 +1431,11 @@ class Test_Cnv(db.Model, Export):
     q_7 = db.Column(db.String(64))
     q_8 = db.Column(db.String(64))
     
-class Test_Emt(db.Model, Export):
+class TEST_EMT(db.Model, Export):
     __tablename__ = 'test_emt'
     export_cols = ('p_id', 'status', 'q_1', 'q_2', 'q_3', 'q_4', 'q_5', 'q_6', 'q_7')
     id = db.Column(db.Integer, primary_key=True)
-    tp_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
+    p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
     status = db.Column(db.String(16), db.ForeignKey('follow_ups.q_1'))
     q_1 = db.Column(db.String(64))
     q_2 = db.Column(db.String(64))
@@ -1441,11 +1445,11 @@ class Test_Emt(db.Model, Export):
     q_6 = db.Column(db.String(64))
     q_7 = db.Column(db.String(64))
     
-class Test_Wm(db.Model, Export):
+class TEST_WM(db.Model, Export):
     __tablename__ = 'test_wm'
     export_cols = ('p_id', 'status', 'q_1', 'q_2', 'q_3', 'q_4', 'q_5', 'q_6', 'q_7', 'q_8', 'q_9', 'q_10', 'q_11', 'q_12', 'q_13', 'q_14', 'q_15')
     id = db.Column(db.Integer, primary_key=True)
-    tp_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
+    p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
     status = db.Column(db.String(16), db.ForeignKey('follow_ups.q_1'))
     q_1 = db.Column(db.String(64))
     q_2 = db.Column(db.String(64))
@@ -1463,11 +1467,11 @@ class Test_Wm(db.Model, Export):
     q_14 = db.Column(db.String(64))
     q_15 = db.Column(db.String(64))
     
-class Test_Wais_Rc(db.Model, Export):
+class TEST_WAIS_RC(db.Model, Export):
     __tablename__ = 'test_wais_rc'
     export_cols = ('p_id', 'status', 'q_1', 'q_2', 'q_3', 'q_4', 'q_5', 'q_6')
     id = db.Column(db.Integer, primary_key=True)
-    tp_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
+    p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
     status = db.Column(db.String(16), db.ForeignKey('follow_ups.q_1'))
     q_1 = db.Column(db.String(64))
     q_2 = db.Column(db.String(64))
@@ -1476,11 +1480,11 @@ class Test_Wais_Rc(db.Model, Export):
     q_5 = db.Column(db.String(64))
     q_6 = db.Column(db.String(64))
     
-class Test_Wcst(db.Model, Export):
+class TEST_WCST(db.Model, Export):
     __tablename__ = 'test_wcst'
     export_cols = ('p_id', 'status', 'q_1', 'q_2', 'q_3', 'q_4', 'q_5', 'q_6', 'q_7', 'q_8', 'q_9', 'q_10', 'q_11', 'q_12', 'q_13', 'q_14', 'q_15', 'q_16', 'q_17', 'q_18', 'q_19')
     id = db.Column(db.Integer, primary_key=True)
-    tp_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
+    p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
     status = db.Column(db.String(16), db.ForeignKey('follow_ups.q_1'))
     q_1 = db.Column(db.String(64))
     q_2 = db.Column(db.String(64))
@@ -1502,11 +1506,11 @@ class Test_Wcst(db.Model, Export):
     q_18 = db.Column(db.String(64))
     q_19 = db.Column(db.String(64))
     
-class Sae(db.Model, Export):
+class SAE(db.Model, Export):
     __tablename__ = 'sae'
     export_cols = ('p_id', 'status', 'q_1', 'q_2', 'q_3', 'q_4', 'q_5', 'q_6', 'q_7', 'q_8', 'q_9', 'q_10', 'q_11', 'q_12', 'q_13', 'q_14')
     id = db.Column(db.Integer, primary_key=True)
-    tp_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
+    p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
     status = db.Column(db.String(16), db.ForeignKey('follow_ups.q_1'))
     q_1 = db.Column(db.Integer)
     q_2 = db.Column(db.String(64))

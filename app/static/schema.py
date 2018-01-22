@@ -117,7 +117,7 @@ self_report = \
  'v8|staxi_2']
  
 other_report = \
- ['v0|cover',
+ ['v0|cover_other',
  'v1|inout',
  'v1|hamd',
  'v1|ymrs',

@@ -26,7 +26,10 @@ def get_pager(report_type, current_status, current_form_name):
         pre = dict(endpoint='main.forms', report_type=report_type,
         form_name=form_name, status=status)
     if index + 1 > index_max:
-        next = dict(endpoint='main.forms', report_type=report_type)
+        if report_type == 'self_report':
+            next = dict(endpoint='main.forms', report_type='other_report', form_name='cover_other', status='v0')
+        else:
+            next = dict(endpoint='main.get_all_patients')
     else:
         status, form_name = report_schema[index + 1].split('|')
         next = dict(endpoint='main.forms', report_type=report_type,
