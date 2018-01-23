@@ -14,6 +14,8 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
+    MAIL_PREFIX = os.environ.get('MAIL_PREFIX')
+    MAIL_SENDER = os.environ.get('MAIL_SENDER')
     MAIL_SERVER = os.environ.get('SMTP_SERVER')
     MAIL_PORT = os.environ.get('SMTP_PORT')
     MAIL_USE_SSL = os.environ.get('USE_SSL')

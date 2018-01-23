@@ -5,10 +5,12 @@ from flask_bootstrap import Bootstrap, WebCDN
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_mail import Mail
 from config import config
 
 bootstrap = Bootstrap()
 moment = Moment()
+mail = Mail()
 db = SQLAlchemy()
 login_manager = LoginManager()
 login_manager.session_protection = 'strong'
@@ -23,6 +25,7 @@ def create_app(config_name):
     #app.extensions['bootstrap']['cdns']['jquery'] = WebCDN(
         #'//upcdn.b0.upaiyun.com/libs/jquery/jquery-2.0.2.min.js')
     moment.init_app(app)
+    mail.init_app(app)
     db.init_app(app)
     login_manager.init_app(app)
 

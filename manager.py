@@ -7,7 +7,7 @@ from tests.test_db import VirtualFillTestCase
 
 from app import models
 
-app = create_app(os.getenv('FLASK_CONFIG') or 'test')
+app = create_app(os.getenv('FLASK_CONFIG') or 'dev')
 manager = Manager(app)
 
 def make_shell_context():
@@ -34,7 +34,7 @@ def init_db():
     Role.insert_roles()
     
     # create adminstator
-    ad = User(email='admin@gmail.com', username='admin', password='admin', role_id=4)
+    ad = User(email='admin@gmail.com', username='admin', password='admin', role_id=4, confirmed=True)
     db.session.add(ad)
     db.session.commit()
 

@@ -1,0 +1,11 @@
+<html>
+<head>
+    <title>确认账户</title>
+</head>
+<body>
+    <h1>欢迎注册 Psy Rates!</h1>
+    <p class="text-info">点击下面的链接来确认你的账户：</p>
+    <a href="{{ url_for('auth.confirm', token=token, _external=True) }}">确认</a>
+    <p>感谢您的注册。 Psy Rates。</p>
+</body>
+</html>

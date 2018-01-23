@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+
+{% block inner %}
+<h1>你的账户尚未激活</h1>
+<p>请查看你的注册邮箱点击链接以激活账户, 或者点击<a href="{{ url_for('auth.resend_confirmation', _external=True) }}">链接</a>重新发送确认邮件</p>
+{% endblock inner %}

@@ -19,3 +19,5 @@ forms_raw
 
 # 忽略backup文件夹
 backup
+
+*.bat
