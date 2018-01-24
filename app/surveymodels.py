@@ -25,6 +25,7 @@ class FOLLOWUP(db.Model):
     __tablename__ = 'follow_ups'
     id = db.Column(db.Integer, primary_key=True)
     p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
+    type = db.Column(db.String(16))
     q_1 = db.Column(db.String(16))
     q_2 = db.Column(db.String(64))
     q_3 = db.Column(db.Integer)
@@ -108,7 +109,7 @@ class PAIN(db.Model, Export):
     def __repr__(self):
         return '<PAIN {}>'.format(self.id)
  
-class MFI(db.Model, Export):
+class MFI_20(db.Model, Export):
     __tablename__ = 'mfi_20'
     export_cols = ('p_id', 'status', 'q_1', 'q_2', 'q_3', 'q_4', 'q_5', 'q_6', 'q_7', 'q_8', 'q_9', 'q_10', 'q_11', 'q_12', 'q_13', 'q_14', 'q_15', 'q_16', 'q_17', 'q_18', 'q_19', 'q_20')
     id = db.Column(db.Integer, primary_key=True)
@@ -618,7 +619,7 @@ class DEMOGRAPH(db.Model, Export):
     q_23 = db.Column(db.String(64))
     q_24 = db.Column(db.String(64))
     
-class PSYCHOISI(db.Model, Export):
+class PSYCHOSIS(db.Model, Export):
     __tablename__ = 'psychoisi'
     export_cols = ('p_id', 'status', 'q_1', 'q_2', 'q_3', 'q_4', 'q_5', 'q_6', 'q_7', 'q_8', 'q_9', 'q_10', 'q_11', 'q_12', 'q_13', 'q_14', 'q_15', 'q_16', 'q_17', 'q_18', 'q_19', 'q_20', 'q_21', 'q_22', 'q_23', 'q_24', 'q_25', 'q_26', 'q_27', 'q_28', 'q_29', 'q_30', 'q_31_1', 'q_31_2', 'q_31_3', 'q_32', 'q_33', 'q_34', 'q_35', 'q_36', 'q_37', 'q_38', 'q_39', 'q_40', 'q_41', 'q_42', 'q_43', 'q_44', 'q_45', 'q_46', 'q_47', 'q_48', 'q_49')
     id = db.Column(db.Integer, primary_key=True)
@@ -773,8 +774,8 @@ class LONGTERM_DIEASE(db.Model, Export):
     q_5 = db.Column(db.String(64))
     q_6 = db.Column(db.String(64))
 
-class MENSE_PREGNACY(db.Model, Export):
-    __tablename__ = 'mense_pregnacy'
+class MENSE_PREGNANCY(db.Model, Export):
+    __tablename__ = 'mense_pregnancy'
     export_cols = ('p_id', 'status', 'q_1', 'q_2', 'q_3', 'q_4', 'q_5', 'q_6', 'q_7', 'q_8', 'q_9', 'q_10', 'q_11', 'q_12', 'q_13', 'q_14', 'q_15', 'q_16', 'q_17')
     id = db.Column(db.Integer, primary_key=True)
     p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))

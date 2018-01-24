@@ -37,6 +37,24 @@ def get_pager(report_type, current_status, current_form_name):
     
     return pre, next
     
+def prerender(raw_form, record):
+    def sort_key(item):
+        sequence = item[0].split('_')[1:]
+        sequence = [int(i) for i in sequence]
+        return sequence
+
+    questions = raw_form['questions']
+    record = [(attr, getattr(record, attr)) for attr in dir(record) if attr.startswith('q_')]
+    record = sorted(record, key=sort_key)
+    print(record)
+    for question, selected in zip(questions, record):
+        if selected[1]:
+            question['default'] = selected[1]
+        else:
+            question['default'] = ''
+    return raw_form
+    
+    
 def flat(li):
     if len(li) > 1:
         return ''.join(str(i) for i in li)
@@ -53,30 +71,36 @@ def forms():
     form_name = request.args.get('form_name', None)
     status = request.args.get('status', 'v9')
     report_type = request.args.get('report_type', 'dev_report')
+    # load record if exits
+    p_id = json.loads(session.get('patient', "{}")).get('id', 0)
+
     if form_name is None:
         return render_template('allforms.html')
-    raw_form = getattr(raw_forms, form_name, None)
-    """
-    patient = dict()
-    patient['name'] = session.get('patient_name', '')
-    patient['code'] = session.get('patient_code', '')
-    patient['writer'] = session.get('writer', '')
-    """
-    patient = json.loads(session.get('patient', "{}"))
-    previous, next = get_pager(report_type, status, form_name)
-    options = dict(survey=raw_form, route='main.recevie', status=status, report_type=report_type,
-    form_name=form_name, patient=patient, previous=previous, next=next)
-    return render_template('rates/{}.html'.format(form_name), **options)
+    elif form_name in ['cover', 'cover_other']:
+        raw_form = getattr(raw_forms, form_name, None)
+        patient = json.loads(session.get('patient', "{}"))
+        previous, next = get_pager(report_type, status, form_name)
+        options = dict(survey=raw_form, route='main.recevie', status=status, report_type=report_type,
+        form_name=form_name, patient=patient, previous=previous, next=next)
+        return render_template('rates/{}.html'.format(form_name), **options)
+    else:
+        model  = getattr(surveymodels, form_name.upper())
+        # special case for followup
+        if form_name == 'followup':
+            record = model.query.filter_by(p_id=p_id, type=report_type).first()
+        else:
+            record = model.query.filter_by(p_id=p_id, status=status).first()
+        raw_form = getattr(raw_forms, form_name, None)
+        rendered_form = prerender(raw_form, record)
+        patient = json.loads(session.get('patient', "{}"))
+        previous, next = get_pager(report_type, status, form_name)
+        options = dict(survey=rendered_form, route='main.recevie', status=status, report_type=report_type,
+        form_name=form_name, patient=patient, previous=previous, next=next)
+        return render_template('rates/{}.html'.format(form_name), **options)
 
 @main.route('/selfreport')
 def selfreport():
     previous, next = get_pager('self_report', 'v0', 'cover')
-    """
-    patient = dict()
-    patient['name'] = session.get('patient_name', '')
-    patient['code'] = session.get('patient_code', '')
-    patient['writer'] = session.get('writer', '')
-    """
     patient = json.loads(session.get('patient', "{}"))
     return render_template('rates/cover.html', status='v0', route='main.patient_regist',
     previous=previous, next=next, patient=patient, report_type='self_report', form_name='cover')
@@ -84,12 +108,6 @@ def selfreport():
 @main.route('/ohterreport')
 def otherreport():
     previous, next = get_pager('other_report', 'v0', 'cover')
-    """
-    patient = dict()
-    patient['name'] = session.get('patient_name', '')
-    patient['code'] = session.get('patient_code', '')
-    patient['writer'] = session.get('writer', '')
-    """
     patient = json.loads(session.get('patient', "{}"))
     return render_template('rates/cover.html', status='v0', route='main.recevie',
     previous=previous, next=next, patient=patient, report_type='other_report', form_name='cover')
@@ -112,7 +130,7 @@ def patient_regist():
         session['patient'] = json.dumps(patient)
     except Exception as e:
         print(e)
-    return redirect(url_for('main.forms', status='v2', route='main.recevie', report_type='self_report', form_name='visit'))
+    return redirect(url_for('main.forms', status='v2', route='main.recevie', report_type='self_report', form_name='followup'))
     
 @main.route('/logoutpatient')
 def logoutpatient():
@@ -131,8 +149,18 @@ def recevie():
     patient = json.loads(session.get('patient', "{}"))
     model = getattr(surveymodels, request.form.get('form_name').upper())
     data['p_id'] = patient.get('id', '')
-    data['status'] = request.form.get('status')
-    record = model(**data)
+    # special case for followup
+    if request.form.get('form_name') != 'followup':
+        data['status'] = request.form.get('status')
+        record = model.query.filter_by(p_id=data['p_id'], status=data['status']).first()
+    else:
+        data['type'] = request.form.get('report_type')
+        record = model.query.filter_by(p_id=data['p_id'], type=request.form['report_type']).first()
+    if not record:
+        record = model(**data)
+    else:
+        for attr, val in ((attr, getattr(record, attr)) for attr in dir(record) if attr.startswith('q_')):
+            setattr(record, attr, val)
     db.session.add(record)
     db.session.commit()
     return render_template('echo.html', data=data)
@@ -196,10 +224,7 @@ def user():
     p_name = p.get('name', '')
     p_code = p.get('code', '')
     p_id = p.get('id')
-    if p_id is not None:
-        p_finished = models.Patient.query.filter_by(id=p.get('id')).first().finished
-    else:
-        p_finished = False
+    p_finished = models.Patient.query.filter_by(id=p.get('id')).first()
     username = u.username
     email = u.email
     return render_template('user.html', u=u, finished=finished, unfinished=unfinished, total=total,

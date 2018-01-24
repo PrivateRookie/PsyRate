@@ -8,24 +8,24 @@
 <div class="container-fluid">
     <h1>{{ survey['title'] }}</h1>
     <form method="post" action="{{ url_for(route) }}">
-        <h2>{{ survey['part_1']['title'] }}</h2>
-        {{ render_radio_question(survey['part_1']['questions'][0]) }}
+        <h2>总览</h2>
+        {{ render_radio_question(survey['questions'][0]) }}
         <div class="form-group row">
-            <label class="control-label col-md-2">{{ survey['part_1']['questions'][1]['title'] }}</label>
+            <label class="control-label col-md-2">{{ survey['questions'][1]['title'] }}</label>
             <div class="col-md-2">
-                <input class="form-control" name="{{ survey['part_1']['questions'][1]['q_id'] }}" type="{{ survey['part_1']['questions'][1]['type'] }}">
+                <input class="form-control" name="{{ survey['questions'][1]['q_id'] }}" type="{{ survey['questions'][1]['type'] }}">
             </div>
         </div>
-        <h2>{{ survey['part_2']['title'] }}</h2>
-        {% for question in survey['part_2']['questions'] %}
+        <h2>诊断依据</h2>
+        {% for question in survey['questions'][2:15] %}
             {% if question['options'][0][0] == 'a' %}
             {{ render_checkbox_question(question) }}
             {% else %}
             {{ render_radio_question(question) }}
             {% endif %}
         {% endfor %}
-        <h2>{{ survey['part_3']['title'] }}</h2>
-        {% for question in survey['part_3']['questions'] %}
+        <h2>本次发作特征描述</h2>
+        {% for question in survey['questions'][15:] %}
             {% if question['options'][0][0] == 'a' %}
             {{ render_checkbox_question(question) }}
             {% else %}

@@ -8,40 +8,40 @@
     <p>{{ survey['description'] }}</p>
     <form method="post" action="{{ url_for(route) }}">
         <h3>Part 1</h3>
-        <p>{{ survey['part_1']['description'] }}</p>
+        <p>第一部分下面是一些描述自己心情的句子，仔细阅读每一句陈述，判断你最近 7 天心情状态与句子陈述的状态的一致程度，在适合你当前心情的选项的数字上打“○”，答案没有对错之分，请你根据自己当前的心情快速做出选择。</p>
         <table class="table">
             <tr>
-                {% for col in survey['part_1']['cols'] %}
+                {% for col in ['我现在的感受', '根本不', '有一点', '中等程度', '非常强烈'] %}
                 <td><strong>{{ col }}<strong></td>
                 {% endfor %}
             </tr>
-            {% for question in survey['part_1']['questions'] %}
+            {% for question in survey['questions'][:15] %}
             {{ render_table_question(question) }}
             {% endfor %} 
         </table>
         <hr>
         <h3>Part 2</h3>
-        <p>{{ survey['part_2']['description'] }}</p>
+        <p>第二部分下列句子是描述人们在生活中对自己的情绪的感受及反应，你与每一道题目描述的情形符合程度如何？在适合您最近 7 天的情况的数字上打“○”。每一道题目都没有对错之分，根据你读完每一句后的第一感觉快速做出判断</p>
         <table class="table">
             <tr>
-                {% for col in survey['part_2']['cols'] %}
+                {% for col in ['我通常的感受：', '几乎从不', '有时', '经常', '几乎总是'] %}
                 <td><strong>{{ col }}<strong></td>
                 {% endfor %}
             </tr>
-            {% for question in survey['part_2']['questions'] %}
+            {% for question in survey['questions'][15:25] %}
             {{ render_table_question(question) }}
             {% endfor %}
         </table>
         <hr>
         <h3>Part 3</h3>
-        <p>{{ survey['part_3']['description'] }}</p>
+        <p>第三部分人们有时会有生气或狂怒的感觉，但每人生气时的反应却各不相同。下列句子是描述人们在生活中生气或狂怒时的反应，你与每一道题目描述的情形符合程度如何？在适合您最近 7 天的情况下打“○”。每一道题目都没有对错之分，根据你读完每一句后的第一感觉快速做出判断。',</p>
         <table class="table">
             <tr>
-                {% for col in survey['part_3']['cols'] %}
+                {% for col in ['当生气或狂怒时我通常的反应：', '几乎从不', '有时', '经常', '几乎总是'] %}
                 <td><strong>{{ col }}<strong></td>
                 {% endfor %}
             </tr>
-            {% for question in survey['part_3']['questions'] %}
+            {% for question in survey['questions'][25:] %}
             {{ render_table_question(question) }}
             {% endfor %}
         </table>

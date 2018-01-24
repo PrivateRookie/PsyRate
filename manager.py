@@ -5,13 +5,13 @@ from app.models import Role, User
 from flask_script import Manager, Shell, Command, Option
 from tests.test_db import VirtualFillTestCase
 
-from app import models
+from app import models, surveymodels
 
 app = create_app(os.getenv('FLASK_CONFIG') or 'dev')
 manager = Manager(app)
 
 def make_shell_context():
-    return dict(app=app, db=db, models=models)
+    return dict(app=app, db=db, models=models, surveymodels=surveymodels)
 manager.add_command('shell', Shell(make_context=make_shell_context))
 
 @manager.command
