@@ -11,6 +11,7 @@ dev_report = \
  'v9|meq_sa',
  'v9|mdq',
  'v9|cover',
+ 'v9|cover_other',
  'v9|les',
  'v9|pain',
  'v9|dsss',

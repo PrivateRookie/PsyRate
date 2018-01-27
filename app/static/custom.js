@@ -17,6 +17,7 @@ function add(){
     }
     $("table tr:last").append("<td><button class='remove btn btn-warning' type='button'><span class='remove glyphicon glyphicon-minus'></span></button></td>");
     $("table tr:last").append("<td><button class='edit btn btn-primary' type='button'><span class='remove glyphicon glyphicon-pencil'></span></button></td>");
+    submit_();
 }
 
 function edit(){
@@ -33,22 +34,10 @@ function edit(){
 }
 
 function submit_(){
-    var q_id = [];
-    $("input[name^=q]").each(function(i){
-        q_id[i] = $(this).attr("name");
-    });
-    var data = [];
-    $("tr.output").each(function(i){
-        var input_data = new Object();
-        $(this).children().each(function(j){
-            if (j < q_id.length){
-                input_data[q_id[j]] = $(this).text();
-            }
-        });
-        data[i] = input_data;
-    });
-    $.post($("form").attr("action"), data, function(){
-        alert("提交成功");
-    });
-    $("tr.output").remove();
+    $.ajax({
+        type:'post',
+        url:$("form").attr("action"),
+        data:$("form").serialize(),
+        cache:false,
+    dataType:'json'})
 }

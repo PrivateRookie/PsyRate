@@ -15,25 +15,25 @@
             <div class="form-group">
                 <label class="control-label col-md-2">患者编号</label>
                 <div class="col-md-10">
-                    <input type="text" class="form-control" name="q_1" required>
+                    <input type="text" class="form-control" name="q_1" required value="{{ data['q_1'] }}">
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label col-md-2">患者姓名</label>
                 <div class="col-md-10">
-                    <input type="text" class="form-control" name="q_2" required> 
+                    <input type="text" class="form-control" name="q_2" required value="{{ data['q_2'] }}"> 
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label col-md-2">入组日期</label>
                 <div class="col-md-10">
-                    <input type="date" class="form-control" name="q_3">
+                    <input type="date" class="form-control" name="q_3" required value="{{ data['q_3'] }}">
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label col-md-2">医生姓名</label>
                 <div class="col-md-10">
-                    <input type="text" class="form-control" name="q_4" required>
+                    <input type="text" class="form-control" name="q_4" required value="{{ data['q_4'] }}">
                 </div>
             </div>
             {{ render_meta_data(form_name, status, report_type) }}

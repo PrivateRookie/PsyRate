@@ -153,22 +153,17 @@
 {% macro render_option_input(question, index) %}
 <li>
     <div class="row">
-    <label class="control-label col-md-2">{{ question['title'] }}</label>
-    <div class="col-md-2">
+    <label class="control-label col-md-3">{{ question['title'] }}</label>
+    <div class="col-md-6">
         <select class="form-control" name="{{ question['q_id'] }}">
-            {% for val in question['opt_values'] %}
+            {% for val in question['opt_values'][::-1] %}
             {% if val == question['default'] %}
             <option value="{{ val }}" selected>{{ val }}</option>
             {% else %}
-            <option value="{{ val }}" selected>{{ val }}</option>
+            <option value="{{ val }}">{{ val }}</option>
             {% endif %}
             {% endfor %}
         </select>
-    </div>
-    <div class="col-md-2">
-        <input class="form-control" name="{{ question['q_id'] }}" type="number"
-        min="{{ question['opt_values'][0] }}" max="{{ question['opt_values'][-1] }}"
-        tabindex={{ index }} value="{{ question['default'] }}">
     </div>
     </div>
 </li>

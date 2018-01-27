@@ -46,7 +46,6 @@ def prerender(raw_form, record):
     questions = raw_form['questions']
     record = [(attr, getattr(record, attr)) for attr in dir(record) if attr.startswith('q_')]
     record = sorted(record, key=sort_key)
-    print(record)
     for question, selected in zip(questions, record):
         if selected[1]:
             question['default'] = selected[1]
@@ -73,16 +72,25 @@ def forms():
     report_type = request.args.get('report_type', 'dev_report')
     # load record if exits
     p_id = json.loads(session.get('patient', "{}")).get('id', 0)
-
     if form_name is None:
         return render_template('allforms.html')
-    elif form_name in ['cover', 'cover_other']:
+    elif form_name == 'cover':
+        raw_form = getattr(raw_forms, form_name, None)
+        patient = json.loads(session.get('patient', "{}"))
+        record = models.Patient.query.filter_by(id=patient.get('id', 0)).first()
+        previous, next = get_pager(report_type, status, form_name)
+        options = dict(survey=raw_form, route='main.recevie', status=status, report_type=report_type,
+        form_name=form_name, patient=patient, previous=previous, next=next)
+        if record:
+            data = dict(q_1=record.code, q_2=record.name, q_3=record.entry_date, q_4=record.doctor)
+        return render_template('rates/cover.html', **options, data=data)
+    elif form_name == 'cover_other':
         raw_form = getattr(raw_forms, form_name, None)
         patient = json.loads(session.get('patient', "{}"))
         previous, next = get_pager(report_type, status, form_name)
         options = dict(survey=raw_form, route='main.recevie', status=status, report_type=report_type,
         form_name=form_name, patient=patient, previous=previous, next=next)
-        return render_template('rates/{}.html'.format(form_name), **options)
+        return render_template('rates/cover_other.html', **options)
     else:
         model  = getattr(surveymodels, form_name.upper())
         # special case for followup
@@ -100,17 +108,31 @@ def forms():
 
 @main.route('/selfreport')
 def selfreport():
-    previous, next = get_pager('self_report', 'v0', 'cover')
+    status = request.args.get('status', 'v9')
+    report_type = request.args.get('report_type', 'dev_report')
+    p_id = json.loads(session.get('patient', "{}")).get('id', 0)
+    raw_form = getattr(raw_forms, 'cover', None)
     patient = json.loads(session.get('patient', "{}"))
-    return render_template('rates/cover.html', status='v0', route='main.patient_regist',
-    previous=previous, next=next, patient=patient, report_type='self_report', form_name='cover')
+    record = models.Patient.query.filter_by(id=patient.get('id', 0)).first()
+    previous, next = get_pager(report_type, status, 'cover')
+    options = dict(survey=raw_form, route='main.recevie', status=status, report_type=report_type,
+    form_name='cover', patient=patient, previous=previous, next=next)
+    if record:
+        data = dict(q_1=record.code, q_2=record.name, q_3=record.entry_date, q_4=record.doctor)
+    return render_template('rates/cover.html', **options, data=data)
     
 @main.route('/ohterreport')
 def otherreport():
-    previous, next = get_pager('other_report', 'v0', 'cover')
+    form_name = request.args.get('form_name', 'cover_other')
+    status = request.args.get('status', 'v9')
+    report_type = request.args.get('report_type', 'dev_report')
+    p_id = json.loads(session.get('patient', "{}")).get('id', 0)
+    raw_form = getattr(raw_forms, form_name, None)
     patient = json.loads(session.get('patient', "{}"))
-    return render_template('rates/cover.html', status='v0', route='main.recevie',
-    previous=previous, next=next, patient=patient, report_type='other_report', form_name='cover')
+    previous, next = get_pager(report_type, status, form_name)
+    options = dict(survey=raw_form, route='main.recevie', status=status, report_type=report_type,
+    form_name=form_name, patient=patient, previous=previous, next=next)
+    return render_template('rates/cover_other.html', **options)
     
 @main.route('/patient_regist', methods=['GET', 'POST'])
 def patient_regist():
@@ -141,12 +163,14 @@ def logoutpatient():
 @main.route('/echo', methods=['GET', 'POST'])
 def echo():
     data = {attr:flat(request.form.getlist(attr)) for attr in request.form.keys() if attr.startswith('q')}
+    previous = request.url
     return render_template('echo.html', data=data)
     
 @main.route('/recevie', methods=['GET', 'POST'])
 def recevie():
     data = {attr:flat(request.form.getlist(attr)) for attr in request.form.keys() if attr.startswith('q')}
     patient = json.loads(session.get('patient', "{}"))
+    print(data)
     model = getattr(surveymodels, request.form.get('form_name').upper())
     data['p_id'] = patient.get('id', '')
     # special case for followup
@@ -159,11 +183,12 @@ def recevie():
     if not record:
         record = model(**data)
     else:
-        for attr, val in ((attr, getattr(record, attr)) for attr in dir(record) if attr.startswith('q_')):
-            setattr(record, attr, val)
+        for q_id, val in data.items():
+            if q_id.startswith('q_'):
+                setattr(record, q_id, val)
     db.session.add(record)
     db.session.commit()
-    return render_template('echo.html', data=data)
+    return render_template('echo.html', data=data, previous=request.referrer)
     
 @main.route('/patients')
 def get_all_patients():

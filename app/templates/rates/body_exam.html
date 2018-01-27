@@ -11,9 +11,13 @@
     {% for question in survey['questions'] %}
     <div class="row">
         <div class="form-group">
-            <label class="control-label col-md-1">{{ question['title'] }}</label>
-            <div class="input-group col-md-2">
-                <input type="number" class="form-control" name="{{ question['q_id'] }}" step="0.1">
+            <label class="control-label col-md-2">{{ question['title'] }}</label>
+            <div class="input-group col-md-6">
+                {% if question['default'] != '' %}
+                <input type="number" class="form-control" name="{{ question['q_id'] }}" step="0.1" value="{{ question['default'] }}">
+                {% else %}
+                <input type="number" class="form-control" name="{{ question['q_id'] }}" step="0.1" value="0">
+                {% endif %}
                 <div class="input-group-addon">{{ question['unit'] }}</div>
             </div>
         </div>
