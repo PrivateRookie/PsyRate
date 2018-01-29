@@ -140,7 +140,7 @@ def otherreport():
     
 @main.route('/patient_regist', methods=['GET', 'POST'])
 def patient_regist():
-    data = [flat(request.form.getlist(attr)) for attr in request.form.keys() if attr.startswith('q')]
+    data = [flat(request.form.getlist(attr)) for attr in sorted(request.form.keys()) if attr.startswith('q')]
     data = {k:v for k, v in zip(['code', 'name', 'entry_date', 'doctor'], data)}
       
     p = models.Patient(**data)
