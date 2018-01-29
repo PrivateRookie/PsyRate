@@ -143,9 +143,14 @@ def otherreport():
 def patient_regist():
     data = [flat(request.form.getlist(attr)) for attr in sorted(request.form.keys()) if attr.startswith('q')]
     data = {k:v for k, v in zip(['code', 'name', 'entry_date', 'doctor'], data)}
-      
-    p = models.Patient(**data)
-    p.recorder = current_user._get_current_object()
+    
+    p = modles.Patient.query.filter_by(code=data['code'], name=data['name'], doctor=data['doctor']).first()
+    if p:
+        for attr, val in data.items():
+            setattr(p, attr, val)
+    else:
+        p = models.Patient(**data)
+        p.recorder = current_user._get_current_object()
     try:
         db.session.add(p)
         db.session.commit()
