@@ -202,8 +202,9 @@ def recevie():
     data.append('病人ID:' + str(patient.get('id', '')))
     data.append('随访窗:' + str(request.form.get('status')))
     data.append('量表名:' + str(request.form.get('form_name')))
-    answers = [attr + flat(request.form.getlist(attr)) for attr in request.form.keys() if attr.startswith('q')]
-    asnwers = sorted(answers)
+    attrs = [attr for attr in request.form.keys() if attr.startswith('q')]
+    attrs = sorted(attrs)
+    answers = [attr + ': ' + flat(request.form.getlist(attr)) for attr in attrs]
     data.extend(answers)
     return render_template('echo.html', data=data, previous=request.referrer)
     
