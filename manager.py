@@ -4,13 +4,13 @@ from app import create_app, db
 from app.models import Role, User
 from flask_script import Manager, Shell, Command, Option
 from tests.test_db import VirtualFillTestCase
-from werkzeug.contrilib.fixers import ProxyFix
+from werkzeug.contrib.fixers import ProxyFix
 
 from app import models, surveymodels
 
 app = create_app(os.getenv('FLASK_CONFIG') or 'dev')
 manager = Manager(app)
-manager.wsgi_app = ProxyFix(app.wsgi_app)
+app.wsgi_app = ProxyFix(app.wsgi_app)
 
 def make_shell_context():
     return dict(app=app, db=db, models=models, surveymodels=surveymodels)
