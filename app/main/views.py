@@ -155,7 +155,7 @@ def patient_regist():
         patient['id'] = p.id
         patient['writer'] = current_user.username
         session['patient'] = json.dumps(patient)
-    except IntegrityError as e
+    except IntegrityError as e:
         db.session.rollback()
     return redirect(url_for('main.forms', status='v2', route='main.recevie', report_type='self_report', form_name='followup'))
     
@@ -200,7 +200,7 @@ def recevie():
     try:
         db.session.add(record)
         db.session.commit()
-    except IntegrityError:
+    except IntegrityError as e:
         db.session.rollback()
     data = []
     data.append('病人ID:' + str(patient.get('id', '')))
