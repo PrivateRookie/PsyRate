@@ -3,9 +3,9 @@
 {% block title %}PsyRates Echo{% endblock %}
 
 {% block content %}
-<h2>Echo</h2>
+<h2>提交成功</h2>
 <ul class="unstyled">
-    {% for q_id, value in data.items() %}
+    {% for q_id, value in data %}
     <li>{{ q_id }}: {{ value }}</li>
     {% endfor %}
 </ul>
