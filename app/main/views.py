@@ -12,8 +12,8 @@ from ..static import raw_forms, schema
 from ..models import Permission
 from ..decorators import permission_required, admin_required
 
-app_path = '\\'.join(os.path.split(os.path.abspath(__file__))[0].split('\\')[:-1])
-rates_path = app_path + '\\templates\\rates'
+app_path = '/'.join(os.path.split(os.path.abspath(__file__))[0].split('/')[:-1])
+rates_path = app_path + '/templates/rates'
 
 def get_pager(report_type, current_status, current_form_name):
     report_schema = getattr(schema, report_type, None)
@@ -83,7 +83,9 @@ def forms():
         form_name=form_name, patient=patient, previous=previous, next=next)
         if record:
             data = dict(q_1=record.code, q_2=record.name, q_3=record.entry_date, q_4=record.doctor)
-        return render_template('rates/cover.html', **options, data=data)
+        else:
+            data = dict()
+        return render_template('rates/cover.html', data=data, **options)
     elif form_name == 'cover_other':
         raw_form = getattr(raw_forms, form_name, None)
         patient = json.loads(session.get('patient', "{}"))
