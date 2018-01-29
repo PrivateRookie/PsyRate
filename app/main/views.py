@@ -166,9 +166,8 @@ def logoutpatient():
     
 @main.route('/echo', methods=['GET', 'POST'])
 def echo():
-    data = {attr:flat(request.form.getlist(attr)) for attr in request.form.keys() if attr.startswith('q')}
-    previous = request.url
-    return render_template('echo.html', data=data)
+    data = [(attr,flat(request.form.getlist(attr))) for attr in request.form.keys() if attr.startswith('q')]
+    return render_template('}.html', data=data)
     
 @main.route('/recevie', methods=['GET', 'POST'])
 def recevie():
