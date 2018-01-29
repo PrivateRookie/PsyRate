@@ -168,10 +168,10 @@ def logoutpatient():
 def echo():
     patient = json.loads(session.get('patient', "{}"))
     data = []
-    data.append(('病人ID', patient.get('id')))
-    data.append(('随访窗', request.args.get('status')))
-    data.append(('量表名', reqeust.args.get('form_name')))
-    answers = [(attr, flat(request.form.getlist(attr))) for attr in request.form.keys() if attr.startswith('q_')]
+    data.append('病人ID:' + str(patient.get('id')))
+    data.append('随访窗': + str(request.args.get('status')))
+    data.append('量表名:' + str(reqeust.args.get('form_name')))
+    answers = [attr + flat(request.form.getlist(attr)) for attr in request.form.keys() if attr.startswith('q_')]
     asnwers = sorted(answers)
     data.extend(answers)
     return render_template('echo.html', data=data)
