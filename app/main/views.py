@@ -156,6 +156,7 @@ def patient_regist():
         session['patient'] = json.dumps(patient)
     except Exception as e:
         print(e)
+        db.session.rollbakc()
     return redirect(url_for('main.forms', status='v2', route='main.recevie', report_type='self_report', form_name='followup'))
     
 @main.route('/logoutpatient')
@@ -196,8 +197,11 @@ def recevie():
         for q_id, val in data.items():
             if q_id.startswith('q_'):
                 setattr(record, q_id, val)
-    db.session.add(record)
-    db.session.commit()
+    try:
+        db.session.add(record)
+        db.session.commit()
+    except:
+        db.session.rollback()
     data = []
     data.append('病人ID:' + str(patient.get('id', '')))
     data.append('随访窗:' + str(request.form.get('status')))
