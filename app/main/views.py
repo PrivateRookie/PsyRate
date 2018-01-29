@@ -79,7 +79,7 @@ def forms():
         patient = json.loads(session.get('patient', "{}"))
         record = models.Patient.query.filter_by(id=patient.get('id', 0)).first()
         previous, next = get_pager(report_type, status, form_name)
-        options = dict(survey=raw_form, route='main.recevie', status=status, report_type=report_type,
+        options = dict(survey=raw_form, route='main.patient_regist', status=status, report_type=report_type,
         form_name=form_name, patient=patient, previous=previous, next=next)
         if record:
             data = dict(q_1=record.code, q_2=record.name, q_3=record.entry_date, q_4=record.doctor)
@@ -117,7 +117,7 @@ def selfreport():
     patient = json.loads(session.get('patient', "{}"))
     record = models.Patient.query.filter_by(id=patient.get('id', 0)).first()
     previous, next = get_pager(report_type, status, 'cover')
-    options = dict(survey=raw_form, route='main.recevie', status=status, report_type=report_type,
+    options = dict(survey=raw_form, route='main.patient_regist', status=status, report_type=report_type,
     form_name='cover', patient=patient, previous=previous, next=next)
     if record:
         data = dict(q_1=record.code, q_2=record.name, q_3=record.entry_date, q_4=record.doctor)
