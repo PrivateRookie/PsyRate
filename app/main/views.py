@@ -11,6 +11,7 @@ from .. import db, surveymodels, models
 from ..static import raw_forms, schema
 from ..models import Permission
 from ..decorators import permission_required, admin_required
+from sqlite3 import IntegrityError
 
 app_path = '/'.join(os.path.split(os.path.abspath(__file__))[0].split('/')[:-1])
 rates_path = app_path + '/templates/rates'
@@ -154,9 +155,8 @@ def patient_regist():
         patient['id'] = p.id
         patient['writer'] = current_user.username
         session['patient'] = json.dumps(patient)
-    except Exception as e:
-        print(e)
-        db.session.rollbakc()
+    except IntegrityError as e
+        db.session.rollback()
     return redirect(url_for('main.forms', status='v2', route='main.recevie', report_type='self_report', form_name='followup'))
     
 @main.route('/logoutpatient')
@@ -200,7 +200,7 @@ def recevie():
     try:
         db.session.add(record)
         db.session.commit()
-    except:
+    except IntegrityError:
         db.session.rollback()
     data = []
     data.append('病人ID:' + str(patient.get('id', '')))
