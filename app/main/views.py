@@ -169,9 +169,9 @@ def echo():
     patient = json.loads(session.get('patient', "{}"))
     data = []
     data.append('病人ID:' + str(patient.get('id')))
-    data.append('随访窗': + str(request.args.get('status')))
+    data.append('随访窗:' + str(request.args.get('status')))
     data.append('量表名:' + str(reqeust.args.get('form_name')))
-    answers = [attr + flat(request.form.getlist(attr)) for attr in request.form.keys() if attr.startswith('q_')]
+    answers = [attr + flat(request.form.getlist(attr)) for attr in request.form.keys() if attr.startswith('q')]
     asnwers = sorted(answers)
     data.extend(answers)
     return render_template('echo.html', data=data)
