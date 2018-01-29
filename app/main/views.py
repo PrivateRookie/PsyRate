@@ -121,7 +121,9 @@ def selfreport():
     form_name='cover', patient=patient, previous=previous, next=next)
     if record:
         data = dict(q_1=record.code, q_2=record.name, q_3=record.entry_date, q_4=record.doctor)
-    return render_template('rates/cover.html', **options, data=data)
+    else:
+        data = dict()
+    return render_template('rates/cover.html', data=data, **options)
     
 @main.route('/ohterreport')
 def otherreport():
