@@ -284,3 +284,49 @@ def user():
     email = u.email
     return render_template('user.html', u=u, finished=finished, unfinished=unfinished, total=total,
         p_name=p_name, p_code=p_code, p_finished=p_finished, username=username, email=email)
+
+@main.route('/ajax/delete/<int:id>')
+def ajax_delete(id):
+    form_name = request.form.get('form_name')
+    model = getattr(surveymodels, form_name.upper())
+    if model:
+        record = model.query.filter_by(id=id).first()
+        if record:
+            db.session.delete(record)
+            db.session.commit()
+        else:
+            print("删除失败")
+
+@main.route('/ajax/<int:id>', methods=['GET', 'POST'])
+def ajax_submit(id):
+    form_name = request.form.get('form_name')
+    p_id = json.loads(session.get('patient', '{}')).get('id')
+    status = request.form.get('status')
+    model = getattr(surveymodels, form_name.upper())
+    if model:
+        record = model.query.filter_by(id=id).first()
+        if record:
+            for attr in request.form.keys():
+                if attr.startswith('q_'):
+                    setattr(record, attr, request.form[attr])
+        else:
+            data = {k:v for k, v in request.form.items() if k.startswith('q_')}
+            data['p_id'] = p_id
+            data['status'] = status
+            record = model(**data)
+        db.session.add(record)
+        db.session.commit()
+    return str(record.id)
+    
+@main.route('/ajax/preload/', methods=['GET', 'POST'])
+def ajax_preload():
+    form_name = request.form.get('form_name')
+    p_id = json.loads(session.get('patient', '{}')).get('id')
+    records = getattr(surveymodels, form_name.upper()).query.filter_by(p_id=p_id).all()
+    def get_input(record):
+        attrs = [attr for attr in dir(record) if attr.startswith('q_')]
+        attrs = sorted(attrs, key=lambda item: tuple(int(i) for i in item.split('_')[1:]))
+        return [getattr(record, attr) for attr in attrs]
+    records = [get_input(record) for record in records]
+    print(json.dumps(dict(p_id=p_id, records=records)))
+    return json.dumps(dict(p_id=p_id, records=records))

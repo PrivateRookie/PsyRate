@@ -20,7 +20,7 @@
                 <td>{{ col }}</td>
                 {% endfor %}
             </tr>
-            <tr class="input">
+            <tr class="input" current-id="0">
                 {% for question in survey['questions'] %}
                 <td>
                 {% if 'options' in question %}
