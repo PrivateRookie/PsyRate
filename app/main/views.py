@@ -13,9 +13,13 @@ from ..models import Permission
 from ..decorators import permission_required, admin_required
 from sqlite3 import IntegrityError
 
-app_path = '/'.join(os.path.split(os.path.abspath(__file__))[0].split('/')[:-1])
-rates_path = app_path + '/templates/rates'
-
+if os.sys.platform.startswith('linux'):
+    app_path = '/'.join(os.path.split(os.path.abspath(__file__))[0].split('/')[:-1])
+    rates_path = app_path + '/templates/rates'
+elif os.sys.platform == 'win32':
+    app_path = '\\'.join(os.path.split(os.path.abspath(__file__))[0].split('\\')[:-1])
+    rates_path = app_path + '\\templates\\rates'
+    
 def get_pager(report_type, current_status, current_form_name):
     report_schema = getattr(schema, report_type, None)
     index_min, index_max = 0, len(report_schema) - 1
@@ -68,9 +72,9 @@ def index():
 @main.route('/forms')
 @permission_required(Permission.SELFREPORT)
 def forms():
-    form_name = request.args.get('form_name', None)
-    status = request.args.get('status', 'v9')
-    report_type = request.args.get('report_type', 'dev_report')
+    form_name = request.args.get('form_name', 'cover')
+    status = request.args.get('status', 'v0')
+    report_type = request.args.get('report_type', 'self_report')
     # load record if exits
     p_id = json.loads(session.get('patient', "{}")).get('id', 0)
     if form_name is None:
@@ -111,8 +115,8 @@ def forms():
 
 @main.route('/selfreport')
 def selfreport():
-    status = request.args.get('status', 'v9')
-    report_type = request.args.get('report_type', 'dev_report')
+    status = request.args.get('status', 'v0')
+    report_type = request.args.get('report_type', 'self_report')
     p_id = json.loads(session.get('patient', "{}")).get('id', 0)
     raw_form = getattr(raw_forms, 'cover', None)
     patient = json.loads(session.get('patient', "{}"))
@@ -129,8 +133,8 @@ def selfreport():
 @main.route('/ohterreport')
 def otherreport():
     form_name = request.args.get('form_name', 'cover_other')
-    status = request.args.get('status', 'v9')
-    report_type = request.args.get('report_type', 'dev_report')
+    status = request.args.get('status', 'v0')
+    report_type = request.args.get('report_type', 'other_report')
     p_id = json.loads(session.get('patient', "{}")).get('id', 0)
     raw_form = getattr(raw_forms, form_name, None)
     patient = json.loads(session.get('patient', "{}"))
@@ -186,7 +190,6 @@ def echo():
 def recevie():
     data = {attr:flat(request.form.getlist(attr)) for attr in request.form.keys() if attr.startswith('q')}
     patient = json.loads(session.get('patient', "{}"))
-    print(data)
     model = getattr(surveymodels, request.form.get('form_name').upper())
     data['p_id'] = patient.get('id', '')
     # special case for followup
