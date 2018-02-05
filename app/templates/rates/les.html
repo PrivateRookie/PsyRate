@@ -17,14 +17,14 @@
         <table class="table">
             <tr>
                 {% for col in survey['cols'] %}
-                <td class="input">{{ col }}</td>
+                <td>{{ col }}</td>
                 {% endfor %}
             </tr>
-            <tr>
+            <tr class="input">
                 {% for question in survey['questions'] %}
                 <td>
                 {% if 'options' in question %}
-                    <select class="form-control" name="{{ question['q_id'] }}">
+                    <select name="{{ question['q_id'] }}" class="form-control">
                         {% for val, opt_str in question['options'] %}
                         <option value="{{ val }}">{{ opt_str }}</option>
                         {% endfor %}
