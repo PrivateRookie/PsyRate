@@ -63,7 +63,7 @@
     <p>{{ survey['description'] }}</p>
     <br>
     <form method="post" action="{{ url_for(route) }}">
-        <table class="table table-condensed table-bordered"> 
+        <table class="table table-condensed table-striped"> 
             <tr>
                 {% for col in survey['cols'] %}
                 <td><strong>{{ col }}</strong></td>

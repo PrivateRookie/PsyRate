@@ -287,15 +287,17 @@ def user():
 
 @main.route('/ajax/delete/<int:id>')
 def ajax_delete(id):
-    form_name = request.form.get('form_name')
+    form_name = request.args.get('form_name')
     model = getattr(surveymodels, form_name.upper())
     if model:
         record = model.query.filter_by(id=id).first()
         if record:
             db.session.delete(record)
             db.session.commit()
+            return "True"
         else:
             print("删除失败")
+            return "False"
 
 @main.route('/ajax/<int:id>', methods=['GET', 'POST'])
 def ajax_submit(id):
@@ -321,12 +323,16 @@ def ajax_submit(id):
 @main.route('/ajax/preload/', methods=['GET', 'POST'])
 def ajax_preload():
     form_name = request.form.get('form_name')
+    status = request.form.get('status')
     p_id = json.loads(session.get('patient', '{}')).get('id')
-    records = getattr(surveymodels, form_name.upper()).query.filter_by(p_id=p_id).all()
+    records = getattr(surveymodels, form_name.upper()).query.filter_by(p_id=p_id, status=status).all()
+    print(records)
     def get_input(record):
         attrs = [attr for attr in dir(record) if attr.startswith('q_')]
         attrs = sorted(attrs, key=lambda item: tuple(int(i) for i in item.split('_')[1:]))
-        return [getattr(record, attr) for attr in attrs]
+        result = dict()
+        result['questions'] = [getattr(record, attr) for attr in attrs]
+        result['id'] = record.id
+        return result
     records = [get_input(record) for record in records]
-    print(json.dumps(dict(p_id=p_id, records=records)))
     return json.dumps(dict(p_id=p_id, records=records))
