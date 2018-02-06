@@ -5,8 +5,8 @@
 {% block head %}
 {{ super() }}
 <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
-<script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script src="{{ url_for('static', filename='custom.js') }}"></script>
+<script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 {% endblock %}
 
 {% block form %}
@@ -15,13 +15,13 @@
         <table class="table">
             <tr>
                 {% for col in survey['cols'] %}
-                <td class="input">{{ col }}</td>
+                <td>{{ col }}</td>
                 {% endfor %}
             </tr>
-            <tr>
+            <tr class="input" current-id="0">
                 {% for question in survey['questions'] %}
                 <td>
-                <input class="form-control" name="{{ question['q_id'] }}" type="{{ question['type'] }}">
+                <input class="form-control" name="{{ question['q_id'] }}" type="{{ question['type'] or 'text' }}">
                 </td>
                 {% endfor %}
                 <td>

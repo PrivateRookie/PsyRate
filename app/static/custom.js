@@ -1,11 +1,17 @@
 $(document).on("click", "button.remove", function(){
-   delete_();
+   $.ajax({
+        type:'get',
+        data:$("input[name='form_name']").serialize(),
+        url:baseurl + 'delete/' + $(this).parents("tr").attr("current-id")
+    });
    $(this).parents("tr").remove();
 });
-$(document).on("click", "button.edit", edit);
-$(document).on("click", "button.add", add);
-$(document).on("click", "button.sub", function(){});
-$(document).ready(preload);
+$(document).on("click", "button.edit", edit_);
+$(document).on("click", "button.add", add_);
+$(document).on("click", "button.sub", function(){
+    alert("提交成功");
+});
+$(document).ready(preload_);
 
 var baseurl = "http://localhost:5000/ajax/";
  
@@ -30,11 +36,11 @@ function set_current_id(id){
     $("tr.input").attr("current-id", 0);
 }
  
-function add(){
+function add_(){
     submit_();
 }
  
- function edit(){
+ function edit_(){
     if ($("tr.input").attr("current-id") != 0){
         alert("请先提交工作区的记录然后再点击修改。");
         return
@@ -75,25 +81,29 @@ function add(){
        success:set_current_id
     })
  }
- 
-function delete_(){
-    $.ajax({
-        type:'get',
-        url:baseurl + 'delete/' + $("tr.input").attr("current-id")
-    });
-}
 
-function preload(){
+function preload_(){
     $.ajax({
         type:'post',
         url:baseurl + 'preload/',
-        data:$("input[name='form_name']").serialize(),
+        data:$("input[name='form_name'], input[name='status']").serialize(),
         success:function(data){
-            for (i = 0; i < data["records"].length; i++){
+            var data = JSON.parse(data);
+            for (i = 0; i < data.records.length; i++){
                 $("table tr:last").after("<tr class='output'></tr>");
-                for (j = 0; j < data["records"][i].length; j++){
-                    $("table tr:last").append("<td>" + data["records"][i][j] + "</td>");
-                }
+                $("table tr:last").attr("current-id", data.records[i].id);
+                $(".form-control").each(function(j){
+                    if ($(this).is("input")){
+                        $("table tr:last").append("<td>" + data.records[i].questions[j] + "</td>");
+                    }
+                    else{
+                        $(this).children("option").each(function(k){
+                            if ($(this).val() == data.records[i].questions[j]){
+                                $("table tr:last").append("<td>" + $(this).text() + "</td>");
+                            }
+                        });
+                    }
+                });
                $("table tr:last").append("<td><button class='remove btn btn-warning' type='button'><span class='remove glyphicon glyphicon-minus'></span></button></td>");
                $("table tr:last").append("<td><button class='edit btn btn-primary' type='button'><span class='remove glyphicon glyphicon-pencil'></span></button></td>");
             }

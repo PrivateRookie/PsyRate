@@ -21,7 +21,7 @@
                 <td>结果</td>
                 <td>操作</td>
             </tr>
-            <tr>
+            <tr class="input" current-id="0">
                 {% for question in survey['questions'] %}
                 <td>
                     <input class="form-control" name="{{ question['q_id'] }}" type="{{ question['type'] }}" step="{{ question['step'] }}">
