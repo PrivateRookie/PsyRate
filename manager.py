@@ -3,13 +3,16 @@ import os
 from app import create_app, db
 from app.models import Role, User
 from flask_script import Manager, Shell, Command, Option
+from flask_migrate import Migrate, MigrateCommand
 from tests.test_db import VirtualFillTestCase
 from werkzeug.contrib.fixers import ProxyFix
 
 from app import models, surveymodels
 
 app = create_app(os.getenv('FLASK_CONFIG') or 'dev')
+migrate = Migrate(app, db)
 manager = Manager(app)
+manager.add_command('db', MigrateCommand)
 app.wsgi_app = ProxyFix(app.wsgi_app)
 
 def make_shell_context():
