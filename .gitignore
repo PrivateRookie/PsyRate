@@ -21,3 +21,5 @@ forms_raw
 backup
 
 *.bat
+
+migrations
