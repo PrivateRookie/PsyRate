@@ -53,9 +53,9 @@ label.label-full {
                     {% include "other_nav.html" %}
                 </div>
             </div>
+            {{ render_pager(previous, next) }}
         </div>
         {% endblock sidebar %}
     </div>
 </div>
-{{ render_pager(previous, next) }}
 {% endblock inner %}
