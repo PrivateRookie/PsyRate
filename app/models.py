@@ -2,9 +2,28 @@
 from . import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from itsdangerous import  BadSignature 
 from flask import current_app
 from . import login_manager
 from flask_login import UserMixin, AnonymousUserMixin
+
+class Project(db.Model):
+    __tablename__ = 'projects'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), unique=True)
+    attendaces = db.relationship('User', backref='project', lazy='dynamic')
+    
+    def generate_invite_code(self, role):
+        serialzer = Serializer(current_app.config['SECRET_KEY'], expires_in = 36000)
+        token = serialzer.dumps(dict(role=role, project=self.name))
+        return token
+    
+    @staticmethod
+    def generate_test_project():
+        p = Project(name='test_project')
+        db.session.add(p)
+        db.session.commit()
+    
 
 class Role(db.Model):
     __tablename__ = "roles"
@@ -39,7 +58,7 @@ class Permission:
     SELFREPORT = 0x01
     OTHERREPORT = 0x02
     MOERATE_REPORT = 0x04
-    ADMINISTRATOR = 0x80  
+    ADMINISTRATOR = 0x80
                 
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
@@ -50,6 +69,7 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     confirmed = db.Column(db.Boolean, default=False)
     patients = db.relationship('Patient', backref='recorder')
+    project_id = db.Column(db.Integer, db.ForeignKey('projects.id'))
     
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
@@ -92,13 +112,14 @@ class User(UserMixin, db.Model):
             
     @staticmethod
     def verify_invite_code(code):
-        roles = dict(P='Patient', D='Doctor', M='Moerator', A='Administrator')
-        user_type = code[0].upper()
-        num = code[1:]
-        if user_type not in ('P', 'D', 'M', 'A'):
-            return None
-        role = Role.query.filter_by(name=roles[user_type]).first()
-        return role
+        serialzer = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            result = serialzer.loads(code)
+        except  BadSignature as e:
+            return None, None
+        role = Role.query.filter_by(name=result['role']).one()
+        project = Project.query.filter_by(name=result['project']).one()
+        return role, project
             
 @login_manager.user_loader
 def load_user(user_id):
@@ -121,4 +142,4 @@ class Patient(db.Model):
     recorder_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     
     def __repr__(self):
-        return '<Patient {}>'.format(self.name)   
+        return '<Patient {}>'.format(self.name)

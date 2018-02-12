@@ -69,8 +69,7 @@ def get_progress(progress):
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
-    rates = [filename.split('.')[0] for filename in os.listdir(rates_path)]
-    return render_template('index.html', rates=rates)
+    return render_template('index.html')
 
 @main.route('/forms')
 @permission_required(Permission.SELFREPORT)
@@ -314,8 +313,9 @@ def user():
     p_finished = p_finished.finished if p_finished else False
     username = u.username
     email = u.email
+    project = u.project.name
     return render_template('user.html', u=u, finished=finished, unfinished=unfinished, total=total,
-        p_name=p_name, p_code=p_code, p_finished=p_finished, username=username, email=email)
+        p_name=p_name, p_code=p_code, p_finished=p_finished, username=username, email=email, project=project)
 
 @main.route('/ajax/delete/<int:id>')
 def ajax_delete(id):

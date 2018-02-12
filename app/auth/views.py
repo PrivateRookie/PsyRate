@@ -48,11 +48,11 @@ def register():
         username = form.username.data
         password = form.password.data
         invite_code = form.invite_code.data
-        role = User.verify_invite_code(invite_code)
-        if role is None:
+        role, project = User.verify_invite_code(invite_code)
+        if (role and project) is False:
             return render_template('register.html', form=form)
         else:
-            user = User(email=email, username=username, password=password, role=role)
+            user = User(email=email, username=username, password=password, role=role, project=project)
             db.session.add(user)
             db.session.commit()
             flash('你已成功注册,请打开注册邮箱点击链接激活账号')
