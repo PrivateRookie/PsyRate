@@ -22,7 +22,7 @@
                 {% for question in survey['questions'][i:i+3] %}
                 <td>
                     <input type="number" class="form-control" name="{{ question['q_id'] }}"
-                    min="{{ question['opt_values'][0] }}" max="{{ question['opt_values'][-1] }}">
+                    min="{{ question['opt_values'][0] }}" max="{{ question['opt_values'][-1] }}" value="{{ question['selected'] }}">
                 </td>
                 {% endfor %}
             </tr>

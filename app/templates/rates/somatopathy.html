@@ -1,39 +1,46 @@
 {% extends "formlayout.html" %}
 
-{% from "macroes.html" import render_meta_data, render_checkbox_question %}
+{% from "macroes.html" import render_pager, render_meta_data %}
+
+{% block head %}
+{{ super() }}
+<script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+<script src="{{ url_for('static', filename='custom.js') }}"></script>
+<script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+{% endblock %}
 
 {% block form %}
 <div class="container-fluid">
-    <h2>{{ survey['title'] }}</h2>
-    <p>{{ survey['description'] }}</h2>
-    <form class="form-horizontal" method="post" action="{{ url_for(route) }}">
-        <div class="row">
-            <div class="col-md-6">
-                <table class="table">
-                    <tr>
-                        <td>系统</td>
-                        <td>疾病名称</td>
-                        <td>严重程度</td>
-                        <td>治疗结果</td>
-                    </tr>
-                {% for question in survey['questions'][:16] %}
-                    <tr>
-                        <td>{{ question['title'] }}</td>
-                        {% for i in range(3) %}
-                        <td>
-                            <input class="form-control" name="{{ question['q_id'] }}">
-                        </td>
-                        {% endfor %}
-                    </tr>
+    <form method="post" action="{{ url_for(route) }}">
+        <table class="table">
+            <tr>
+                {% for col in survey['cols'] %}
+                <td>{{ col }}</td>
                 {% endfor %}
-                </table>
-            </div>
-        </div>
-        <div class="row">
-            {{ render_checkbox_question(survey['questions'][-1]) }}
-        </div>
+            </tr>
+            <tr class="input" current-id="0">
+                {% for question in survey['questions'] %}
+                <td>
+                <input class="form-control" name="{{ question['q_id'] }}" type="{{ question['type'] }}">
+                </td>
+                {% endfor %}
+                <td>
+                    <button class="add btn btn-primary" type="button">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                </td>
+                <td>
+                    <button class="btn btn-primary" disabled>
+                        <span class="glyphicon glyphicon-chevron-down"></span>
+                    </button>
+                </td>
+            </tr>
+        </table>
         {{ render_meta_data(form_name, status, report_type) }}
-        <button class="btn btn-primary" type="submit">提交</button>
+        <button class="sub btn btn-primary" type="button">提交</button>
     </form>
+    <div class="container-fluid">
+    <output></output>
+    </div>
 </div>
 {% endblock form %}

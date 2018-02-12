@@ -10,14 +10,14 @@
         <div class="form-group">
             <label class="control-label col-md-1">{{ survey['questions'][0]['title'] }}</label>
             <div class="col-md-2">
-                <input class="form-control" name="q_1" type="date">
+                <input class="form-control" name="q_1" type="date" value="{{ survey['questions'][0]['selected'] }}">
             </div>
         </div>
         {% for question in survey['questions'][1:] %}
         <div class="form-group">
             <label class="control-label col-md-1">{{ question['title'] }}</label>
             <div class="input-group col-md-2">
-                <input class="form-control" name="{{ question['q_id'] }}" type="{{ question['type'] }}" step="{{ question['step'] }}">
+                <input class="form-control" name="{{ question['q_id'] }}" type="{{ question['type'] }}" step="{{ question['step'] }}" value="{{ question['selected'] }}">
                 {% if question['unit'] != '' %}
                 <div class="input-group-addon">{{ question['unit'] }}</div>
                 {% endif %}

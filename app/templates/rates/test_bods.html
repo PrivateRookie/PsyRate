@@ -10,7 +10,7 @@
         <div class="form-group">
             <label class="control-label col-md-1">{{ survey['questions'][0]['title'] }}</label>
             <div class="col-md-2">
-                <input class="form-control" name="q_1" type="date">
+                <input class="form-control" name="q_1" type="date" value="{{ survey['questions'][0]['selected'] }}">
             </div>
         </div>
         <div class="row">

@@ -14,14 +14,14 @@
         <div class="form-group">
             <label class="control-label col-md-2">{{ survey['questions'][0]['title'] }}</label>
             <div class="col-md-10">
-                <input type="date" name="{{ question['q_id'] }}" class="form-control">
+                <input type="date" name="{{ question['q_id'] }}" class="form-control" value="{{ survey['questions'][0]['selected'] }}">
             </div>
         </div>
         {% else %}
         <div class="form-group">
             <label class="control-label col-md-2">{{ question['title'] }}</label>
             <div class="col-md-10">
-                <input class="form-control" name="{{ question['q_id'] }}" type="text">
+                <input class="form-control" name="{{ question['q_id'] }}" type="text" value="{{ question['selected'] }}">
             </div>
         </div>
         {% endif %}

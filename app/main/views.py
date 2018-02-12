@@ -52,10 +52,10 @@ def prerender(raw_form, record):
     record = [(attr, getattr(record, attr)) for attr in dir(record) if attr.startswith('q_')]
     record = sorted(record, key=sort_key)
     for question, selected in zip(questions, record):
-        if selected[1]:
-            question['default'] = selected[1]
+        if selected[1] is not None:
+            question['selected'] = selected[1]
         else:
-            question['default'] = ''
+            question['selected'] = ''
     return raw_form
     
     
@@ -63,6 +63,9 @@ def flat(li):
     if len(li) > 1:
         return ''.join(str(i) for i in li)
     return li[0]
+    
+def get_progress(progress):
+    return {attr:getattr(progress, attr) for attr in dir(progress) if attr.startswith('v')}
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
@@ -77,6 +80,8 @@ def forms():
     report_type = request.args.get('report_type', 'self_report')
     # load record if exits
     p_id = json.loads(session.get('patient', "{}")).get('id', 0)
+    progress = surveymodels.Progress.query.filter_by(p_id=p_id).first()
+    progress = get_progress(progress)
     if form_name is None:
         return render_template('allforms.html')
     elif form_name == 'cover':
@@ -85,7 +90,8 @@ def forms():
         record = models.Patient.query.filter_by(id=patient.get('id', 0)).first()
         previous, next = get_pager(report_type, status, form_name)
         options = dict(survey=raw_form, route='main.patient_regist', status=status, report_type=report_type,
-        form_name=form_name, patient=patient, previous=previous, next=next)
+        form_name=form_name, patient=patient, previous=previous, next=next, self_nav=schema.self_nav,
+        other_nav=schema.other_nav, progress=progress)
         if record:
             data = dict(q_1=record.code, q_2=record.name, q_3=record.entry_date, q_4=record.doctor)
         else:
@@ -96,7 +102,8 @@ def forms():
         patient = json.loads(session.get('patient', "{}"))
         previous, next = get_pager(report_type, status, form_name)
         options = dict(survey=raw_form, route='main.recevie', status=status, report_type=report_type,
-        form_name=form_name, patient=patient, previous=previous, next=next)
+        form_name=form_name, patient=patient, previous=previous, next=next, self_nav=schema.self_nav,
+        other_nav=schema.other_nav, progress=progress)
         return render_template('rates/cover_other.html', **options)
     else:
         model  = getattr(surveymodels, form_name.upper())
@@ -110,7 +117,8 @@ def forms():
         patient = json.loads(session.get('patient', "{}"))
         previous, next = get_pager(report_type, status, form_name)
         options = dict(survey=rendered_form, route='main.recevie', status=status, report_type=report_type,
-        form_name=form_name, patient=patient, previous=previous, next=next)
+        form_name=form_name, patient=patient, previous=previous, next=next, self_nav=schema.self_nav,
+        other_nav=schema.other_nav, progress=progress)
         return render_template('rates/{}.html'.format(form_name), **options)
 
 @main.route('/selfreport')
@@ -122,8 +130,10 @@ def selfreport():
     patient = json.loads(session.get('patient', "{}"))
     record = models.Patient.query.filter_by(id=patient.get('id', 0)).first()
     previous, next = get_pager(report_type, status, 'cover')
+    progress = dict()
     options = dict(survey=raw_form, route='main.patient_regist', status=status, report_type=report_type,
-    form_name='cover', patient=patient, previous=previous, next=next)
+    form_name='cover', patient=patient, previous=previous, next=next, self_nav=schema.self_nav,
+    other_nav=schema.other_nav, progress=progress)
     if record:
         data = dict(q_1=record.code, q_2=record.name, q_3=record.entry_date, q_4=record.doctor)
     else:
@@ -139,8 +149,10 @@ def otherreport():
     raw_form = getattr(raw_forms, form_name, None)
     patient = json.loads(session.get('patient', "{}"))
     previous, next = get_pager(report_type, status, form_name)
+    progress = dict()
     options = dict(survey=raw_form, route='main.recevie', status=status, report_type=report_type,
-    form_name=form_name, patient=patient, previous=previous, next=next)
+    form_name=form_name, patient=patient, previous=previous, next=next, self_nav=schema.self_nav,
+    other_nav=schema.other_nav, progress=progress)
     return render_template('rates/cover_other.html', **options)
     
 @main.route('/patient_regist', methods=['GET', 'POST'])
@@ -158,14 +170,21 @@ def patient_regist():
     try:
         db.session.add(p)
         db.session.commit()
-        patient = dict()
-        patient['name'] = request.form.get('q_2')
-        patient['code'] = request.form.get('q_1')
-        patient['id'] = p.id
-        patient['writer'] = current_user.username
-        session['patient'] = json.dumps(patient)
     except IntegrityError as e:
         db.session.rollback()
+    
+    try:
+        progress = surveymodels.Progress(p_id=p.id, v0_cover=True)
+        db.session.add(progress)
+        db.session.commit()
+    except IntegrityError as e:
+        db.session.rollbakc()
+    patient = dict()
+    patient['name'] = request.form.get('q_2')
+    patient['code'] = request.form.get('q_1')
+    patient['id'] = p.id
+    patient['writer'] = current_user.username
+    session['patient'] = json.dumps(patient)
     return redirect(url_for('main.forms', status='v2', route='main.recevie', report_type='self_report', form_name='followup'))
     
 @main.route('/logoutpatient')
@@ -209,6 +228,16 @@ def recevie():
         db.session.add(record)
         db.session.commit()
     except IntegrityError as e:
+        db.session.rollback()
+        
+    try:
+        progress = surveymodels.Progress.query.filter_by(p_id=patient['id']).first()
+        setattr(progress, request.form.get('status') + '_' + request.form.get('form_name'), True)
+        print('[info] Set {0}_{1} to True'.format(request.form.get('status'), request.form.get('form_name')))
+        db.session.add(progress)
+        db.session.commit()
+    except IntegrityError as e:
+        print(e)
         db.session.rollback()
     data = []
     data.append('病人ID:' + str(patient.get('id', '')))
@@ -264,7 +293,9 @@ def change_status():
 def delete():
     p_id = request.args.get('id')
     patient = models.Patient.query.filter_by(id=p_id).first()
+    progress = surveymodels.Progress.query.filter_by(p_id=p_id).first()
     db.session.delete(patient)
+    db.session.delete(progress)
     db.session.commit()
     return redirect(url_for('main.get_all_patients'))
         
@@ -280,6 +311,7 @@ def user():
     p_code = p.get('code', '')
     p_id = p.get('id')
     p_finished = models.Patient.query.filter_by(id=p.get('id')).first()
+    p_finished = p_finished.finished if p_finished else False
     username = u.username
     email = u.email
     return render_template('user.html', u=u, finished=finished, unfinished=unfinished, total=total,
@@ -318,6 +350,10 @@ def ajax_submit(id):
             record = model(**data)
         db.session.add(record)
         db.session.commit()
+        progress = surveymodels.Progress.query.filter_by(p_id=p_id).first()
+        setattr(progress, status + '_' + form_name, True)
+        db.session.add(progress)
+        db.session.commit()
     return str(record.id)
     
 @main.route('/ajax/preload/', methods=['GET', 'POST'])
@@ -326,7 +362,6 @@ def ajax_preload():
     status = request.form.get('status')
     p_id = json.loads(session.get('patient', '{}')).get('id')
     records = getattr(surveymodels, form_name.upper()).query.filter_by(p_id=p_id, status=status).all()
-    print(records)
     def get_input(record):
         attrs = [attr for attr in dir(record) if attr.startswith('q_')]
         attrs = sorted(attrs, key=lambda item: tuple(int(i) for i in item.split('_')[1:]))

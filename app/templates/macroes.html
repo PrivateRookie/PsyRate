@@ -6,6 +6,36 @@
 </div>
 {% endmacro %}
 
+{% macro render_nav(nav, report_type, progress) %}
+{% for status in ['v0', 'v1', 'v2', 'v3', 'v4', 'v5', 'v6', 'v7', 'v8'] %}
+<div class="btn-group">
+    <button type="button" class="btn btn-default">{{ status }}</button>
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+        {% for form_name, translation in nav[status] %}
+        {% if progress.get(status + '_' + form_name) %}
+        <li><a href="{{ url_for('main.forms', report_type=report_type, form_name=form_name, status=status) }}">
+        <div class="text-success">
+            <span class="glyphicon glyphicon-ok-sign"></span>
+            {{ translation }}
+        </div>
+        </a></li>
+        {% else %}
+        <li><a href="{{ url_for('main.forms', report_type=report_type, form_name=form_name, status=status) }}">
+        <div class="text-warning">
+            <span class="glyphicon glyphicon-question-sign"></span>
+            {{ translation }}
+        </div>
+        </a></li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+</div>
+{% endfor %}
+{% endmacro %}
+
 {% macro render_radio_question(question) %}
     <div class="form-group">
         <p><strong>{{ question['title'] }}</strong></p>
@@ -13,7 +43,7 @@
         {% for value, opt_str in question['options'] %}
         <li>
             <label class="btn btn-default">
-                {% if value == question['default'] %}
+                {% if (value == question['selected']) or (value | int == question['selected']) %}
                 <input type="radio" name="{{ question['q_id'] }}" value="{{ value }}" checked>{{ opt_str }}
                 {% else %}
                 <input type="radio" name="{{ question['q_id'] }}" value="{{ value }}">{{ opt_str }}
@@ -46,10 +76,10 @@
         {% for opt_value in question['opt_values'] %}
         <td class="col-md-1">
             <label class="btn btn-default label-full">
-                {% if value == question['default'] %}
-                <input type="radio" name="{{ question['q_id'] }}" value="{{ value }}" checked>{{ opt_str }}
+                {% if opt_value == question['selected'] or opt_value | int == question['selected'] %}
+                <input type="radio" name="{{ question['q_id'] }}" value="{{ opt_value }}" checked>{{ opt_str }}
                 {% else %}
-                <input type="radio" name="{{ question['q_id'] }}" value="{{ value }}">{{ opt_str }}
+                <input type="radio" name="{{ question['q_id'] }}" value="{{ opt_value }}">{{ opt_str }}
                 {% endif %}
             </label>
         </td>
@@ -84,7 +114,7 @@
 {% for value, opt_str in question['options'] %}
     <li>
         <label class="btn btn-default">
-            {% if value in question['default'] %}
+            {% if value | string in question['selected'] %}
             <input type="checkbox" name="{{ question['q_id'] }}" value="{{ value }}" checked>{{ opt_str }}
             {% else %}
             <input type="checkbox" name="{{ question['q_id'] }}" value="{{ value }}">{{ opt_str }}
@@ -97,9 +127,11 @@
 
 {% macro render_wrapped_input(question) %}
     <div class="form-group">
-        <span for="input">{{ question['prepend_text'] }}</span>
-            <input class="form-control input-sm" form="main-form" type="{{ question['input_type'] }}" name="{{ question['q_id'] }}" value="{{ question['default'] }}">
-        <span for="input">{{ question['append_text'] }}</span>
+        <div>{{ question['prepend_text'] }}</div>
+        <div class="input-group">
+            <input class="form-control input-sm" type="{{ question['input_type'] }}" name="{{ question['q_id'] }}" value="{{ question['selected'] }}">
+            <div class="input-group-addon">{{ question['append_text'] }}</div>
+        </div>
     </div>
 {% endmacro %}
 
@@ -130,16 +162,16 @@
     <tr>
         <td>{{ question['title'] }}</td>
         <td>
-            <input class="form-control" name="{{ question['q_id'] }}" type="number" step="0.1" value="{{ question['default'] }}">
+            <input class="form-control" name="{{ question['q_id'] }}" type="number" step="0.1" value="{{ question['selected'] }}">
         </td>
     {% else %}
         <td>
             <select class="form-control" name="{{ question['q_id'] }}">
                 {% for val in question['opt_values'] %}
-                {% if val == question['default'] %}
+                {% if val == question['selected'] %}
                 <option value="{{ val }}" selected>{{ val }}</option>
                 {% else %}
-                <option value="{{ val }}" selected>{{ val }}</option>
+                <option value="{{ val }}">{{ val }}</option>
                 {% endif %}
                 {% endfor %}
             </select>
@@ -156,11 +188,11 @@
     <label class="control-label col-md-3">{{ question['title'] }}</label>
     <div class="col-md-6">
         <select class="form-control" name="{{ question['q_id'] }}">
-            {% for val in question['opt_values'][::-1] %}
-            {% if val == question['default'] %}
+            {% for val in question['opt_values']%}
+            {% if val == question['selected'] or val | int == question['selected'] %}
             <option value="{{ val }}" selected>{{ val }}</option>
             {% else %}
-            <option value="{{ val }}">{{ val }}</option>
+            <option value="{{ val }}">{{ val }}</options>
             {% endif %}
             {% endfor %}
         </select>

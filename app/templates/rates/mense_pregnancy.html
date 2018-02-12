@@ -13,7 +13,7 @@
         <div class="form-group">
             <label class="control-lable col-md-1">{{ question['title'] }}</label>
             <div class="input-group col-md-2">
-                <input class="form-control" name="{{ question['q_id'] }}" type="{{ question['type'] }}">
+                <input class="form-control" name="{{ question['q_id'] }}" type="{{ question['type'] }}" value="{{ question['selected'] }}">
                 {% if question['unit'] != '' %}
                 <div class="input-group-addon">{{ question['unit'] }}</div>
                 {% endif %}

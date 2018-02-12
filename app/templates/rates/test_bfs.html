@@ -10,7 +10,7 @@
         <div class="form-group">
             <label class="control-label col-md-1">{{ survey['questions'][0]['title'] }}</label>
             <div class="col-md-2">
-                <input class="form-control" name="q_1" type="date">
+                <input class="form-control" name="q_1" type="date" value="{{ survey['questions'][0]['selected'] }}">
             </div>
         </div>
         <table class="table">
@@ -26,19 +26,19 @@
             {% if loop.index % 3 == 0 %}
                 <td>{{ question['title'] }}</td>
                 <td>
-                    <input class="form-control" name="{{ question['q_id'] }}" type="{{ question['type'] }}" step="{{ question['step'] }}">
+                    <input class="form-control" name="{{ question['q_id'] }}" type="{{ question['type'] }}" step="{{ question['step'] }}" value="{{ question['selected'] }}">
                 </td>
             </tr>
             {% elif loop.index % 3 == 1%}
             <tr>
                <td>{{ question['title'] }}</td>
                 <td>
-                    <input class="form-control" name="{{ question['q_id'] }}" type="{{ question['type'] }}" step="{{ question['step'] }}">
+                    <input class="form-control" name="{{ question['q_id'] }}" type="{{ question['type'] }}" step="{{ question['step'] }}" value="{{ question['selected'] }}">
                 </td>
             {% else %}
                 <td>{{ question['title'] }}</td>
                 <td>
-                    <input class="form-control" name="{{ question['q_id'] }}" type="{{ question['type'] }}" step="{{ question['step'] }}">
+                    <input class="form-control" name="{{ question['q_id'] }}" type="{{ question['type'] }}" step="{{ question['step'] }}" value="{{ question['selected'] }}">
                 </td>
             {% endif %}
             {% endfor %}

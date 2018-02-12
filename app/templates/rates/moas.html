@@ -16,15 +16,14 @@
             <div class="row">
                 <div class="col-md-2">
                     <select class="form-control" name="{{ question['q_id'] }}">
-                        {% for val in question['opt_values'] %}
-                        <option val="{{ val }}">{{ val }}</option>
+                        {% for val in question['opt_values']%}
+                        {% if val == question['selected'] or val | int == question['selected'] %}
+                        <option value="{{ val }}" selected>{{ val }}</option>
+                        {% else %}
+                        <option value="{{ val }}">{{ val }}</options>
+                        {% endif %}
                         {% endfor %}
                     </select>
-                </div>
-                <div class="col-md-2">
-                    <input class="form-control" name="{{ question['q_id'] }}" type="number"
-                    min="{{ question['opt_values'][0] }}" max="{{ question['opt_values'][-1] }}"
-                    tabindex={{ loop.index }}>
                 </div>
             </div>
         </li>

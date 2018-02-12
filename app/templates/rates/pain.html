@@ -34,7 +34,11 @@ output {
         {% for value, opt_str in survey['questions'][0]['options'] %}
             <li>
                 <label class="btn btn-default">
+                    {% if value | string in survey['questions'][0]['selected'] %}
+                    <input type="checkbox" name="{{ survey['questions'][0]['q_id'] }}" value="{{ value }}" checked>{{ opt_str }}
+                    {% else %}
                     <input type="checkbox" name="{{ survey['questions'][0]['q_id'] }}" value="{{ value }}">{{ opt_str }}
+                    {% endif %}
                 </label>
             </li>
         {% endfor %}
@@ -42,9 +46,9 @@ output {
         <br>
         <div class="form-group">
             <span><strong>如果存在疼痛，最长持续多久？</strong></span>
-            <input type="number" class="form-control" max="100" min="1" name="{{ survey['questions'][1]['q_id'] }}">
+            <input type="number" class="form-control" max="100" min="1" name="{{ survey['questions'][1]['q_id'] }}" value="{{ survey['questions'][1]['selected'] }}">
             <span><strong>{{ survey['questions'][1]['title'] }}</strong></span>
-            <input type="number" class="form-control" max="31" min="1" name="{{ survey['questions'][2]['q_id'] }}">
+            <input type="number" class="form-control" max="31" min="1" name="{{ survey['questions'][2]['q_id'] }}" value="{{ survey['questions'][2]['selected'] }}">
             <span><strong>{{ survey['questions'][2]['title'] }}</strong></span>
         </div>
         <hr>
@@ -54,10 +58,10 @@ output {
         <br>
         <div class="form-group">
             <label>无疼痛（0）</label>
-            <input id="range1" type="range" name="{{ survey['questions'][3]['q_id'] }}" min="0" max="10" value="0">
+            <input id="range1" type="range" name="{{ survey['questions'][3]['q_id'] }}" min="0" max="10" value="{{ survey['questions'][3]['selected'] }}">
             <label>最严重疼痛（10）</label>
         <label>疼痛分数: </label>
-        <output class="text-danger" name="score" id="score" for="range1"></output>
+        <output class="text-danger" name="score" id="score" for="range1">{{ survey['questions'][3]['selected'] }}</output>
         </div>
         {{ render_meta_data(form_name, status, report_type) }}
         <button class="btn btn-primary" type="submit">提交</button>

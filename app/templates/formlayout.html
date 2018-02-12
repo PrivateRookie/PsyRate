@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "macroes.html" import render_pager %}
+{% from "macroes.html" import render_pager, render_nav %}
 
 {% block head %}
 {{ super() }}
@@ -36,6 +36,7 @@ label.label-full {
                         <li><strong>病人姓名：</strong>{{ patient['name'] }}</li>
                         <li><strong>编号：</strong>{{ patient['code'] }}</li>
                         <li><strong>当前编写者：</strong>{{ patient['writer'] }}</li>
+                        <li><strong>当前随访窗：</strong>{{ request.args.get('status') }}</li>
                     </ul>
                     <a class="btn btn-primary" href="{{ url_for('main.logoutpatient') }}">退出填写</a>
                     <a class="btn btn-primary" href="{{ url_for('main.get_all_patients') }}">选择病人</a>
@@ -44,13 +45,13 @@ label.label-full {
             <div class="panel panel-default">
                 <div class="panel-heading">自评</div>
                 <div class="panel-body">
-                    {% include "self_nav.html" %}
+                    {{ render_nav(self_nav, 'self_report', progress) }}
                 </div>
             </div>
             <div class="panel panel-default">
                 <div class="panel-heading">他评</div>
                 <div class="panel-body">
-                    {% include "other_nav.html" %}
+                    {{ render_nav(other_nav, 'other_report', progress) }}
                 </div>
             </div>
             {{ render_pager(previous, next) }}

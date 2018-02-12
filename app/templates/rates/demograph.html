@@ -16,8 +16,12 @@
             <label class="control-label col-md-1">{{ question['title'] }}</label>
             <div class="col-md-3">
                 <select class="form-control" name="{{ question['q_id'] }}">
-                    {% for val, opt_str in question['options'] %}
-                    <option value="{{ val }}">{{ val }}. {{ opt_str }}</option>
+                    {% for val, opt_str in question['options']%}
+                    {% if val == question['selected'] or val | int == question['selected'] %}
+                    <option value="{{ val }}" selected>{{ opt_str }}</option>
+                    {% else %}
+                    <option value="{{ val }}">{{ opt_str}}</options>
+                    {% endif %}
                     {% endfor %}
                 </select>
             </div>
@@ -26,7 +30,7 @@
         <div class="form-group">
             <label class="control-label col-md-1">{{ question['title'] }}</label>
             <div class="col-md-3">
-                <input class="form-control" type="{{ question['type'] }}" name="{{ question['q_id'] }}">
+                <input class="form-control" type="{{ question['type'] }}" name="{{ question['q_id'] }}" value="{{ question['selected'] }}">
             </div>
         </div>
         {% endif %}

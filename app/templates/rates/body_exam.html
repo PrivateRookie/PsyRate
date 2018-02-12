@@ -13,8 +13,8 @@
         <div class="form-group">
             <label class="control-label col-md-2">{{ question['title'] }}</label>
             <div class="input-group col-md-6">
-                {% if question['default'] != '' %}
-                <input type="number" class="form-control" name="{{ question['q_id'] }}" step="0.1" value="{{ question['default'] }}">
+                {% if question['selected'] != '' %}
+                <input type="number" class="form-control" name="{{ question['q_id'] }}" step="0.1" value="{{ question['selected'] }}">
                 {% else %}
                 <input type="number" class="form-control" name="{{ question['q_id'] }}" step="0.1" value="0">
                 {% endif %}

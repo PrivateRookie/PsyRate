@@ -1,4 +1,4 @@
-{% extends "formlayout.html" %}
+ {% extends "formlayout.html" %}
 
 {% from "macroes.html" import render_slip, render_meta_data %}
 
@@ -11,7 +11,7 @@
         <div class="form-group">
             <label class="control-label col-md-1">{{ question['title'] }}</label>
             <div class="input-group col-md-2">
-                <input class="form-control" name="{{ question['q_id'] }}" type="{{ question['type'] }}" step="{{ question['step'] }}">
+                <input class="form-control" name="{{ question['q_id'] }}" type="{{ question['type'] }}" step="{{ question['step'] }}" value="{{ question['selected'] }}">
                 {% if question['unit'] != '' %}
                 <div class="input-group-addon">{{ question['unit'] }}</div>
                 {% endif %}
@@ -29,7 +29,7 @@
                     <tr>
                         <td>{{ question['title'] }}</td>
                         <td>
-                            <input class="form-control" name="{{ question['q_id'] }}" type="number" step="0.1">
+                            <input class="form-control" name="{{ question['q_id'] }}" type="number" step="0.1" value="{{ question['selected'] }}">
                         </td>
                     </tr>
                     {% endfor %}

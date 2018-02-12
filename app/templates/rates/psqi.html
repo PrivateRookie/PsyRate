@@ -8,15 +8,13 @@
     <br>
     <p>{{ survey['description'] }}</p>
     <br>
-    <form class="form-inline">
+    <form action="{{ url_for(route) }}" method="post">
         <ul class="list-unstyled">
         {% for question in survey['questions'][:4] %}
             <li>{{ render_wrapped_input(question) }}</li>
             <li><label></label></li>
         {% endfor %}
         </ul>
-    </form>
-    <form  id="main-form" action="{{ url_for(route) }}" method="post">
         <br>
         <table class="table">
             <p>5. 近 1 个月 ，因下列情况影响睡眠而烦恼：</p>
@@ -24,7 +22,7 @@
             {{ render_table_question(question) }}
             {% endfor %}
         </table>
-        {% for question in survey['questions'][13:] %}
+        {% for question in survey['questions'][-4:] %}
         {{ render_radio_question(question) }}
         {% endfor %}
         {{ render_meta_data(form_name, status, report_type) }}
