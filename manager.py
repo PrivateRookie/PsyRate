@@ -41,6 +41,16 @@ def init_db():
     ad = User(email='admin@gmail.com', username='admin', password='admin', role_id=4, project_id=1, confirmed=True)
     db.session.add(ad)
     db.session.commit()
+    
+@manager.command
+def init_product():
+    db.drop_all()
+    db.creat_all()
+    Role.insert_roles()
+    default_project = Project(name='默认工程')
+    administrator = User(email='admin@gmail.com', username='admin', password='admin', role_id=4, project_id=1, confirmed=True)
+    db.session.add(adminstator)
+    db.session.commit()
 
 if __name__ == '__main__':
     manager.run()
