@@ -9,7 +9,7 @@ from app.surveymodels import Patient, FOLLOWUP
 class VirtualFillTestCase(unittest.TestCase):
     def setUp(self):
         # initializ app
-        self.app = create_app('test')
+        self.app = create_app('TEST')
         self.app_context = self.app.app_context()
         self.app_context.push()
         # initializ database
