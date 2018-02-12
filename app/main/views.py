@@ -232,7 +232,6 @@ def recevie():
     try:
         progress = surveymodels.Progress.query.filter_by(p_id=patient['id']).first()
         setattr(progress, request.form.get('status') + '_' + request.form.get('form_name'), True)
-        print('[info] Set {0}_{1} to True'.format(request.form.get('status'), request.form.get('form_name')))
         db.session.add(progress)
         db.session.commit()
     except IntegrityError as e:
