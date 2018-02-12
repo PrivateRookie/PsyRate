@@ -45,6 +45,7 @@
         <div class="panel panel-primary">
             <div class="panel-heading">个人资料</div>
             <div class="panel-body">
+                <h3>所属项目:{{ project }}</h3>
                 <ul class="list-unstyled">
                     <li>
                         <form class="form-horizontal" method="post" action="{{ url_for('auth.change_username') }}">

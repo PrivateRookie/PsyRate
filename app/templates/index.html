@@ -7,12 +7,6 @@
         <h1>Psy Rates</h1>
         <p>欢迎来到 Psy Rates!</p>
         <p>Psy Rates 是由 Python Flask + Bootstrap3 + SQLALchemy 搭建的心境障碍相关量表网站，所有代码均已上传到GitHub。</p>
-        <p>现已完成量表有：</p>
-        <ul class="list-inline">
-            {% for rate in rates %}
-            <li><a class="text-uppercase btn btn-defualt" href="{{ url_for('main.forms', form_name=rate) }}">{{ rate }}</a></li>
-            {% endfor %}
-        </ul>
         <p><a class="btn btn-primary btn-lg" href="https://github.com/PrivateRookie/PsyRates" role="button">GitHub</a></p>
     </div>
 </div>

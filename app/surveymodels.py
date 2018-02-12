@@ -13,7 +13,7 @@ class Export:
         csv_file = cls.__tablename__ + '.csv' if csv_file is None else csv_file
         ints = cls.query.all()
         col_names = ['p_id', 'status']
-        col_names += [cls.__tablename__ + col for col in cls.export_cols]
+        col_names += [cls.__tablename__ + '_' + col for col in cls.export_cols]
         with open(csv_file, 'w', newline='') as f:
             writer = csv.writer(f)
             writer.writerow(col_names)
@@ -498,7 +498,7 @@ class CTQ(db.Model, Export):
     
 class LES(db.Model, Export):
     __tablename__ = 'les'
-    export_cols = ('p_id', 'status', 'event_code', 'event_date', 'property', 'degree', 'duration', 'note')
+    export_cols = ('p_id', 'status', 'q_1', 'q_2', 'q_3', 'q_4', 'q_5', 'q_6')
     id = db.Column(db.Integer, primary_key=True)
     p_id = db.Column(db.Integer, db.ForeignKey('patient_infos.id'))
     status = db.Column(db.String(16), db.ForeignKey('follow_ups.q_1'))

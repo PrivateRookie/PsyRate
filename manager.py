@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 from app import create_app, db
-from app.models import Role, User
+from app.models import Project, Role, User
 from flask_script import Manager, Shell, Command, Option
 from flask_migrate import Migrate, MigrateCommand
 from tests.test_db import VirtualFillTestCase
@@ -36,10 +36,11 @@ def init_db():
     """init database"""
     db.drop_all()
     db.create_all()
+    Project.generate_test_project()
     Role.insert_roles()
     
     # create adminstator
-    ad = User(email='admin@gmail.com', username='admin', password='admin', role_id=4, confirmed=True)
+    ad = User(email='admin@gmail.com', username='admin', password='admin', role_id=4, project_id=1, confirmed=True)
     db.session.add(ad)
     db.session.commit()
 
