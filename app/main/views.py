@@ -188,6 +188,7 @@ def patient_regist():
     return redirect(url_for('main.forms', status='v2', route='main.recevie', report_type='self_report', form_name='followup'))
     
 @main.route('/logoutpatient')
+@login_required
 def logoutpatient():
     session['patient'] = "{}"
     flash('你已经退出填写')
@@ -251,11 +252,13 @@ def recevie():
     return render_template('echo.html', data=data, previous=request.referrer)
     
 @main.route('/patients')
+@login_required
 def get_all_patients():
     patients = current_user.patients
     return render_template('patients.html', patients=patients)
     
 @main.route('/editpatient')
+@login_required
 def editpatient():
     id = request.args.get('id', 0)
     p = models.Patient.query.filter_by(id=id).first()
