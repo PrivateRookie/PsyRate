@@ -3,7 +3,7 @@
 import os
 import json
 from datetime import datetime
-from flask import render_template, redirect, url_for, flash, session, request
+from flask import render_template, redirect, url_for, flash, session, request, abort
 from flask_login import current_user, login_required
 from . import main
 from .forms import *
@@ -72,7 +72,6 @@ def index():
     return render_template('index.html')
 
 @main.route('/forms')
-@permission_required(Permission.SELFREPORT)
 def forms():
     form_name = request.args.get('form_name', 'cover')
     status = request.args.get('status', 'v0')
@@ -156,6 +155,8 @@ def otherreport():
     
 @main.route('/patient_regist', methods=['GET', 'POST'])
 def patient_regist():
+    if not current_user.is_authenticated:
+        abort(403)
     data = [flat(request.form.getlist(attr)) for attr in sorted(request.form.keys()) if attr.startswith('q')]
     data = {k:v for k, v in zip(['code', 'name', 'entry_date', 'doctor'], data)}
     
@@ -187,6 +188,7 @@ def patient_regist():
     return redirect(url_for('main.forms', status='v2', route='main.recevie', report_type='self_report', form_name='followup'))
     
 @main.route('/logoutpatient')
+@login_required
 def logoutpatient():
     session['patient'] = "{}"
     flash('你已经退出填写')
@@ -206,6 +208,8 @@ def echo():
     
 @main.route('/recevie', methods=['GET', 'POST'])
 def recevie():
+    if not current_user.is_authenticated:
+        abort(403)
     data = {attr:flat(request.form.getlist(attr)) for attr in request.form.keys() if attr.startswith('q')}
     patient = json.loads(session.get('patient', "{}"))
     model = getattr(surveymodels, request.form.get('form_name').upper())
@@ -232,7 +236,6 @@ def recevie():
     try:
         progress = surveymodels.Progress.query.filter_by(p_id=patient['id']).first()
         setattr(progress, request.form.get('status') + '_' + request.form.get('form_name'), True)
-        print('[info] Set {0}_{1} to True'.format(request.form.get('status'), request.form.get('form_name')))
         db.session.add(progress)
         db.session.commit()
     except IntegrityError as e:
@@ -249,11 +252,13 @@ def recevie():
     return render_template('echo.html', data=data, previous=request.referrer)
     
 @main.route('/patients')
+@login_required
 def get_all_patients():
     patients = current_user.patients
     return render_template('patients.html', patients=patients)
     
 @main.route('/editpatient')
+@login_required
 def editpatient():
     id = request.args.get('id', 0)
     p = models.Patient.query.filter_by(id=id).first()
@@ -270,6 +275,7 @@ def editpatient():
         return redirect(url_for('main.selfreport'))
 
 @main.route('/status')
+@login_required
 def change_status():
     id = request.args.get('id')
     if id is None:

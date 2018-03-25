@@ -17,6 +17,11 @@ class Project(db.Model):
         serialzer = Serializer(current_app.config['SECRET_KEY'], expires_in = 36000)
         token = serialzer.dumps(dict(role=role, project=self.name))
         return token
+
+    def generate_invite_codes(self, role, num):
+        with open(role+'_codes.txt', 'w') as f:
+            for i in range(num):
+                f.write(self.generate_invite_code(role).decode('utf-8')+'\n')
     
     @staticmethod
     def generate_test_project():
