@@ -18,6 +18,13 @@
         <br>
         <table class="table">
             <p>5. 近 1 个月 ，因下列情况影响睡眠而烦恼：</p>
+            <tr>
+                <td>症状条目</td>
+                <td>无</td>
+                <td><1次/周</td>
+                <td>1-2次/周</td>
+                <td>≥3次/周</td>
+            </tr>
             {% for question in survey['questions'][4:13] %}
             {{ render_table_question(question) }}
             {% endfor %}

@@ -15,7 +15,6 @@ class RegisterForm(FlaskForm):
     email = StringField('邮箱', validators=[Required(), Length(1, 64), Email()])
     username = StringField('用户名', validators=[
             Required(), Length(1, 64)])
-    invite_code = StringField('邀请码', validators=[Required()])
     password = PasswordField('密码', validators=[Required(),
             EqualTo('password2', message='密码必须相同')])
     password2 = PasswordField('确认密码', validators=[Required()])

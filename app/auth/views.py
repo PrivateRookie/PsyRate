@@ -3,7 +3,7 @@ from flask import render_template, redirect, request, session, url_for, flash
 from flask_login import login_user, logout_user, current_user, login_required
 from . import auth
 from .. import db
-from ..models import User
+from ..models import User, Role, Project
 from ..email import send_email
 from .forms import LoginForm, RegisterForm
 
@@ -47,17 +47,17 @@ def register():
         email = form.email.data
         username = form.username.data
         password = form.password.data
-        invite_code = form.invite_code.data
-        role, project = User.verify_invite_code(invite_code)
+        role = Role.query.filter_by(name='Doctor').first()
+        project = Project.query.filter_by(name='默认工程').first()
         if (role and project) is False:
             return render_template('register.html', form=form)
         else:
             user = User(email=email, username=username, password=password, role=role, project=project)
+            token = user.generate_confirmation_token()
+            send_email(user.email, '确认账户', 'auth/email/confirm', user=user, token=token)
             db.session.add(user)
             db.session.commit()
             flash('你已成功注册,请打开注册邮箱点击链接激活账号')
-            token = user.generate_confirmation_token()
-            send_email(user.email, '确认账户', 'auth/email/confirm', user=user, token=token)
             return redirect(url_for('auth.login'))
     return render_template('register.html', form=form)
     
