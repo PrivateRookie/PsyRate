@@ -1,0 +1,24 @@
+{% extends "formlayout.html" %}
+
+{% from "macroes.html" import render_table_question, render_meta_data %}
+
+{% block form %}
+<div class="container-fluid">
+    <h2>{{ survey['title'] }}</h2>
+    <p>{{ survey['description'] }}</p>
+    <form method="post" action="{{ url_for(route) }}">
+        <table class="table">
+            <tr>
+                {% for col in survey['cols'] %}
+                <td><strong>{{ col }}<strong></td>
+                {% endfor %}
+            </tr>
+            {% for question in survey['questions'] %}
+            {{ render_table_question(question) }}
+            {% endfor %}
+        </table>
+        {{ render_meta_data(form_name, status, report_type) }}
+        <button class="btn btn-primary" type="submit">提交</button>
+    </form>
+</div>
+{% endblock form %}
