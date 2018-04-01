@@ -212,6 +212,9 @@ def recevie():
         abort(403)
     data = {attr:flat(request.form.getlist(attr)) for attr in request.form.keys() if attr.startswith('q')}
     patient = json.loads(session.get('patient', "{}"))
+    if patient.get('id') is None:
+        flash('请先填写病人信息,然后再填写量表')
+        return redirect(url_for('main.forms', status='v0', route='main.recivie', report_type='self_report', form_name='cover'))
     model = getattr(surveymodels, request.form.get('form_name').upper())
     data['p_id'] = patient.get('id', '')
     # special case for followup
